@@ -485,7 +485,7 @@ async function saveShare(uid,name,data){const{db,collection,addDoc,serverTimesta
 async function doAmenToggle(id,a){const{db,doc,updateDoc,increment}=window._fb;await updateDoc(doc(db,'shares_youth',id),{amen:increment(a?-1:1)});}
 
 // ── 홈 ──
-function HomeScreen({done,onWrite,onMarkDone,completedSet,streak,points,onViewNote}){
+function HomeScreen({done,onWrite,onMarkDone,completedSet,streak,points,onViewNote,onViewPrayer,onViewMemory,onViewShare}){
   const me=window._me,entry=getEntry(),td=new Date(TODAY),dow=td.getDay(),mo=dow===0?-6:1-dow;
   const week=Array.from({length:7},(_,i)=>{const d=new Date(td);d.setDate(td.getDate()+mo+i);return{date:d.toISOString().slice(0,10),dow:['일','월','화','수','목','금','토'][d.getDay()]};});
 
@@ -554,15 +554,15 @@ function HomeScreen({done,onWrite,onMarkDone,completedSet,streak,points,onViewNo
       <div className="qt-memory-ref">({MEMORY.ref})</div>
     </div>
 
-    {/* 6. 퀵메뉴 - 나눔 탭으로 연결 */}
+    {/* 6. 퀵메뉴 - 실제 화면으로 연결 */}
     <div className="qt-quick-grid">
       {[
-        {icon:'🔥',label:'묵상 기록',tab:'more'},
-        {icon:'📝',label:'기도 노트',tab:'prayer'},
-        {icon:'📖',label:'말씀 암송',tab:'memory'},
-        {icon:'👥',label:'나눔',tab:'share'},
+        {icon:'🔥',label:'묵상 기록',action:onViewNote},
+        {icon:'📝',label:'기도 노트',action:onViewPrayer},
+        {icon:'📖',label:'말씀 암송',action:onViewMemory},
+        {icon:'👥',label:'나눔',action:onViewShare},
       ].map(i=>(
-        <div key={i.label} className="qt-quick-item" onClick={()=>i.onClick&&i.onClick()}>
+        <div key={i.label} className="qt-quick-item" onClick={i.action} style={{cursor:'pointer'}}>
           <div className="qt-quick-icon">{i.icon}</div>
           <div className="qt-quick-label">{i.label}</div>
         </div>
@@ -890,7 +890,36 @@ function WriteScreen({onCancel,onSave}){
           ))}
         </div>
 
-        {/* 말씀 기도 */}
+        {/* 묵상 도움말 (꿀잼QT 스타일) */}
+        <div style={{margin:'12px 18px 0',background:'var(--surface)',borderRadius:14,overflow:'hidden'}}>
+          <div style={{padding:'14px 16px',background:'var(--orange-soft)',borderBottom:'1px solid rgba(255,159,28,.15)'}}>
+            <div style={{fontSize:13,fontWeight:800,color:'var(--orange-dark)'}}>🌿 청소년 묵상 도움</div>
+          </div>
+          <div style={{padding:'14px 16px'}}>
+            <div style={{fontSize:14,lineHeight:1.7,color:'var(--text)'}}>
+              {entry.date==='2026-05-18'?'하나님 나라는 말이 아닌 능력이에요. 매일 작은 실천으로 하나님의 능력을 나타내봐요.':
+               entry.date==='2026-05-15'?'우리는 하나님의 동역자예요! 오늘도 하나님과 함께 일하고 있다는 사실이 얼마나 놀라운가요.':
+               '오늘 말씀 속에서 하나님이 나에게 하시는 말씀을 찾아봐요. 작은 것이라도 마음에 담아보세요.'}
+            </div>
+          </div>
+          <div style={{padding:'0 16px 14px'}}>
+            <div style={{fontSize:12,fontWeight:800,color:'var(--orange)',marginBottom:6}}>적용 도움</div>
+            <div style={{fontSize:14,lineHeight:1.65,color:'var(--text-2)'}}>말씀을 삶에 적용하는 가장 좋은 방법은 아주 작은 것부터 시작하는 거예요. 오늘 한 가지만 실천해봐요!</div>
+          </div>
+          <div style={{padding:'0 16px 14px',background:'rgba(255,212,59,.08)',borderTop:'1px solid rgba(255,212,59,.2)'}}>
+            <div style={{fontSize:12,fontWeight:800,color:'var(--orange-dark)',marginBottom:6}}>🙏 함께 기도해요</div>
+            <div style={{fontFamily:'Noto Serif KR,serif',fontSize:13,lineHeight:1.75,color:'var(--text-2)',fontStyle:'italic'}}>
+              "주님, 오늘 말씀을 통해 저를 만나주세요. 말씀대로 살아갈 힘을 주시고, 작은 실천을 통해 주님을 닮아가게 해주세요. 아멘."
+            </div>
+          </div>
+          <div style={{padding:'14px 16px',borderTop:'1px solid var(--divider)',display:'flex',alignItems:'center',gap:10}}>
+            <div style={{width:24,height:24,borderRadius:6,background:'var(--green-soft)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:14}}>✅</div>
+            <div>
+              <div style={{fontSize:12,fontWeight:800,color:'var(--green)'}}>오늘의 실천</div>
+              <div style={{fontSize:13,color:'var(--text-2)',marginTop:2}}>오늘 한 사람에게 진심 어린 격려의 말을 건네보세요.</div>
+            </div>
+          </div>
+        </div>
         <div style={{margin:'12px 18px 0',padding:'14px 16px',background:'var(--yellow-soft)',borderRadius:14,border:'1px solid rgba(255,212,59,.3)'}}>
           <div style={{fontSize:11,color:'var(--orange-dark)',fontWeight:800,marginBottom:6}}>말씀 기도</div>
           <div style={{fontFamily:'Noto Serif KR,serif',fontSize:13,lineHeight:1.75,color:'var(--text)'}}>
@@ -969,7 +998,144 @@ function WriteScreen({onCancel,onSave}){
   );
 }
 
-// ── 내 묵상 노트 화면 ──
+// ── 기도 노트 ──
+function PrayerNoteScreen({onClose,uid}){
+  const[prayers,setPrayers]=useState([]);const[loading,setLoading]=useState(true);const[filter,setFilter]=useState('전체');const[adding,setAdding]=useState(false);const[newTitle,setNewTitle]=useState('');const[saving,setSaving]=useState(false);
+  useEffect(()=>{
+    const{db,collection,query,where,onSnapshot}=window._fb;
+    const q=query(collection(db,'prayers_youth'),where('uid','==',uid));
+    return onSnapshot(q,snap=>{let docs=snap.docs.map(d=>({id:d.id,...d.data()}));docs.sort((a,b)=>(b.createdAt?.toDate?.()||0)-(a.createdAt?.toDate?.()||0));setPrayers(docs);setLoading(false);});
+  },[uid]);
+  const addPrayer=async()=>{
+    if(!newTitle.trim())return;setSaving(true);
+    const{db,collection,addDoc,serverTimestamp}=window._fb;
+    await addDoc(collection(db,'prayers_youth'),{uid,title:newTitle,status:'기도중',createdAt:serverTimestamp()});
+    setNewTitle('');setAdding(false);setSaving(false);
+  };
+  const toggleStatus=async(p)=>{
+    const{db,doc,updateDoc}=window._fb;
+    await updateDoc(doc(db,'prayers_youth',p.id),{status:p.status==='기도중'?'응답됨':'기도중'});
+  };
+  const filtered=filter==='전체'?prayers:prayers.filter(p=>p.status===filter);
+  const prayingCount=prayers.filter(p=>p.status==='기도중').length;
+  const answeredCount=prayers.filter(p=>p.status==='응답됨').length;
+  return(
+    <div style={{position:'fixed',inset:0,zIndex:60,background:'var(--bg)',overflowY:'auto'}}>
+      <div style={{padding:'18px 20px 0',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
+        <button onClick={onClose} style={{fontSize:14,color:'var(--text-3)',fontWeight:700,padding:'6px 0'}}>← 닫기</button>
+        <div style={{fontSize:17,fontWeight:900}}>기도 노트 🙏</div>
+        <div style={{width:48}}/>
+      </div>
+      {/* 통계 카드 */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,padding:'0 16px',marginBottom:14}}>
+        {[{l:'전체',v:prayers.length,c:'var(--text)'},{l:'기도 중',v:prayingCount,c:'var(--orange)'},{l:'응답됨',v:answeredCount,c:'var(--green)'}].map(s=>(
+          <div key={s.l} style={{background:'var(--surface)',borderRadius:14,padding:'14px 10px',textAlign:'center',boxShadow:'0 2px 8px rgba(255,159,28,.08)'}}>
+            <div style={{fontSize:26,fontWeight:900,color:s.c}}>{s.v}</div>
+            <div style={{fontSize:12,color:'var(--text-3)',fontWeight:600,marginTop:3}}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+      {/* 추가 버튼 */}
+      {adding?(
+        <div style={{padding:'0 16px',marginBottom:14}}>
+          <input style={{width:'100%',padding:'14px 16px',borderRadius:14,background:'var(--surface)',border:'2px solid var(--orange)',fontSize:15,fontFamily:'inherit',outline:'none',color:'var(--text)',marginBottom:10}} value={newTitle} onChange={e=>setNewTitle(e.target.value)} placeholder="기도 제목을 입력해요" autoFocus/>
+          <div style={{display:'flex',gap:8}}>
+            <button onClick={addPrayer} disabled={saving} style={{flex:1,height:48,borderRadius:12,background:'var(--orange)',color:'#fff',fontSize:15,fontWeight:800,border:0,cursor:'pointer'}}>추가</button>
+            <button onClick={()=>setAdding(false)} style={{flex:1,height:48,borderRadius:12,background:'var(--surface)',color:'var(--text-3)',fontSize:15,fontWeight:700,border:0,cursor:'pointer'}}>취소</button>
+          </div>
+        </div>
+      ):(
+        <div style={{padding:'0 16px',marginBottom:14}}>
+          <button onClick={()=>setAdding(true)} style={{width:'100%',height:52,borderRadius:14,background:'var(--orange)',color:'#fff',fontSize:16,fontWeight:800,border:0,cursor:'pointer',boxShadow:'0 4px 14px rgba(255,159,28,.3)'}}>+ 새 기도 제목 추가</button>
+        </div>
+      )}
+      {/* 필터 탭 */}
+      <div style={{display:'flex',gap:8,padding:'0 16px',marginBottom:14}}>
+        {['전체','기도 중','응답됨'].map(f=>(
+          <button key={f} onClick={()=>setFilter(f==='기도 중'?'기도중':f==='응답됨'?'응답됨':'전체')} style={{padding:'8px 16px',borderRadius:999,background:filter===(f==='기도 중'?'기도중':f==='응답됨'?'응답됨':'전체')?'var(--orange)':'var(--surface)',color:filter===(f==='기도 중'?'기도중':f==='응답됨'?'응답됨':'전체')?'#fff':'var(--text-2)',fontSize:13,fontWeight:700,boxShadow:'0 2px 8px rgba(255,159,28,.1)'}}>
+            {f}{f==='기도 중'?' 🙏':f==='응답됨'?' ✅':''}
+          </button>
+        ))}
+      </div>
+      {/* 기도 목록 */}
+      {loading?<div style={{textAlign:'center',padding:40,color:'var(--text-3)'}}>불러오는 중…</div>
+      :filtered.length===0?<div style={{textAlign:'center',padding:48}}><div style={{fontSize:40,marginBottom:12}}>🙏</div><div style={{fontSize:14,color:'var(--text-3)',fontWeight:600}}>기도 제목을 추가해보세요</div></div>
+      :filtered.map(p=>(
+        <div key={p.id} style={{background:'var(--surface)',borderRadius:16,padding:'16px 18px',margin:'0 16px 10px',display:'flex',alignItems:'center',gap:12,boxShadow:'0 2px 8px rgba(255,159,28,.06)'}}>
+          <button onClick={()=>toggleStatus(p)} style={{width:32,height:32,borderRadius:50,background:p.status==='응답됨'?'var(--green-soft)':'var(--orange-soft)',border:`2px solid ${p.status==='응답됨'?'var(--green)':'var(--orange)'}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,cursor:'pointer'}}>
+            {p.status==='응답됨'?'✓':'🙏'}
+          </button>
+          <div style={{flex:1}}>
+            <div style={{fontSize:15,fontWeight:700,color:p.status==='응답됨'?'var(--text-3)':'var(--text)',textDecoration:p.status==='응답됨'?'line-through':''}}>{p.title}</div>
+            <div style={{fontSize:11,color:p.status==='응답됨'?'var(--green)':'var(--orange)',fontWeight:700,marginTop:2}}>{p.status}</div>
+          </div>
+        </div>
+      ))}
+      <div style={{height:40}}/>
+    </div>
+  );
+}
+
+// ── 말씀 암송 ──
+function MemoryScreen({onClose}){
+  const[revealed,setRevealed]=useState(false);const[done,setDone]=useState(false);
+  return(
+    <div style={{position:'fixed',inset:0,zIndex:60,background:'var(--bg)',overflowY:'auto'}}>
+      <div style={{padding:'18px 20px 0',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
+        <button onClick={onClose} style={{fontSize:14,color:'var(--text-3)',fontWeight:700,padding:'6px 0'}}>← 닫기</button>
+        <div style={{fontSize:17,fontWeight:900}}>말씀 암송 📖</div>
+        <div style={{width:48}}/>
+      </div>
+      {/* 이번 주 암송 현황 */}
+      <div style={{margin:'0 16px 14px',background:'var(--surface)',borderRadius:16,padding:'16px 18px',boxShadow:'0 2px 8px rgba(255,159,28,.08)'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+          <div style={{fontSize:14,fontWeight:800,color:'var(--text)'}}>이번 주 암송 현황</div>
+          <div style={{fontSize:14,fontWeight:800,color:'var(--orange)'}}>{done?'1/7':'0/7'}</div>
+        </div>
+        <div style={{display:'flex',gap:8,justifyContent:'center'}}>
+          {['주일','월','화','수','목','금','토'].map((d,i)=>(
+            <div key={d} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+              <div style={{width:34,height:34,borderRadius:50,background:done&&i===0?'var(--orange)':'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                {done&&i===0?<span style={{fontSize:14}}>✓</span>:<span style={{fontSize:18}}>○</span>}
+              </div>
+              <div style={{fontSize:10,color:'var(--text-3)',fontWeight:600}}>{d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* 암송 카드 */}
+      <div style={{margin:'0 16px 12px',borderRadius:18,background:'linear-gradient(135deg,var(--orange),#FFB444)',padding:'28px 22px',boxShadow:'0 6px 24px rgba(255,159,28,.3)',cursor:'pointer',minHeight:180,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center'}} onClick={()=>setRevealed(r=>!r)}>
+        <div style={{fontSize:12,color:'rgba(255,255,255,.8)',fontWeight:700,marginBottom:8}}>오늘의 암송 구절</div>
+        <div style={{fontSize:22,fontWeight:900,color:'#fff',marginBottom:8}}>{MEMORY.ref}</div>
+        {revealed?(
+          <div style={{fontFamily:'Noto Serif KR,serif',fontSize:15,lineHeight:1.75,color:'#fff',marginTop:8}}>{MEMORY.verse}</div>
+        ):(
+          <>
+            <div style={{fontSize:14,color:'rgba(255,255,255,.75)',fontWeight:600}}>이 구절을 기억하시나요?</div>
+            <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginTop:4}}>탭하여 본문 확인</div>
+          </>
+        )}
+      </div>
+      {/* 빈칸 힌트 */}
+      <div style={{margin:'0 16px 12px',background:'var(--surface)',borderRadius:16,padding:'16px 18px',boxShadow:'0 2px 8px rgba(255,159,28,.08)',textAlign:'center',cursor:'pointer'}}>
+        <div style={{fontSize:14,fontWeight:800,color:'var(--text)'}}>💡 빈칸 힌트로 연습하기</div>
+        <div style={{fontFamily:'Noto Serif KR,serif',fontSize:14,lineHeight:1.7,color:'var(--text-2)',marginTop:8}}>
+          우리가 환난 중에도 _____하나니 이는 환난은 _____를, _____는 연단을, 연단은 _____을 이루는 줄 앎이로다
+        </div>
+      </div>
+      {/* 완료 버튼 */}
+      <div style={{padding:'0 16px'}}>
+        <button onClick={()=>{setDone(true);setRevealed(true);}} style={{width:'100%',height:52,borderRadius:14,background:done?'var(--green-soft)':'var(--surface)',color:done?'var(--green)':'var(--text)',fontSize:16,fontWeight:800,border:done?'2px solid var(--green)':'2px solid var(--divider)',cursor:'pointer',marginBottom:10}}>
+          {done?'✅ 암송 완료!':'다시 보기'}
+        </button>
+        {!done&&<button onClick={()=>setDone(true)} style={{width:'100%',height:52,borderRadius:14,background:'var(--orange)',color:'#fff',fontSize:16,fontWeight:800,border:0,cursor:'pointer',boxShadow:'0 4px 14px rgba(255,159,28,.3)'}}>
+          ✓ 암송했어요!
+        </button>}
+      </div>
+      <div style={{height:40}}/>
+    </div>
+  );
+}
 function MyNotesScreen({onClose,uid}){
   const[notes,setNotes]=useState([]);const[loading,setLoading]=useState(true);
   useEffect(()=>{
@@ -1075,7 +1241,7 @@ function Dashboard({onBack}){
 
 // ── 메인 ──
 function App(){
-  const[tab,setTab]=useState('home');const[done,setDone]=useState(false);const[cs,setCs]=useState(new Set());const[streak,setStreak]=useState(0);const[points,setPoints]=useState(0);const[writing,setWriting]=useState(false);const[toast,setToast]=useState(null);const[dash,setDash]=useState(false);const[shareCount,setShareCount]=useState(0);const[attendCount,setAttendCount]=useState(0);const[viewingNotes,setViewingNotes]=useState(false);
+  const[tab,setTab]=useState('home');const[done,setDone]=useState(false);const[cs,setCs]=useState(new Set());const[streak,setStreak]=useState(0);const[points,setPoints]=useState(0);const[writing,setWriting]=useState(false);const[toast,setToast]=useState(null);const[dash,setDash]=useState(false);const[shareCount,setShareCount]=useState(0);const[attendCount,setAttendCount]=useState(0);const[viewingNotes,setViewingNotes]=useState(false);const[viewingPrayer,setViewingPrayer]=useState(false);const[viewingMemory,setViewingMemory]=useState(false);
   const me=window._me;
   useEffect(()=>{
     if(!me)return;
@@ -1096,6 +1262,8 @@ function App(){
 
   if(dash)return<Dashboard onBack={()=>setDash(false)}/>;
   if(viewingNotes)return<MyNotesScreen onClose={()=>setViewingNotes(false)} uid={me?.uid}/>;
+  if(viewingPrayer)return<PrayerNoteScreen onClose={()=>setViewingPrayer(false)} uid={me?.uid}/>;
+  if(viewingMemory)return<MemoryScreen onClose={()=>setViewingMemory(false)}/>;
 
   const TABS=[
     {id:'home',l:'홈',i:'🏠'},
@@ -1108,7 +1276,7 @@ function App(){
   return(
     <div className="qt-app" style={{position:'relative'}}>
       <div className="qt-scroll">
-        {tab==='home'&&<HomeScreen done={done} onWrite={()=>setWriting(true)} onMarkDone={markDone} completedSet={cs} streak={streak} points={points} onViewNote={()=>setViewingNotes(true)}/>}
+        {tab==='home'&&<HomeScreen done={done} onWrite={()=>setWriting(true)} onMarkDone={markDone} completedSet={cs} streak={streak} points={points} onViewNote={()=>setViewingNotes(true)} onViewPrayer={()=>setViewingPrayer(true)} onViewMemory={()=>setViewingMemory(true)} onViewShare={()=>setTab('share')}/>}
         {tab==='cal'&&<CalendarScreen completedSet={cs} streak={streak}/>}
         {tab==='share'&&<ShareScreen uid={me?.uid}/>}
         {tab==='badge'&&<BadgeScreen completedSet={cs} streak={streak} points={points} shareCount={shareCount} attendCount={attendCount}/>}
