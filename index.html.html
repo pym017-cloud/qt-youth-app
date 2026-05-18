@@ -1,0 +1,1607 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>QT — 순천침례교회</title>
+  <meta name="description" content="순천침례교회 매일 큐티 묵상 앱 — 두란노 생명의 삶"/>
+  <meta name="theme-color" content="#0f1419"/>
+
+  <!-- PWA 매니페스트 -->
+  <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22QT%20%E2%80%94%20%EC%88%9C%EC%B2%9C%EC%B9%A8%EB%A1%80%EA%B5%90%ED%9A%8C%22%2C%22short_name%22%3A%22QT%22%2C%22description%22%3A%22%EC%88%9C%EC%B2%9C%EC%B9%A8%EB%A1%80%EA%B5%90%ED%9A%8C%20%EB%A7%A4%EC%9D%BC%20%ED%81%90%ED%8B%B0%20%EB%AC%B5%EC%83%81%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f1419%22%2C%22theme_color%22%3A%22%230f1419%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%2527http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%2527%2520viewBox%3D%25270%25200%2520192%2520192%2527%253E%253Crect%2520width%3D%2527192%2527%2520height%3D%2527192%2527%2520rx%3D%252740%2527%2520fill%3D%2527%25230f1419%2527%2F%253E%253Crect%2520x%3D%252716%2527%2520y%3D%252716%2527%2520width%3D%2527160%2527%2520height%3D%2527160%2527%2520rx%3D%252732%2527%2520fill%3D%2527rgba(212%2C165%2C116%2C0.16)%2527%2F%253E%253Ctext%2520x%3D%252796%2527%2520y%3D%2527118%2527%2520text-anchor%3D%2527middle%2527%2520font-family%3D%2527serif%2527%2520font-size%3D%252788%2527%2520fill%3D%2527%2523d4a574%2527%253E%25EB%25AC%25B5%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D"/>
+
+  <!-- 아이폰 PWA 설정 -->
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="QT"/>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%230f1419'/><rect x='10' y='10' width='160' height='160' rx='32' fill='rgba(212,165,116,0.16)'/><text x='90' y='115' text-anchor='middle' font-family='serif' font-size='90' fill='%23d4a574'>묵</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:#0f1419;color:#e8e3d8;font-family:'Noto Sans KR',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+    #loading-screen{position:fixed;inset:0;background:#0f1419;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:9999;transition:opacity .4s}
+    #loading-screen.hidden{opacity:0;pointer-events:none}
+    .ld-mark{width:72px;height:72px;border-radius:22px;background:rgba(212,165,116,.16);color:#d4a574;font-family:'Noto Serif KR',serif;font-size:36px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .ld-title{font-size:20px;font-weight:700}.ld-sub{font-size:14px;color:#5b6470}
+    .spinner{width:28px;height:28px;border-radius:50%;border:2.5px solid rgba(212,165,116,.2);border-top-color:#d4a574;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #login-screen{min-height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px}
+    #login-screen.visible{display:flex}
+    .ln-logo{width:80px;height:80px;border-radius:24px;background:rgba(212,165,116,.16);color:#d4a574;font-family:'Noto Serif KR',serif;font-size:42px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+    .ln-title{font-size:28px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px;text-align:center}
+    .ln-sub{font-size:15px;color:#8a9199;text-align:center;line-height:1.6;margin-bottom:32px}
+    .ln-card{width:100%;max-width:380px;background:#1a2330;border-radius:24px;padding:28px 24px;border:1px solid rgba(232,227,216,.08)}
+    .ln-tabs{display:flex;gap:6px;margin-bottom:24px;background:#0f1419;border-radius:14px;padding:4px}
+    .ln-tab{flex:1;height:40px;border-radius:10px;font-size:14px;font-weight:600;color:#8a9199;border:0;background:transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+    .ln-tab.active{background:#1a2330;color:#e8e3d8;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    .ln-section-title{font-size:18px;font-weight:700;margin-bottom:6px}
+    .ln-section-sub{font-size:14px;color:#8a9199;margin-bottom:20px;line-height:1.55}
+    .ln-label{font-size:13px;color:#8a9199;font-weight:600;margin-bottom:8px;letter-spacing:.04em}
+    .ln-input{width:100%;padding:14px 16px;border-radius:14px;background:#232f3e;border:1px solid rgba(232,227,216,.1);color:#e8e3d8;font-size:16px;font-family:inherit;outline:none;margin-bottom:14px;transition:border-color .15s}
+    .ln-input:focus{border-color:#d4a574}
+    .ln-birth-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+    .ln-birth-input{padding:14px 8px;border-radius:14px;background:#232f3e;border:1px solid rgba(232,227,216,.1);color:#e8e3d8;font-size:18px;font-weight:600;font-family:inherit;outline:none;text-align:center;transition:border-color .15s;width:100%}
+    .ln-birth-input:focus{border-color:#d4a574}
+    .ln-birth-label{font-size:12px;color:#5b6470;text-align:center;margin-top:-10px;margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+    .ln-btn{width:100%;height:54px;border-radius:14px;background:#d4a574;color:#1a1410;font-size:17px;font-weight:700;font-family:inherit;border:0;cursor:pointer;transition:filter .15s}
+    .ln-btn:hover{filter:brightness(1.05)}.ln-btn:active{transform:translateY(1px)}
+    .ln-btn.ghost{background:rgba(212,165,116,.12);color:#d4a574;border:1.5px solid rgba(212,165,116,.3);height:46px;font-size:15px;margin-top:10px}
+    .ln-google{width:100%;height:54px;border-radius:14px;background:#fff;color:#1a1410;font-size:16px;font-weight:700;font-family:inherit;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:filter .15s}
+    .ln-google:hover{filter:brightness(.96)}
+    .ln-err{font-size:13px;color:#e57373;text-align:center;min-height:18px;margin-bottom:10px}
+    .ln-hint{font-size:13px;color:#5b6470;text-align:center;line-height:1.6;margin-top:8px}
+    .ln-toggle{font-size:14px;color:#d4a574;text-align:center;margin-top:14px;cursor:pointer}
+    .ln-divider{text-align:center;color:#5b6470;font-size:12px;margin:14px 0;position:relative}
+    .ln-divider::before,.ln-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:rgba(232,227,216,.1)}
+    .ln-divider::before{left:0}.ln-divider::after{right:0}
+    #app{display:none;max-width:428px;margin:0 auto;min-height:100vh}
+    #app.visible{display:block}
+    .qt-app{--bg:#0f1419;--surface:#1a2330;--surface-2:#232f3e;--text:#e8e3d8;--text-2:#8a9199;--text-3:#5b6470;--gold:#d4a574;--gold-soft:rgba(212,165,116,.16);--done:oklch(0.78 0.11 150);--done-strong:oklch(0.72 0.13 150);--done-soft:oklch(0.78 0.11 150/.20);--divider:rgba(232,227,216,.10);--danger:oklch(0.72 0.14 30);font-family:'Noto Sans KR',system-ui,sans-serif;color:var(--text);background:var(--bg);width:100%;min-height:100vh;display:flex;flex-direction:column;word-break:keep-all;overflow-wrap:break-word}
+    .qt-app *{box-sizing:border-box}
+    .qt-app button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+    .qt-scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:90px}
+    .qt-scroll::-webkit-scrollbar{display:none}
+    .qt-topbar{padding:18px 22px 4px;display:flex;align-items:flex-end;justify-content:space-between}
+    .qt-greet{font-size:15px;color:var(--text-2);font-weight:500}
+    .qt-date{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-top:2px}
+    .qt-card{background:var(--surface);border-radius:22px;padding:22px;margin:16px 16px 0}
+    .qt-card.hero{background:linear-gradient(155deg,#1d2a3a 0%,#182230 60%,#15202d 100%);border:1px solid rgba(212,165,116,.18);padding:24px 24px 22px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+    .qt-eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
+    .qt-passage-book{font-family:'Noto Serif KR',serif;font-size:30px;font-weight:700;letter-spacing:-.02em;margin-top:8px;line-height:1.2}
+    .qt-passage-range{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:500;color:var(--text);margin-top:2px}
+    .qt-passage-title{font-size:17px;color:var(--text-2);margin-top:10px}
+    .qt-meta{display:flex;gap:14px;align-items:center;font-size:14px;color:var(--text-3);margin-top:14px}
+    .qt-meta-dot{width:3px;height:3px;border-radius:50%;background:var(--text-3)}
+    .qt-cta{display:block;width:100%;height:64px;border-radius:18px;background:var(--gold);color:#1a1410;font-size:19px;font-weight:700;margin-top:22px;transition:transform .08s,filter .15s}
+    .qt-cta:active{transform:translateY(1px);filter:brightness(.96)}
+    .qt-cta.done{background:var(--done-soft);color:var(--done);border:1.5px solid var(--done);pointer-events:none}
+    .qt-cta.ghost{background:transparent;color:var(--text);border:1.5px solid var(--divider);height:56px;font-size:17px;margin-top:12px;font-weight:600}
+    .qt-streak{display:flex;align-items:center;gap:18px;padding:16px 18px;background:var(--surface-2);border-radius:16px;margin-top:14px}
+    .qt-streak-num{font-size:34px;font-weight:800;color:var(--gold);letter-spacing:-.02em;line-height:1;white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:baseline}
+    .qt-streak-num .unit{font-size:16px;font-weight:600;margin-left:3px;color:var(--text-2)}
+    .qt-streak-label{font-size:15px;color:var(--text-2);line-height:1.5}
+    .qt-streak-label b{color:var(--text);font-weight:600}
+    .qt-week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
+    .qt-week-cell{display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 0}
+    .qt-week-day{font-size:13px;color:var(--text-3)}
+    .qt-week-day.today{color:var(--gold);font-weight:700}
+    .qt-week-mark{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;background:transparent;color:var(--text-3);border:1.5px dashed var(--divider)}
+    .qt-week-mark.done{background:var(--done-soft);color:var(--done);border-color:transparent}
+    .qt-week-mark.today{border:1.5px solid var(--gold);color:var(--gold)}
+    .qt-week-mark.today.done{background:var(--done);color:#0f1419;border-color:var(--done)}
+    .qt-cal-stat{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:0 16px}
+    .qt-stat{background:var(--surface);border-radius:14px;padding:14px 14px 12px}
+    .qt-stat-num{font-size:24px;font-weight:800;color:var(--gold);letter-spacing:-.02em}
+    .qt-stat-label{font-size:13px;color:var(--text-2);margin-top:2px}
+    .qt-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:14px 16px 0}
+    .qt-cal-dow{text-align:center;font-size:13px;color:var(--text-3);padding:8px 0}
+    .qt-cal-day{aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--surface)}
+    .qt-cal-day.empty{background:transparent}.qt-cal-day.future{background:transparent;border:1px dashed rgba(232,227,216,.18);color:var(--text-3)}.qt-cal-day.miss{background:transparent;color:var(--text-3);border:1px solid var(--divider)}.qt-cal-day.done{background:var(--done-strong);color:#0b1117}.qt-cal-day.today{border:2.5px solid var(--gold);background:var(--gold-soft);color:var(--gold)}
+    .qt-cal-day-num{font-size:16px;font-weight:700}
+    .qt-cal-legend{display:flex;flex-wrap:wrap;gap:12px 18px;padding:22px 22px 0;font-size:13px;color:var(--text-2)}
+    .qt-cal-legend>span{display:inline-flex;align-items:center;gap:8px}
+    .qt-cal-sw{width:16px;height:16px;border-radius:5px;flex-shrink:0}
+    .qt-cal-sw.done{background:var(--done-strong)}.qt-cal-sw.today{background:var(--gold-soft);border:2px solid var(--gold)}.qt-cal-sw.miss{background:transparent;border:1px solid var(--divider)}.qt-cal-sw.future{background:transparent;border:1px dashed rgba(232,227,216,.32)}
+    .qt-feed-filter{display:flex;gap:8px;padding:4px 16px 12px;overflow-x:auto}.qt-feed-filter::-webkit-scrollbar{display:none}
+    .qt-chip{padding:9px 16px;border-radius:999px;background:var(--surface);color:var(--text-2);font-size:14px;font-weight:600;white-space:nowrap;flex-shrink:0}.qt-chip.active{background:var(--gold-soft);color:var(--gold)}
+    .qt-avatar{width:40px;height:40px;border-radius:50%;background:var(--surface-2);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;font-family:'Noto Serif KR',serif;flex-shrink:0}
+    .qt-feed-card{background:var(--surface);border-radius:22px;padding:20px 22px 18px;margin:0 16px 12px}
+    .qt-share-head{display:flex;align-items:center;gap:12px}
+    .qt-share-name{font-size:16px;font-weight:600}.qt-share-meta{font-size:13px;color:var(--text-3);margin-top:1px}
+    .qt-verse{margin-top:14px;padding:14px 16px 14px 18px;background:rgba(212,165,116,.08);border-left:3px solid var(--gold);border-radius:4px 14px 14px 4px}
+    .qt-verse-ref{font-size:13px;letter-spacing:.08em;color:var(--gold);font-weight:700}
+    .qt-verse-body{font-family:'Noto Serif KR',serif;font-size:17px;line-height:1.65;color:var(--text);margin-top:6px}
+    .qt-share-text{font-size:16px;line-height:1.65;color:var(--text);margin-top:12px}
+    .qt-feed-actions{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--divider)}
+    .qt-feed-btn{flex:1;height:44px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600;color:var(--text)}.qt-feed-btn.amened{background:var(--gold-soft);color:var(--gold)}
+    .qt-tabs{display:flex;padding:6px 8px 4px;background:rgba(15,20,25,.95);backdrop-filter:blur(12px);border-top:1px solid var(--divider);position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:428px;z-index:100}
+    .qt-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0 8px;color:var(--text-2);font-size:13px;font-weight:600}.qt-tab.active{color:var(--gold)}
+    .qt-tab-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center}
+    .qt-write-head{padding:18px 22px 0;display:flex;justify-content:space-between;align-items:center}
+    .qt-write-cancel{font-size:16px;color:var(--text-2);font-weight:600;padding:8px 4px}.qt-write-save{font-size:16px;color:var(--gold);font-weight:700;padding:8px 4px}
+    .qt-write-section{padding:20px 22px 0}
+    .qt-write-label{font-size:13px;color:var(--gold);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+    .qt-write-area{width:100%;margin-top:10px;background:var(--surface);border-radius:16px;border:1px solid var(--divider);padding:16px 18px;color:var(--text);font-family:inherit;font-size:17px;line-height:1.65;resize:none;outline:none}
+    .qt-write-area::placeholder{color:var(--text-3)}.qt-write-area:focus{border-color:var(--gold)}
+    .qt-verse-ref-input{width:100%;margin-top:8px;background:transparent;border:0;border-bottom:1px solid var(--divider);padding:6px 0;color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.08em;font-family:inherit;outline:none}
+    .qt-verse-ref-input:focus{border-bottom-color:var(--gold)}
+    .qt-verse-input{width:100%;margin-top:10px;background:rgba(212,165,116,.08);border-left:3px solid var(--gold);border-radius:4px 14px 14px 4px;padding:14px 16px;color:var(--text);font-family:'Noto Serif KR',serif;font-size:17px;line-height:1.65;resize:none;outline:none;border-top:1px solid transparent;border-right:1px solid transparent;border-bottom:1px solid transparent}
+    .qt-verse-input:focus{background:rgba(212,165,116,.12)}
+    .qt-write-toggle{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:16px;padding:16px 18px;margin-top:16px;width:100%}
+    .qt-toggle{width:52px;height:30px;border-radius:30px;background:var(--surface-2);position:relative;transition:background .2s;flex-shrink:0}
+    .qt-toggle::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--text);transition:transform .2s}
+    .qt-toggle.on{background:var(--gold)}.qt-toggle.on::after{transform:translateX(22px);background:#1a1410}
+    .qt-more-list{padding:0 16px}
+    .qt-more-item{display:flex;align-items:center;justify-content:space-between;width:100%;padding:18px 20px;background:var(--surface);margin-top:8px;border-radius:16px;text-align:left}
+    .qt-more-label{font-size:17px;font-weight:500}.qt-more-right{display:inline-flex;align-items:center;gap:10px;flex-shrink:0}.qt-more-meta{font-size:14px;color:var(--text-2)}
+    .qt-profile{display:flex;align-items:center;gap:16px;padding:6px 22px 4px}
+    .qt-profile-av{width:60px;height:60px;border-radius:50%;background:var(--gold-soft);color:var(--gold);font-family:'Noto Serif KR',serif;font-size:24px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .qt-profile-name{font-size:22px;font-weight:700}.qt-profile-sub{font-size:14px;color:var(--text-2);margin-top:2px}
+    .qt-toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);padding:14px 22px;border-radius:999px;background:var(--done);color:#0f1419;font-size:15px;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:500;animation:toast-in .25s ease;white-space:nowrap}
+    @keyframes toast-in{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translateX(-50%)}}
+    .qt-empty{padding:48px 24px;text-align:center;color:var(--text-3)}
+    .qt-empty-icon{font-size:40px;margin-bottom:12px}.qt-empty-msg{font-size:16px;line-height:1.6}
+    .dash{--bg:#0b1117;--surface:#141d28;--surface-2:#1e2a38;--text:#e8e3d8;--text-2:#8a9199;--text-3:#5b6470;--gold:#d4a574;--gold-soft:rgba(212,165,116,.16);--done:oklch(0.74 0.09 150);--done-soft:oklch(0.74 0.09 150/.18);--danger:oklch(0.7 0.13 30);--divider:rgba(232,227,216,.07);font-family:'Noto Sans KR',system-ui,sans-serif;color:var(--text);background:var(--bg);min-height:100vh;display:grid;grid-template-columns:240px 1fr;word-break:keep-all}
+    .dash *{box-sizing:border-box}.dash button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+    .dash-side{background:var(--surface);border-right:1px solid var(--divider);display:flex;flex-direction:column;padding:22px 16px;position:sticky;top:0;height:100vh}
+    .dash-logo{display:flex;align-items:center;gap:10px;padding:0 6px 22px;border-bottom:1px solid var(--divider);margin-bottom:12px}
+    .dash-logo-mark{width:36px;height:36px;border-radius:10px;background:var(--gold-soft);color:var(--gold);font-family:'Noto Serif KR',serif;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center}
+    .dash-logo-name{font-size:16px;font-weight:700}.dash-logo-sub{font-size:11px;color:var(--text-3);margin-top:1px;letter-spacing:.06em;text-transform:uppercase}
+    .dash-nav-sec{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);padding:14px 10px 6px}
+    .dash-nav-item{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border-radius:10px;font-size:14.5px;font-weight:500;color:var(--text-2);text-align:left}
+    .dash-nav-item.active{background:var(--surface-2);color:var(--text)}
+    .dash-dot{width:6px;height:6px;border-radius:50%;background:var(--divider)}.dash-nav-item.active .dash-dot{background:var(--gold)}
+    .dash-nav-count{margin-left:auto;font-size:12px;color:var(--text-3)}
+    .dash-foot{margin-top:auto;padding:16px 8px;border-top:1px solid var(--divider);display:flex;align-items:center;gap:12px}
+    .dash-av{width:40px;height:40px;border-radius:50%;background:var(--gold-soft);color:var(--gold);font-family:'Noto Serif KR',serif;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .dash-main{padding:28px 36px 40px;overflow-y:auto;max-height:100vh}
+    .dash-main-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+    .dash-main-title{font-size:28px;font-weight:700;letter-spacing:-.02em}.dash-main-sub{font-size:14px;color:var(--text-2);margin-top:4px}
+    .dash-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+    .dash-kpi{background:var(--surface);border:1px solid var(--divider);border-radius:16px;padding:18px 20px 16px}
+    .dash-kpi-label{font-size:13px;color:var(--text-2)}
+    .dash-kpi-val{font-size:34px;font-weight:700;letter-spacing:-.025em;margin-top:6px;line-height:1.1;font-variant-numeric:tabular-nums}
+    .dash-kpi-val .unit{font-size:14px;color:var(--text-2);font-weight:600;margin-left:3px}
+    .dash-kpi-delta{font-size:12.5px;margin-top:6px;display:inline-flex;align-items:center;gap:5px;color:var(--done)}.dash-kpi-delta.flat{color:var(--text-2)}
+    .dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+    .dash-panel{background:var(--surface);border:1px solid var(--divider);border-radius:18px;padding:22px 22px 18px}
+    .dash-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .dash-panel-title{font-size:16px;font-weight:700}.dash-panel-meta{font-size:12.5px;color:var(--text-3)}
+    .dash-table{width:100%;border-collapse:collapse;font-size:13.5px}
+    .dash-table th{text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--divider)}
+    .dash-table td{padding:14px 12px;border-bottom:1px solid var(--divider);vertical-align:middle}
+    .dash-table tr:last-child td{border-bottom:0}
+    .dash-bar-wrap{position:relative;width:100%;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+    .dash-bar{height:100%;border-radius:3px;background:var(--gold);transition:width .6s ease}
+    .dash-pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:600}
+    .dash-pill.good{background:var(--done-soft);color:var(--done)}.dash-pill.mid{background:rgba(212,165,116,.16);color:var(--gold)}.dash-pill.low{background:rgba(213,90,73,.18);color:var(--danger)}
+    .dash-status{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .dash-status.done{background:var(--done)}.dash-status.miss{background:var(--surface-2);border:1.5px solid var(--text-3)}
+    .dash-feed-row{padding:13px 0;border-bottom:1px solid var(--divider);display:flex;gap:12px}.dash-feed-row:last-child{border-bottom:0}
+    .dash-feed-av{width:34px;height:34px;border-radius:50%;background:var(--surface-2);color:var(--gold);font-family:'Noto Serif KR',serif;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .dash-feed-txt{font-size:13.5px;line-height:1.6;color:var(--text)}.dash-feed-name{font-weight:700}
+    .dash-feed-time{font-size:12px;color:var(--text-3);margin-top:4px}
+    .dash-feed-quote{font-size:13.5px;color:var(--text-2);margin-top:6px;padding-left:10px;border-left:2px solid var(--gold);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--done);margin-right:5px;animation:pulse 2s ease infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @media(max-width:900px){.dash{grid-template-columns:1fr}.dash-side{display:none}.dash-kpis{grid-template-columns:1fr 1fr}.dash-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<div id="loading-screen">
+  <div class="ld-mark">✝️</div>
+  <div class="ld-title">QT</div>
+  <div class="ld-sub">순천침례교회 · 두란노 생명의 삶</div>
+  <div class="spinner" style="margin-top:8px"></div>
+</div>
+
+<div id="login-screen">
+  <div class="ln-logo">✝️</div>
+  <div class="ln-title">순천침례교회 QT</div>
+  <div class="ln-sub">두란노 생명의 삶으로<br>매일 말씀을 묵상해요</div>
+  <div class="ln-card">
+    <div class="ln-tabs">
+      <button class="ln-tab active" id="tab-simple" onclick="switchTab('simple')">✋ 간편 가입</button>
+      <button class="ln-tab" id="tab-email" onclick="switchTab('email')">✉️ 이메일</button>
+      <button class="ln-tab" id="tab-google" onclick="switchTab('google')">🔵 구글</button>
+    </div>
+
+    <div id="panel-simple">
+      <div id="simple-signup">
+        <div class="ln-section-title">처음 오셨나요?</div>
+        <div class="ln-section-sub">이름과 생년월일만 입력하면<br>바로 시작할 수 있어요</div>
+        <div class="ln-label">이름</div>
+        <input class="ln-input" type="text" id="s-name" placeholder="예: 김은혜" autocomplete="name"/>
+        <div class="ln-label">생년월일 (비밀번호로 사용돼요)</div>
+        <div class="ln-birth-row">
+          <input class="ln-birth-input" type="tel" id="s-yy" placeholder="1960" maxlength="4" inputmode="numeric" oninput="birthInput(this,'s-mm',4)"/>
+          <input class="ln-birth-input" type="tel" id="s-mm" placeholder="03" maxlength="2" inputmode="numeric" oninput="birthInput(this,'s-dd',2)"/>
+          <input class="ln-birth-input" type="tel" id="s-dd" placeholder="15" maxlength="2" inputmode="numeric" oninput="birthInput(this,null,2)"/>
+        </div>
+        <div class="ln-birth-label"><span>년</span><span>월</span><span>일</span></div>
+        <div class="ln-err" id="simple-err"></div>
+        <button class="ln-btn" onclick="handleSimpleSignup()">가입하고 시작하기 🙏</button>
+        <div class="ln-divider">이미 가입하셨나요?</div>
+        <button class="ln-btn ghost" onclick="showSimpleLogin()">이름으로 로그인</button>
+      </div>
+      <div id="simple-login" style="display:none">
+        <div class="ln-section-title">다시 오셨군요!</div>
+        <div class="ln-section-sub">이름과 생년월일을 입력해주세요</div>
+        <div class="ln-label">이름</div>
+        <input class="ln-input" type="text" id="sl-name" placeholder="예: 김은혜"/>
+        <div class="ln-label">생년월일</div>
+        <div class="ln-birth-row">
+          <input class="ln-birth-input" type="tel" id="sl-yy" placeholder="1960" maxlength="4" inputmode="numeric" oninput="birthInput(this,'sl-mm',4)"/>
+          <input class="ln-birth-input" type="tel" id="sl-mm" placeholder="03" maxlength="2" inputmode="numeric" oninput="birthInput(this,'sl-dd',2)"/>
+          <input class="ln-birth-input" type="tel" id="sl-dd" placeholder="15" maxlength="2" inputmode="numeric" oninput="birthInput(this,null,2)"/>
+        </div>
+        <div class="ln-birth-label"><span>년</span><span>월</span><span>일</span></div>
+        <div class="ln-err" id="simple-login-err"></div>
+        <button class="ln-btn" onclick="handleSimpleLogin()">로그인</button>
+        <div class="ln-toggle" onclick="showSimpleSignup()">← 처음 가입하기</div>
+      </div>
+    </div>
+
+    <div id="panel-email" style="display:none">
+      <div id="email-login-form">
+        <div class="ln-section-title">이메일 로그인</div>
+        <div class="ln-label">이메일</div>
+        <input class="ln-input" type="email" id="ln-email" placeholder="이메일 주소" autocomplete="email"/>
+        <div class="ln-label">비밀번호</div>
+        <input class="ln-input" type="password" id="ln-pw" placeholder="비밀번호 (6자 이상)"/>
+        <div class="ln-err" id="ln-err"></div>
+        <button class="ln-btn" onclick="handleEmailLogin()">로그인</button>
+        <div class="ln-toggle" onclick="toggleEmailMode()">계정이 없으신가요? <b>회원가입</b></div>
+      </div>
+      <div id="email-signup-form" style="display:none">
+        <div class="ln-section-title">이메일 회원가입</div>
+        <div class="ln-label">이름</div>
+        <input class="ln-input" type="text" id="ln-name" placeholder="예: 김은혜"/>
+        <div class="ln-label">이메일</div>
+        <input class="ln-input" type="email" id="ln-su-email" placeholder="이메일 주소"/>
+        <div class="ln-label">비밀번호</div>
+        <input class="ln-input" type="password" id="ln-su-pw" placeholder="비밀번호 (6자 이상)"/>
+        <div class="ln-err" id="ln-su-err"></div>
+        <button class="ln-btn" onclick="handleSignup()">회원가입</button>
+        <div class="ln-toggle" onclick="toggleEmailMode()">이미 계정이 있으신가요? <b>로그인</b></div>
+      </div>
+    </div>
+
+    <div id="panel-google" style="display:none">
+      <div class="ln-section-title">구글 계정으로 로그인</div>
+      <div class="ln-section-sub">구글 계정이 있으면<br>한 번에 로그인할 수 있어요<br><br>⚠️ 카카오톡 안에서는 안 돼요.<br>크롬 브라우저로 열어주세요!</div>
+      <button class="ln-google" onclick="handleGoogleLogin()">
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Google 계정으로 로그인
+      </button>
+    </div>
+
+    <div class="ln-hint" style="margin-top:20px">📋 리더·교역자는 Firebase 콘솔에서<br>isLeader: true 로 설정하면 대시보드가 열려요</div>
+  </div>
+</div>
+
+<div id="app"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, where, orderBy, onSnapshot, updateDoc, increment, serverTimestamp, limit, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app = initializeApp({ apiKey:"AIzaSyDgoWnFT7OR2pEKzZ0DhWixC0AVZARsWag", authDomain:"scbaptist-qt.firebaseapp.com", projectId:"scbaptist-qt", storageBucket:"scbaptist-qt.firebasestorage.app", messagingSenderId:"324309935668", appId:"1:324309935668:web:711d15b34811c275b78c61" });
+const auth = getAuth(app), db = getFirestore(app), gp = new GoogleAuthProvider();
+window._fb = { auth, db, gp, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, GoogleAuthProvider, doc, setDoc, getDoc, collection, addDoc, query, where, orderBy, onSnapshot, updateDoc, increment, serverTimestamp, limit, deleteDoc, getDocs, getAuth };
+
+onAuthStateChanged(auth, async (user) => {
+  document.getElementById('loading-screen').classList.add('hidden');
+  if (user) {
+    const uRef = doc(db,'users',user.uid);
+    const snap = await getDoc(uRef);
+    const uData = snap.exists() ? snap.data() : { name:user.displayName||'성도', email:user.email||'', role:'성도', group:'미배정', isLeader:false };
+    if (!snap.exists()) await setDoc(uRef, { ...uData, createdAt:serverTimestamp() });
+    window._me = { uid:user.uid, name:user.displayName||uData.name||'성도', email:user.email||'', role:uData.role||'성도', group:uData.group||'미배정', isLeader:uData.isLeader||false };
+    document.getElementById('login-screen').classList.remove('visible');
+    document.getElementById('app').classList.add('visible');
+    if (!window._reactMounted) { window._reactMounted=true; window._mountApp && window._mountApp(); }
+  } else {
+    window._me = null;
+    document.getElementById('login-screen').classList.add('visible');
+    document.getElementById('app').classList.remove('visible');
+  }
+});
+
+function makeEmail(name, birth) {
+  const safe = encodeURIComponent(name.trim()).replace(/%/g,'').toLowerCase().slice(0,20);
+  return `${safe}_${birth}@qt.scbaptist.local`;
+}
+
+window.switchTab = t => { ['simple','email','google'].forEach(x => { document.getElementById('panel-'+x).style.display=x===t?'block':'none'; document.getElementById('tab-'+x).classList.toggle('active',x===t); }); };
+window.showSimpleLogin = () => { document.getElementById('simple-signup').style.display='none'; document.getElementById('simple-login').style.display='block'; };
+window.showSimpleSignup = () => { document.getElementById('simple-signup').style.display='block'; document.getElementById('simple-login').style.display='none'; };
+window.birthInput = (el,nextId,maxLen) => { if(el.value.length>=maxLen&&nextId) document.getElementById(nextId).focus(); };
+
+window.handleSimpleSignup = async () => {
+  const name=document.getElementById('s-name').value.trim(), yy=document.getElementById('s-yy').value.trim(), mm=document.getElementById('s-mm').value.trim().padStart(2,'0'), dd=document.getElementById('s-dd').value.trim().padStart(2,'0'), err=document.getElementById('simple-err'); err.textContent='';
+  if(!name){err.textContent='이름을 입력해주세요';return;}
+  if(yy.length!==4||!mm||!dd){err.textContent='생년월일을 모두 입력해주세요';return;}
+  const birth=`${yy}${mm}${dd}`, email=makeEmail(name,birth), pw=`qt_${birth}_${name.slice(0,2)}`;
+  try { const c=await createUserWithEmailAndPassword(auth,email,pw); await updateProfile(c.user,{displayName:name}); await setDoc(doc(db,'users',c.user.uid),{name,email,role:'성도',group:'미배정',isLeader:false,createdAt:serverTimestamp()}); }
+  catch(e) { err.textContent=e.code==='auth/email-already-in-use'?'이미 가입된 이름+생년월일이에요. 아래 "이름으로 로그인"을 눌러주세요.':'가입에 실패했어요. 다시 시도해주세요.'; }
+};
+window.handleSimpleLogin = async () => {
+  const name=document.getElementById('sl-name').value.trim(), yy=document.getElementById('sl-yy').value.trim(), mm=document.getElementById('sl-mm').value.trim().padStart(2,'0'), dd=document.getElementById('sl-dd').value.trim().padStart(2,'0'), err=document.getElementById('simple-login-err'); err.textContent='';
+  if(!name||yy.length!==4){err.textContent='이름과 생년월일을 입력해주세요';return;}
+  const birth=`${yy}${mm}${dd}`, email=makeEmail(name,birth), pw=`qt_${birth}_${name.slice(0,2)}`;
+  try { await signInWithEmailAndPassword(auth,email,pw); }
+  catch(e) { err.textContent='이름 또는 생년월일이 맞지 않아요. 처음 오셨다면 위 "간편 가입"으로 가입해주세요.'; }
+};
+window.handleEmailLogin = async () => {
+  const email=document.getElementById('ln-email').value.trim(), pw=document.getElementById('ln-pw').value, err=document.getElementById('ln-err'); err.textContent='';
+  try { await signInWithEmailAndPassword(auth,email,pw); }
+  catch(e) { err.textContent={'auth/user-not-found':'등록된 계정이 없어요','auth/wrong-password':'비밀번호가 맞지 않아요','auth/invalid-credential':'이메일 또는 비밀번호를 확인해주세요'}[e.code]||'로그인에 실패했어요'; }
+};
+window.handleSignup = async () => {
+  const name=document.getElementById('ln-name').value.trim(), email=document.getElementById('ln-su-email').value.trim(), pw=document.getElementById('ln-su-pw').value, err=document.getElementById('ln-su-err'); err.textContent='';
+  if(!name){err.textContent='이름을 입력해주세요';return;}
+  try { const c=await createUserWithEmailAndPassword(auth,email,pw); await updateProfile(c.user,{displayName:name}); await setDoc(doc(db,'users',c.user.uid),{name,email,role:'성도',group:'미배정',isLeader:false,createdAt:serverTimestamp()}); }
+  catch(e) { err.textContent={'auth/email-already-in-use':'이미 사용 중인 이메일이에요','auth/weak-password':'비밀번호는 6자 이상이어야 해요'}[e.code]||'회원가입에 실패했어요'; }
+};
+window.toggleEmailMode = () => { const isLogin=document.getElementById('email-signup-form').style.display==='none'; document.getElementById('email-login-form').style.display=isLogin?'none':'block'; document.getElementById('email-signup-form').style.display=isLogin?'block':'none'; };
+window.handleGoogleLogin = async () => { try { await signInWithPopup(auth,gp); } catch(e) { alert('구글 로그인 실패. 크롬 브라우저로 열어주세요.'); } };
+</script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect } = React;
+
+// ── 두란노 생명의 삶 2026년 5월 스케줄 ──
+const SCHEDULE = [
+  {date:'2026-05-01', book:'룻기', range:'1:1-14',  verse:'나오미가 두 며느리에게 이르되 너희는 각기 너희 어머니의 집으로 돌아가라 너희가 죽은 자들과 나를 선대한 것 같이 여호와께서 너희를 선대하시기를 원하며 (룻 1:8)'},
+  {date:'2026-05-02', book:'룻기', range:'1:15-22', verse:'룻이 이르되 내가 어머니를 떠나며 어머니를 따르지 말고 돌아가라 강권하지 마옵소서 어머니께서 가시는 곳에 나도 가고 어머니께서 머무시는 곳에서 나도 머물겠나이다 (룻 1:16)'},
+  {date:'2026-05-03', book:'룻기', range:'2:1-7',   verse:'보아스가 룻에게 이르되 내 딸아 들으라 이삭을 주우러 다른 밭으로 가지 말며 여기서 떠나지 말고 나의 소녀들과 함께 있으라 (룻 2:8)'},
+  {date:'2026-05-04', book:'룻기', range:'2:8-16',  verse:'보아스가 그에게 대답하여 이르되 네 남편이 죽은 후로 네가 시어머니에게 행한 모든 것과 네 부모와 고국을 떠나 전에 알지 못하던 백성에게로 온 일이 내게 분명히 알려졌느니라 (룻 2:11)'},
+  {date:'2026-05-05', book:'룻기', range:'2:17-23', verse:'나오미가 자기 며느리에게 이르되 그가 여호와로부터 복 받기를 원하노라 그가 살아 있는 자와 죽은 자에게 은혜 베풀기를 그치지 아니하도다 (룻 2:20)'},
+  {date:'2026-05-06', book:'룻기', range:'3:1-18',  verse:'보아스가 이르되 내 딸아 여호와께서 네게 복 주시기를 원하노라 네가 가난하고 부하고 간에 젊은 자를 따르지 아니하였으니 네가 베푼 인애가 처음보다 나중이 더하도다 (룻 3:10)'},
+  {date:'2026-05-07', book:'룻기', range:'4:1-6',   verse:'보아스가 이르되 네가 나오미의 손에서 그 밭을 사는 날에 죽은 자의 아내 모압 여인 룻에게서 사서 그 죽은 자의 기업을 그의 이름으로 세워야 할지니라 (룻 4:5)'},
+  {date:'2026-05-08', book:'룻기', range:'4:7-12',  verse:'성문에 있는 모든 백성과 장로들이 이르되 우리가 증인이 되노라 여호와께서 네 집에 들어가는 여인으로 이스라엘의 집을 세운 라헬과 레아 두 사람과 같게 하시기를 원하며 (룻 4:11)'},
+  {date:'2026-05-09', book:'룻기', range:'4:13-22', verse:'나오미가 아기를 받아 품에 품고 그의 양육자가 되니 그의 이웃 여인들이 그에게 이름을 지어 주되 나오미에게 아들이 태어났다 하여 그의 이름을 오벳이라 하였는데 그는 다윗의 아버지인 이새의 아버지였더라 (룻 4:16-17)'},
+  {date:'2026-05-10', book:'고린도전서', range:'1:1-17',  verse:'그리스도께서 나를 보내심은 세례를 베풀게 하려 하심이 아니요 오직 복음을 전하게 하려 하심이로되 말의 지혜로 하지 아니함은 그리스도의 십자가가 헛되지 않게 하려 함이라 (고전 1:17)'},
+  {date:'2026-05-11', book:'고린도전서', range:'1:18-25', verse:'십자가의 도가 멸망하는 자들에게는 미련한 것이요 구원을 받는 우리에게는 하나님의 능력이라 (고전 1:18)'},
+  {date:'2026-05-12', book:'고린도전서', range:'1:26-31', verse:'하나님께서 세상의 미련한 것들을 택하사 지혜 있는 자들을 부끄럽게 하려 하시고 세상의 약한 것들을 택하사 강한 것들을 부끄럽게 하려 하시며 (고전 1:27)'},
+  {date:'2026-05-13', book:'고린도전서', range:'2:1-9',   verse:'내가 너희 중에서 예수 그리스도와 그가 십자가에 못 박히신 것 외에는 아무 것도 알지 아니하기로 작정하였음이라 (고전 2:2)'},
+  {date:'2026-05-14', book:'고린도전서', range:'2:10-16', verse:'오직 하나님이 성령으로 이것을 우리에게 보이셨으니 성령은 모든 것 곧 하나님의 깊은 것까지도 통달하시느니라 (고전 2:10)'},
+  {date:'2026-05-15', book:'고린도전서', range:'3:1-15',  verse:'우리는 하나님의 동역자들이요 너희는 하나님의 밭이요 하나님의 집이니라 (고전 3:9)'},
+  {date:'2026-05-16', book:'고린도전서', range:'3:16-23', verse:'너희는 너희가 하나님의 성전인 것과 하나님의 성령이 너희 안에 계시는 것을 알지 못하느냐 (고전 3:16)'},
+  {date:'2026-05-17', book:'고린도전서', range:'4:1-8',   verse:'사람이 마땅히 우리를 그리스도의 일꾼이요 하나님의 비밀을 맡은 자로 여길지어다 (고전 4:1)'},
+  {date:'2026-05-18', book:'고린도전서', range:'4:9-21',  verse:'하나님의 나라는 말에 있지 아니하고 오직 능력에 있음이라 (고전 4:20)'},
+  {date:'2026-05-19', book:'고린도전서', range:'5:1-13',  verse:'너희가 자랑하는 것이 옳지 아니하도다 적은 누룩이 온 덩어리에 퍼지는 것을 알지 못하느냐 (고전 5:6)'},
+  {date:'2026-05-20', book:'고린도전서', range:'6:1-11',  verse:'불의한 자가 하나님의 나라를 유업으로 받지 못할 줄을 알지 못하느냐 (고전 6:9)'},
+  {date:'2026-05-21', book:'고린도전서', range:'6:12-20', verse:'너희 몸은 너희가 하나님께로부터 받은 바 너희 가운데 계신 성령의 전인 줄을 알지 못하느냐 너희는 너희 자신의 것이 아니라 (고전 6:19)'},
+  {date:'2026-05-22', book:'고린도전서', range:'7:1-16',  verse:'각 사람은 부르심을 받은 그 부르심 그대로 지내라 (고전 7:20)'},
+  {date:'2026-05-23', book:'고린도전서', range:'7:17-24', verse:'형제들아 각 사람이 부르심을 받은 그 상태로 하나님과 함께 거하라 (고전 7:24)'},
+  {date:'2026-05-24', book:'고린도전서', range:'7:25-40', verse:'때가 단축하여진고로 이 후부터 아내 있는 자들은 없는 자 같이 하며 (고전 7:29)'},
+  {date:'2026-05-25', book:'고린도전서', range:'8:1-13',  verse:'지식은 교만하게 하며 사랑은 덕을 세우나니 (고전 8:1)'},
+  {date:'2026-05-26', book:'고린도전서', range:'9:1-10',  verse:'내가 복음을 전할지라도 자랑할 것이 없음은 내가 부득불 할 일임이라 만일 복음을 전하지 아니하면 내게 화가 있을 것임이로라 (고전 9:16)'},
+  {date:'2026-05-27', book:'고린도전서', range:'9:11-18', verse:'내가 모든 사람에게서 자유로우나 스스로 모든 사람에게 종이 된 것은 더 많은 사람을 얻고자 함이라 (고전 9:19)'},
+  {date:'2026-05-28', book:'고린도전서', range:'9:19-27', verse:'내가 내 몸을 쳐 복종하게 함은 내가 남에게 전파한 후에 자신이 도리어 버림을 당할까 두려워함이로다 (고전 9:27)'},
+  {date:'2026-05-29', book:'고린도전서', range:'10:1-13', verse:'사람이 감당할 시험 밖에는 너희가 당한 것이 없나니 오직 하나님은 미쁘사 너희가 감당하지 못할 시험 당함을 허락하지 아니하시고 (고전 10:13)'},
+  {date:'2026-05-30', book:'고린도전서', range:'10:14-22',verse:'우리가 축복하는 바 축복의 잔은 그리스도의 피에 참여함이 아니며 우리가 떼는 떡은 그리스도의 몸에 참여함이 아니냐 (고전 10:16)'},
+  {date:'2026-05-31', book:'고린도전서', range:'10:23-33',verse:'그런즉 너희가 먹든지 마시든지 무엇을 하든지 다 하나님의 영광을 위하여 하라 (고전 10:31)'},
+];
+
+const getToday = () => new Date().toISOString().slice(0,10);
+const TODAY = getToday(); // 앱 로드 시점 날짜 (자정 넘으면 새로고침으로 갱신)
+const getEntry = () => {
+  // Firebase에서 불러온 스케줄이 있으면 우선 사용
+  if (window._scheduleCache && window._scheduleCache[TODAY]) return window._scheduleCache[TODAY];
+  return SCHEDULE.find(x=>x.date===TODAY) || SCHEDULE[SCHEDULE.length-1];
+};
+const ini = n => n?(n.length>=2?n.slice(-2,-1):n[0]):'?';
+const fmtTime = ts => { if(!ts)return''; const d=ts.toDate?ts.toDate():new Date(ts),h=d.getHours(),m=String(d.getMinutes()).padStart(2,'0'); return `${h<12?'오전':'오후'} ${h%12||12}:${m}`; };
+
+const IC = {
+  home: c=><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1v-8.5z" stroke={c} strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  cal:  c=><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15" rx="2" stroke={c} strokeWidth="1.8"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke={c} strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  chat: c=><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M21 11.5c0 4.4-4 7.5-9 7.5-1 0-2-.1-2.9-.4L4 20.5l1.5-3.6C4 15.4 3 13.5 3 11.5 3 7.1 7 4 12 4s9 3.1 9 7.5z" stroke={c} strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  more: c=><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke={c} strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  chk:  c=><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l5 5L20 7" stroke={c} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  amen: c=><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-7-11a4 4 0 017-2.6A4 4 0 0119 10c0 6.5-7 11-7 11z" stroke={c} strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  msg:  c=><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H8l-4 4V5z" stroke={c} strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  chev: c=><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  dash: c=><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1" stroke={c} strokeWidth="1.8"/><rect x="13" y="3" width="8" height="8" rx="1" stroke={c} strokeWidth="1.8"/><rect x="3" y="13" width="8" height="8" rx="1" stroke={c} strokeWidth="1.8"/><rect x="13" y="13" width="8" height="8" rx="1" stroke={c} strokeWidth="1.8"/></svg>,
+  out:  c=><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+};
+
+async function saveCheck(uid,date){const{db,doc,setDoc,serverTimestamp}=window._fb;await setDoc(doc(db,'checks',`${uid}_${date}`),{uid,date,completedAt:serverTimestamp()});}
+async function saveShare(uid,name,data){
+  const{db,collection,addDoc,serverTimestamp,auth}=window._fb;
+  // 이름이 없으면 Firebase Auth에서 다시 가져오기
+  const finalName = name || auth?.currentUser?.displayName || window._me?.name || '성도';
+  await addDoc(collection(db,'shares'),{uid,name:finalName,...data,createdAt:serverTimestamp(),amen:0,comments:0});
+}
+async function doToggleAmen(id,amened){const{db,doc,updateDoc,increment}=window._fb;await updateDoc(doc(db,'shares',id),{amen:increment(amened?-1:1)});}
+
+// ── 성경 책 이름 → 영문 변환 (getbible.net API용) ──
+const BOOK_MAP = {
+  '창세기':'gen','출애굽기':'exo','레위기':'lev','민수기':'num','신명기':'deu',
+  '여호수아':'jos','사사기':'jdg','룻기':'rut','사무엘상':'1sa','사무엘하':'2sa',
+  '열왕기상':'1ki','열왕기하':'2ki','역대상':'1ch','역대하':'2ch','에스라':'ezr',
+  '느헤미야':'neh','에스더':'est','욥기':'job','시편':'psa','잠언':'pro',
+  '전도서':'ecc','아가':'sng','이사야':'isa','예레미야':'jer','예레미야애가':'lam',
+  '에스겔':'eze','다니엘':'dan','호세아':'hos','요엘':'joe','아모스':'amo',
+  '오바댜':'oba','요나':'jon','미가':'mic','나훔':'nah','하박국':'hab',
+  '스바냐':'zep','학개':'hag','스가랴':'zec','말라기':'mal',
+  '마태복음':'mat','마가복음':'mrk','누가복음':'luk','요한복음':'jhn',
+  '사도행전':'act','로마서':'rom','고린도전서':'1co','고린도후서':'2co',
+  '갈라디아서':'gal','에베소서':'eph','빌립보서':'php','골로새서':'col',
+  '데살로니가전서':'1th','데살로니가후서':'2th','디모데전서':'1ti','디모데후서':'2ti',
+  '디도서':'tit','빌레몬서':'phm','히브리서':'heb','야고보서':'jas',
+  '베드로전서':'1pe','베드로후서':'2pe','요한일서':'1jn','요한이서':'2jn',
+  '요한삼서':'3jn','유다서':'jud','요한계시록':'rev',
+};
+
+// 성경 본문 불러오기 (캐시 포함)
+const bibleCache = {};
+async function fetchBibleText(book, range) {
+  const bookEn = BOOK_MAP[book];
+  if (!bookEn) return null;
+
+  // 범위 파싱 (예: 3:1-15 → chapter:3, verses:1-15)
+  const match = range.match(/^(\d+):(\d+)(?:-(\d+))?$/);
+  if (!match) return null;
+  const chapter = match[1];
+  const verseStart = parseInt(match[2]);
+  const verseEnd = match[3] ? parseInt(match[3]) : verseStart;
+
+  const cacheKey = `${bookEn}_${chapter}_${verseStart}_${verseEnd}`;
+  if (bibleCache[cacheKey]) return bibleCache[cacheKey];
+
+  try {
+    const res = await fetch(
+      `https://cdn.jsdelivr.net/gh/scrollmapper/bible_databases@master/json/kr/${bookEn}.json`
+    );
+    if (!res.ok) throw new Error('fetch fail');
+    const data = await res.json();
+    const chap = data.chapters?.[parseInt(chapter)-1];
+    if (!chap) return null;
+    // 해당 범위 구절 추출
+    const verses = chap.verses
+      .filter(v => v.verse >= verseStart && v.verse <= verseEnd)
+      .map(v => `${v.verse}. ${v.text}`)
+      .join('\n');
+    bibleCache[cacheKey] = verses;
+    return verses;
+  } catch(e) {
+    // API 실패 시 스케줄에 있는 대표 구절 반환
+    return null;
+  }
+}
+
+function HomeScreen({done,onWrite,onMarkDone,completedSet,streak,monthDone}){
+  const me=window._me, entry=getEntry(), td=new Date(TODAY), dow=td.getDay(), mo=dow===0?-6:1-dow;
+  const week=Array.from({length:7},(_,i)=>{const d=new Date(td);d.setDate(td.getDate()+mo+i);return{date:d.toISOString().slice(0,10),dow:['일','월','화','수','목','금','토'][d.getDay()]};});
+
+  // 성경 본문 API
+  const[bibleText,setBibleText]=useState('');
+  const[bibleLoading,setBibleLoading]=useState(true);
+  useEffect(()=>{
+    setBibleLoading(true);
+    setBibleText('');
+    fetchBibleText(entry.book, entry.range).then(text=>{
+      setBibleText(text||entry.verse||'');
+      setBibleLoading(false);
+    });
+  },[entry.date]);
+
+  // 오늘 내가 쓴 나눔 글
+  const[myNote,setMyNote]=useState(null);
+  const[editing,setEditing]=useState(false);
+  const[editVerseRef,setEditVerseRef]=useState('');
+  const[editVerse,setEditVerse]=useState('');
+  const[editText,setEditText]=useState('');
+  const[editApply,setEditApply]=useState('');
+  const[saving,setSaving]=useState(false);
+
+  useEffect(()=>{
+    if(!done||!me)return;
+    const{db,collection,query,where,onSnapshot}=window._fb;
+    const q=query(collection(db,'shares'),where('uid','==',me.uid),where('date','==',TODAY));
+    const unsub=onSnapshot(q,snap=>{
+      if(snap.docs.length>0){
+        const d=snap.docs[0];
+        setMyNote({id:d.id,...d.data()});
+      } else {
+        setMyNote(null);
+      }
+    });
+    return()=>unsub();
+  },[done,me?.uid]);
+
+  const startEdit=()=>{
+    if(!myNote)return;
+    setEditVerseRef(myNote.verseRef||'');
+    setEditVerse(myNote.verse||'');
+    setEditText(myNote.text||'');
+    setEditApply(myNote.apply||'');
+    setEditing(true);
+  };
+
+  const saveEdit=async()=>{
+    setSaving(true);
+    try{
+      const{db,doc,updateDoc}=window._fb;
+      await updateDoc(doc(db,'shares',myNote.id),{verseRef:editVerseRef,verse:editVerse,text:editText,apply:editApply});
+      setEditing(false);
+    }catch(e){alert('저장 실패.');}
+    finally{setSaving(false);}
+  };
+
+  const S={
+    noteCard:{background:'var(--surface)',borderRadius:20,padding:'20px 20px 16px',margin:'16px 16px 0',border:'1px solid rgba(212,165,116,0.2)'},
+    label:{fontSize:12,color:'var(--gold)',fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:6},
+    textarea:{width:'100%',background:'var(--surface-2)',border:'1px solid var(--gold)',borderRadius:14,padding:'14px 16px',color:'var(--text)',fontSize:16,lineHeight:1.65,fontFamily:'inherit',resize:'none',outline:'none',marginBottom:10},
+    verseBox:{marginBottom:12,padding:'12px 14px 12px 16px',background:'rgba(212,165,116,0.08)',borderLeft:'3px solid var(--gold)',borderRadius:'4px 12px 12px 4px'},
+  };
+
+  return(<>
+    <div className="qt-topbar"><div>
+      <div style={{fontSize:12,color:'var(--gold)',fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',marginBottom:2}}>순천침례교회</div>
+      <div className="qt-greet">평안하세요, {me?.name}님</div>
+      <div className="qt-date">{parseInt(TODAY.slice(5,7))}월 {parseInt(TODAY.slice(8,10))}일</div>
+    </div></div>
+    <div className="qt-card hero">
+      <div className="qt-eyebrow">📖 두란노 생명의 삶</div>
+      <div className="qt-passage-book">{entry.book}</div>
+      <div className="qt-passage-range">{entry.range}</div>
+      <div style={{marginTop:14,padding:'14px 16px 14px 18px',background:'rgba(212,165,116,0.1)',borderLeft:'3px solid var(--gold)',borderRadius:'4px 14px 14px 4px',maxHeight:180,overflowY:'auto'}}>
+        {bibleLoading
+          ? <div style={{fontSize:13,color:'var(--text-3)'}}>본문 불러오는 중…</div>
+          : bibleText
+            ? <div style={{fontFamily:'Noto Serif KR,serif',fontSize:14,lineHeight:1.8,color:'var(--text)',opacity:0.92,whiteSpace:'pre-line'}}>{bibleText}</div>
+            : <div style={{fontSize:13,color:'var(--text-3)'}}>본문을 불러올 수 없어요</div>
+        }
+      </div>
+      <div className="qt-meta"><span>약 15분</span><span className="qt-meta-dot"/><span>묵상 + 나눔</span></div>
+      {done
+        ? <button className="qt-cta done"><span style={{display:'inline-flex',alignItems:'center',gap:8}}>{IC.chk()}오늘 묵상 완료</span></button>
+        : <button className="qt-cta" onClick={onWrite}>묵상 시작하기</button>
+      }
+      {!done&&<button className="qt-cta ghost" onClick={onMarkDone}>본문만 읽음 표시</button>}
+    </div>
+
+    {/* 오늘 내가 쓴 묵상 노트 */}
+    {done && myNote && (
+      <div style={S.noteCard}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
+          <div style={{fontSize:15,fontWeight:700,color:'var(--text)'}}>오늘 내가 쓴 묵상</div>
+          {!editing&&(
+            <button onClick={startEdit} style={{padding:'7px 14px',borderRadius:9,background:'var(--gold-soft)',color:'var(--gold)',fontSize:13,fontWeight:700,border:0,cursor:'pointer'}}>
+              수정하기
+            </button>
+          )}
+        </div>
+
+        {editing?(
+          /* 수정 모드 */
+          <div>
+            <div style={S.label}>은혜 받은 구절</div>
+            <input
+              style={{width:'100%',background:'transparent',border:0,borderBottom:'1px solid var(--divider)',padding:'6px 0',color:'var(--gold)',fontWeight:700,fontSize:13,fontFamily:'inherit',outline:'none',marginBottom:8,letterSpacing:'.06em'}}
+              value={editVerseRef} onChange={e=>setEditVerseRef(e.target.value)} placeholder="예: 고전 3:11"
+            />
+            <textarea style={{...S.textarea,background:'rgba(212,165,116,0.08)',border:'none',borderLeft:'3px solid var(--gold)',borderRadius:'4px 14px 14px 4px',fontFamily:'Noto Serif KR,serif'}} rows={3} value={editVerse} onChange={e=>setEditVerse(e.target.value)} placeholder="마음에 와닿은 구절"/>
+            <div style={S.label}>받은 은혜 · 깨달음</div>
+            <textarea style={S.textarea} rows={5} value={editText} onChange={e=>setEditText(e.target.value)}/>
+            <div style={S.label}>결단 · 적용</div>
+            <textarea style={{...S.textarea,border:'1px solid var(--divider)'}} rows={2} value={editApply} onChange={e=>setEditApply(e.target.value)} placeholder="오늘 실천할 한 가지"/>
+            <div style={{display:'flex',gap:8,marginTop:4}}>
+              <button onClick={saveEdit} disabled={saving} style={{flex:1,height:46,borderRadius:12,background:'var(--gold)',color:'#1a1410',fontSize:16,fontWeight:700,border:0,cursor:'pointer',fontFamily:'inherit'}}>
+                {saving?'저장 중…':'저장'}
+              </button>
+              <button onClick={()=>setEditing(false)} style={{flex:1,height:46,borderRadius:12,background:'var(--surface-2)',color:'var(--text-2)',fontSize:16,fontWeight:600,border:0,cursor:'pointer',fontFamily:'inherit'}}>
+                취소
+              </button>
+            </div>
+          </div>
+        ):(
+          /* 보기 모드 */
+          <>
+            {myNote.verseRef&&(
+              <div style={S.verseBox}>
+                <div style={{fontSize:12,color:'var(--gold)',fontWeight:700,letterSpacing:'.06em'}}>{myNote.verseRef}</div>
+                {myNote.verse&&<div style={{fontFamily:'Noto Serif KR,serif',fontSize:16,lineHeight:1.65,color:'var(--text)',marginTop:5}}>"{myNote.verse}"</div>}
+              </div>
+            )}
+            {myNote.text&&<div style={{fontSize:16,lineHeight:1.7,color:'var(--text)',marginBottom:myNote.apply?10:0}}>{myNote.text}</div>}
+            {myNote.apply&&<div style={{fontSize:14,color:'var(--text-2)',paddingTop:10,borderTop:'1px solid var(--divider)'}}>✏️ {myNote.apply}</div>}
+          </>
+        )}
+      </div>
+    )}
+
+    <div style={{padding:'0 16px'}}>
+      <div className="qt-streak" style={{marginTop:16}}><div className="qt-streak-num">{streak}<span className="unit">일</span></div><div className="qt-streak-label">연속 묵상 중이에요<br/><b>이번 달 {monthDone}일</b> 완료</div></div>
+      <div className="qt-week">{week.map(d=>{const isT=d.date===TODAY,isDone=completedSet.has(d.date);return(<div key={d.date} className="qt-week-cell"><div className={'qt-week-day'+(isT?' today':'')}>{d.dow}</div><div className={'qt-week-mark'+(isDone?' done':'')+(isT?' today':'')}>{isDone?IC.chk():parseInt(d.date.slice(-2),10)}</div></div>);})}</div>
+    </div>
+    <div style={{height:24}}/>
+  </>);
+}
+
+function CalendarScreen({completedSet,streak}){
+  const y=parseInt(TODAY.slice(0,4)),m=parseInt(TODAY.slice(5,7)),fd=new Date(y,m-1,1).getDay(),dim=new Date(y,m,0).getDate(),cells=[];
+  for(let i=0;i<fd;i++)cells.push({empty:true,key:'e'+i});
+  for(let d=1;d<=dim;d++){const ds=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`,done=completedSet.has(ds),isT=ds===TODAY,isFu=ds>TODAY;cells.push({day:d,date:ds,done,isT,isFu,isMiss:!done&&!isT&&!isFu,key:'d'+d});}
+  const dc=[...completedSet].filter(d=>d.startsWith(`${y}-${String(m).padStart(2,'0')}`)).length,tot=parseInt(TODAY.slice(8,10)),rate=tot>0?Math.round(dc/tot*100):0;
+  return(<>
+    <div className="qt-topbar" style={{paddingBottom:8}}><div><div className="qt-greet">나의 진도</div><div className="qt-date">{y}년 {m}월</div></div></div>
+    <div className="qt-cal-stat">{[{v:dc,u:'일',l:'이번 달 완료'},{v:rate,u:'%',l:'달성률'},{v:streak,u:'일',l:'연속 묵상'}].map(s=><div key={s.l} className="qt-stat"><div className="qt-stat-num">{s.v}<span style={{fontSize:14,color:'var(--text-2)',marginLeft:2}}>{s.u}</span></div><div className="qt-stat-label">{s.l}</div></div>)}</div>
+    <div className="qt-cal-grid">
+      {['일','월','화','수','목','금','토'].map(d=><div key={d} className="qt-cal-dow">{d}</div>)}
+      {cells.map(c=>{if(c.empty)return<div key={c.key} className="qt-cal-day empty"/>;const cls='qt-cal-day'+(c.done?' done':'')+(c.isT?' today':'')+(c.isFu?' future':'')+(c.isMiss?' miss':'');return<div key={c.key} className={cls}><div className="qt-cal-day-num">{c.day}</div></div>;})}
+    </div>
+    <div className="qt-cal-legend"><span><span className="qt-cal-sw done"/>완료</span><span><span className="qt-cal-sw today"/>오늘</span><span><span className="qt-cal-sw miss"/>놓친 날</span><span><span className="qt-cal-sw future"/>앞으로</span></div>
+    <div style={{height:24}}/>
+  </>);
+}
+
+function ShareScreen({uid}){
+  const[shares,setShares]=useState([]);
+  const[loading,setLoading]=useState(true);
+  const[amened,setAmened]=useState(new Set());
+  const[filter,setFilter]=useState('오늘');
+  const[editing,setEditing]=useState(null); // 수정 중인 글 id
+  const[editText,setEditText]=useState('');
+  const[editApply,setEditApply]=useState('');
+  const[saving,setSaving]=useState(false);
+
+  useEffect(()=>{
+    setLoading(true);
+    const{db,collection,query,where,orderBy,onSnapshot,limit}=window._fb;
+    let q;
+    if(filter==='오늘'){
+      // 인덱스 문제 방지: orderBy 없이 가져온 후 클라이언트에서 정렬
+      q=query(collection(db,'shares'),where('date','==',TODAY));
+    } else {
+      q=query(collection(db,'shares'),orderBy('createdAt','desc'),limit(50));
+    }
+    return onSnapshot(q, snap=>{
+      let docs=snap.docs.map(d=>({id:d.id,...d.data()}));
+      // 클라이언트에서 최신순 정렬
+      docs.sort((a,b)=>{
+        const ta=a.createdAt?.toDate?.()||new Date(0);
+        const tb=b.createdAt?.toDate?.()||new Date(0);
+        return tb-ta;
+      });
+      setShares(docs);
+      setLoading(false);
+    });
+  },[filter]);
+
+  const doAmen=async s=>{
+    const a=amened.has(s.id);
+    setAmened(p=>{const n=new Set(p);a?n.delete(s.id):n.add(s.id);return n;});
+    await doToggleAmen(s.id,a);
+  };
+
+  const startEdit=s=>{
+    setEditing(s.id);
+    setEditText(s.text||'');
+    setEditApply(s.apply||'');
+  };
+
+  const saveEdit=async(s)=>{
+    setSaving(true);
+    try{
+      const{db,doc,updateDoc}=window._fb;
+      await updateDoc(doc(db,'shares',s.id),{text:editText,apply:editApply});
+      setEditing(null);
+    }catch(e){alert('수정 실패. 다시 시도해주세요.');}
+    finally{setSaving(false);}
+  };
+
+  const deleteShare=async(s)=>{
+    if(!confirm('이 나눔 글을 삭제할까요?'))return;
+    const{db,doc,deleteDoc}=window._fb;
+    try{await deleteDoc(doc(db,'shares',s.id));}
+    catch(e){alert('삭제 실패.');}
+  };
+
+  const isMine=s=>s.uid===uid;
+
+  return(<>
+    <div className="qt-topbar" style={{paddingBottom:8}}>
+      <div><div className="qt-greet">함께 묵상해요</div><div className="qt-date">나눔</div></div>
+    </div>
+    <div className="qt-feed-filter">
+      {['오늘','전체'].map(f=>(
+        <button key={f} className={'qt-chip'+(filter===f?' active':'')} onClick={()=>setFilter(f)}>{f}</button>
+      ))}
+    </div>
+    {loading
+      ? <div className="qt-empty"><div className="spinner" style={{margin:'0 auto'}}/></div>
+      : shares.length===0
+        ? <div className="qt-empty">
+            <div className="qt-empty-icon">🕊</div>
+            <div className="qt-empty-msg">아직 나눔이 없어요.<br/>오늘 묵상을 완료하고<br/>첫 번째로 나눠보세요!</div>
+          </div>
+        : shares.map(s=>(
+          <div key={s.id} className="qt-feed-card">
+            <div className="qt-share-head">
+              <div className="qt-avatar">{ini(s.name)}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div className="qt-share-name" style={{display:'flex',alignItems:'center',gap:6}}>
+                  {s.name}
+                  {isMine(s)&&<span style={{fontSize:11,background:'var(--gold-soft)',color:'var(--gold)',padding:'1px 6px',borderRadius:5,fontWeight:600}}>나</span>}
+                </div>
+                <div className="qt-share-meta">{fmtTime(s.createdAt)} · {s.book} {s.range}</div>
+              </div>
+              {/* 내 글일 때 수정/삭제 버튼 */}
+              {isMine(s)&&editing!==s.id&&(
+                <div style={{display:'flex',gap:6,flexShrink:0}}>
+                  <button onClick={()=>startEdit(s)} style={{padding:'6px 12px',borderRadius:8,background:'var(--surface-2)',color:'var(--text-2)',fontSize:13,fontWeight:600,border:0,cursor:'pointer'}}>수정</button>
+                  <button onClick={()=>deleteShare(s)} style={{padding:'6px 12px',borderRadius:8,background:'rgba(213,90,73,0.15)',color:'var(--danger)',fontSize:13,fontWeight:600,border:0,cursor:'pointer'}}>삭제</button>
+                </div>
+              )}
+            </div>
+
+            {s.verseRef&&(
+              <div className="qt-verse">
+                <div className="qt-verse-ref">{s.verseRef}</div>
+                {s.verse&&<div className="qt-verse-body">"{s.verse}"</div>}
+              </div>
+            )}
+
+            {/* 수정 모드 */}
+            {editing===s.id?(
+              <div style={{marginTop:12}}>
+                <textarea
+                  style={{width:'100%',background:'var(--surface-2)',border:'1px solid var(--gold)',borderRadius:14,padding:'14px 16px',color:'var(--text)',fontSize:16,lineHeight:1.65,fontFamily:'inherit',resize:'none',outline:'none',marginBottom:8}}
+                  rows={5} value={editText} onChange={e=>setEditText(e.target.value)}
+                />
+                <textarea
+                  style={{width:'100%',background:'var(--surface-2)',border:'1px solid var(--divider)',borderRadius:14,padding:'12px 16px',color:'var(--text)',fontSize:15,lineHeight:1.65,fontFamily:'inherit',resize:'none',outline:'none',marginBottom:10}}
+                  rows={2} value={editApply} onChange={e=>setEditApply(e.target.value)} placeholder="결단·적용 (선택)"
+                />
+                <div style={{display:'flex',gap:8}}>
+                  <button onClick={()=>saveEdit(s)} disabled={saving} style={{flex:1,height:44,borderRadius:12,background:'var(--gold)',color:'#1a1410',fontSize:15,fontWeight:700,border:0,cursor:'pointer',fontFamily:'inherit'}}>
+                    {saving?'저장 중…':'저장'}
+                  </button>
+                  <button onClick={()=>setEditing(null)} style={{flex:1,height:44,borderRadius:12,background:'var(--surface-2)',color:'var(--text-2)',fontSize:15,fontWeight:600,border:0,cursor:'pointer',fontFamily:'inherit'}}>
+                    취소
+                  </button>
+                </div>
+              </div>
+            ):(
+              <>
+                <div className="qt-share-text">{s.text}</div>
+                {s.apply&&<div style={{fontSize:14,color:'var(--text-2)',marginTop:8,paddingTop:8,borderTop:'1px solid var(--divider)'}}>✏️ {s.apply}</div>}
+              </>
+            )}
+
+            {editing!==s.id&&(
+              <div className="qt-feed-actions">
+                <button className={'qt-feed-btn'+(amened.has(s.id)?' amened':'')} onClick={()=>doAmen(s)}>
+                  {IC.amen()} 아멘 {(s.amen||0)+(amened.has(s.id)?1:0)}
+                </button>
+                <button className="qt-feed-btn">{IC.msg()} 댓글 {s.comments||0}</button>
+              </div>
+            )}
+          </div>
+        ))
+    }
+    <div style={{height:24}}/>
+  </>);
+}
+
+// ── 내 묵상 노트 화면 ──
+function MyNotesScreen({onClose}){
+  const me = window._me;
+  const[notes,setNotes]=useState([]);
+  const[loading,setLoading]=useState(true);
+  const[editing,setEditing]=useState(null);
+  const[editVerse,setEditVerse]=useState('');
+  const[editVerseRef,setEditVerseRef]=useState('');
+  const[editText,setEditText]=useState('');
+  const[editApply,setEditApply]=useState('');
+  const[saving,setSaving]=useState(false);
+
+  useEffect(()=>{
+    const{db,collection,query,where,onSnapshot}=window._fb;
+    const q=query(collection(db,'shares'),where('uid','==',me.uid));
+    return onSnapshot(q,snap=>{
+      let docs=snap.docs.map(d=>({id:d.id,...d.data()}));
+      docs.sort((a,b)=>{
+        const ta=a.createdAt?.toDate?.()||new Date(0);
+        const tb=b.createdAt?.toDate?.()||new Date(0);
+        return tb-ta;
+      });
+      setNotes(docs);
+      setLoading(false);
+    });
+  },[me.uid]);
+
+  const startEdit=n=>{
+    setEditing(n.id);
+    setEditVerseRef(n.verseRef||'');
+    setEditVerse(n.verse||'');
+    setEditText(n.text||'');
+    setEditApply(n.apply||'');
+  };
+
+  const saveEdit=async(n)=>{
+    setSaving(true);
+    try{
+      const{db,doc,updateDoc}=window._fb;
+      await updateDoc(doc(db,'shares',n.id),{verseRef:editVerseRef,verse:editVerse,text:editText,apply:editApply});
+      setEditing(null);
+    }catch(e){alert('저장 실패.');}
+    finally{setSaving(false);}
+  };
+
+  const deleteNote=async(n)=>{
+    if(!confirm('이 묵상 노트를 삭제할까요?'))return;
+    const{db,doc,deleteDoc}=window._fb;
+    try{await deleteDoc(doc(db,'shares',n.id));}
+    catch(e){alert('삭제 실패.');}
+  };
+
+  const fmtDate=ts=>{
+    if(!ts)return'';
+    const d=ts.toDate?ts.toDate():new Date(ts);
+    return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+  };
+
+  return(
+    <div className="qt-app" style={{position:'fixed',inset:0,zIndex:50,background:'var(--bg)',overflowY:'auto'}}>
+      <div className="qt-write-head">
+        <button className="qt-write-cancel" onClick={onClose}>← 닫기</button>
+        <div style={{fontSize:17,fontWeight:700}}>내 묵상 노트</div>
+        <div style={{width:60}}/>
+      </div>
+
+      <div style={{padding:'8px 16px 0',color:'var(--text-3)',fontSize:13}}>
+        총 {notes.length}편의 묵상 노트
+      </div>
+
+      {loading?(
+        <div className="qt-empty"><div className="spinner" style={{margin:'0 auto'}}/></div>
+      ):notes.length===0?(
+        <div className="qt-empty">
+          <div className="qt-empty-icon">📖</div>
+          <div className="qt-empty-msg">아직 묵상 노트가 없어요.<br/>오늘 묵상을 시작해보세요!</div>
+        </div>
+      ):notes.map(n=>(
+        <div key={n.id} style={{background:'var(--surface)',borderRadius:20,padding:'20px 20px 16px',margin:'12px 16px 0'}}>
+          {/* 헤더 */}
+          <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:12}}>
+            <div>
+              <div style={{fontSize:13,color:'var(--gold)',fontWeight:700,letterSpacing:'.06em'}}>{fmtDate(n.createdAt)}</div>
+              <div style={{fontSize:16,fontWeight:700,marginTop:3}}>{n.book} {n.range}</div>
+            </div>
+            {editing!==n.id&&(
+              <div style={{display:'flex',gap:6,flexShrink:0,marginLeft:8}}>
+                <button onClick={()=>startEdit(n)} style={{padding:'7px 13px',borderRadius:9,background:'var(--gold-soft)',color:'var(--gold)',fontSize:13,fontWeight:700,border:0,cursor:'pointer'}}>수정</button>
+                <button onClick={()=>deleteNote(n)} style={{padding:'7px 13px',borderRadius:9,background:'rgba(213,90,73,0.15)',color:'var(--danger)',fontSize:13,fontWeight:600,border:0,cursor:'pointer'}}>삭제</button>
+              </div>
+            )}
+          </div>
+
+          {/* 수정 모드 */}
+          {editing===n.id?(
+            <div>
+              <div style={{fontSize:12,color:'var(--gold)',fontWeight:700,letterSpacing:'.08em',marginBottom:6}}>은혜 받은 구절</div>
+              <input
+                style={{width:'100%',background:'transparent',border:0,borderBottom:'1px solid var(--divider)',padding:'6px 0',color:'var(--gold)',fontWeight:700,fontSize:13,fontFamily:'inherit',outline:'none',marginBottom:8,letterSpacing:'.06em'}}
+                value={editVerseRef} onChange={e=>setEditVerseRef(e.target.value)} placeholder="예: 눅 24:15"
+              />
+              <textarea
+                style={{width:'100%',background:'rgba(212,165,116,0.08)',borderLeft:'3px solid var(--gold)',borderRadius:'4px 14px 14px 4px',padding:'12px 14px',color:'var(--text)',fontFamily:'Noto Serif KR,serif',fontSize:16,lineHeight:1.65,resize:'none',outline:'none',border:'none',borderLeft:'3px solid var(--gold)',marginBottom:12}}
+                rows={3} value={editVerse} onChange={e=>setEditVerse(e.target.value)} placeholder="마음에 와닿은 구절"
+              />
+              <div style={{fontSize:12,color:'var(--gold)',fontWeight:700,letterSpacing:'.08em',marginBottom:6}}>받은 은혜 · 깨달음</div>
+              <textarea
+                style={{width:'100%',background:'var(--surface-2)',border:'1px solid var(--gold)',borderRadius:14,padding:'14px 16px',color:'var(--text)',fontSize:16,lineHeight:1.65,fontFamily:'inherit',resize:'none',outline:'none',marginBottom:10}}
+                rows={5} value={editText} onChange={e=>setEditText(e.target.value)}
+              />
+              <div style={{fontSize:12,color:'var(--gold)',fontWeight:700,letterSpacing:'.08em',marginBottom:6}}>결단 · 적용</div>
+              <textarea
+                style={{width:'100%',background:'var(--surface-2)',border:'1px solid var(--divider)',borderRadius:14,padding:'12px 16px',color:'var(--text)',fontSize:15,lineHeight:1.65,fontFamily:'inherit',resize:'none',outline:'none',marginBottom:12}}
+                rows={2} value={editApply} onChange={e=>setEditApply(e.target.value)} placeholder="오늘 실천할 한 가지"
+              />
+              <div style={{display:'flex',gap:8}}>
+                <button onClick={()=>saveEdit(n)} disabled={saving} style={{flex:1,height:46,borderRadius:12,background:'var(--gold)',color:'#1a1410',fontSize:16,fontWeight:700,border:0,cursor:'pointer',fontFamily:'inherit'}}>
+                  {saving?'저장 중…':'저장'}
+                </button>
+                <button onClick={()=>setEditing(null)} style={{flex:1,height:46,borderRadius:12,background:'var(--surface-2)',color:'var(--text-2)',fontSize:16,fontWeight:600,border:0,cursor:'pointer',fontFamily:'inherit'}}>
+                  취소
+                </button>
+              </div>
+            </div>
+          ):(
+            /* 보기 모드 */
+            <>
+              {n.verseRef&&(
+                <div style={{marginBottom:12,padding:'12px 14px 12px 16px',background:'rgba(212,165,116,0.08)',borderLeft:'3px solid var(--gold)',borderRadius:'4px 12px 12px 4px'}}>
+                  <div style={{fontSize:12,color:'var(--gold)',fontWeight:700,letterSpacing:'.06em'}}>{n.verseRef}</div>
+                  {n.verse&&<div style={{fontFamily:'Noto Serif KR,serif',fontSize:16,lineHeight:1.65,color:'var(--text)',marginTop:5}}>"{n.verse}"</div>}
+                </div>
+              )}
+              {n.text&&<div style={{fontSize:16,lineHeight:1.7,color:'var(--text)',marginBottom:n.apply?10:0}}>{n.text}</div>}
+              {n.apply&&(
+                <div style={{fontSize:14,color:'var(--text-2)',paddingTop:10,borderTop:'1px solid var(--divider)'}}>✏️ {n.apply}</div>
+              )}
+            </>
+          )}
+        </div>
+      ))}
+      <div style={{height:40}}/>
+    </div>
+  );
+}
+
+function MoreScreen({streak,onLogout,onDash}){
+  const me=window._me;
+  const[showNotes,setShowNotes]=useState(false);
+  return(<>
+    {showNotes&&<MyNotesScreen onClose={()=>setShowNotes(false)}/>}
+    <div className="qt-topbar" style={{paddingBottom:14}}><div className="qt-date">더보기</div></div>
+    <div className="qt-profile"><div className="qt-profile-av">{ini(me?.name)}</div><div><div className="qt-profile-name">{me?.name}</div><div className="qt-profile-sub">{me?.group||'미배정'} · 연속 {streak}일</div></div></div>
+    <div className="qt-more-list">
+      <button className="qt-more-item" onClick={()=>setShowNotes(true)}>
+        <span className="qt-more-label">내 묵상 노트</span>
+        <span className="qt-more-right">{IC.chev('#6c7682')}</span>
+      </button>
+      {[{l:'알림 설정'},{l:'도움말'}].map(i=>(
+        <button key={i.l} className="qt-more-item"><span className="qt-more-label">{i.l}</span><span className="qt-more-right">{IC.chev('#6c7682')}</span></button>
+      ))}
+      {me?.isLeader&&<button className="qt-more-item" onClick={onDash} style={{marginTop:8}}><span className="qt-more-label" style={{color:'var(--gold)'}}>리더 대시보드</span><span className="qt-more-right">{IC.dash('var(--gold)')}</span></button>}
+      <button className="qt-more-item" onClick={onLogout} style={{marginTop:8}}><span className="qt-more-label" style={{color:'var(--danger)'}}>로그아웃</span><span className="qt-more-right">{IC.out('var(--danger)')}</span></button>
+    </div>
+    <div style={{height:24}}/>
+  </>);
+}
+
+function WriteScreen({onCancel,onSave}){
+  const entry=getEntry();
+  const[vRef,setVRef]=useState('');
+  const[verse,setVerse]=useState('');
+  const[text,setText]=useState('');
+  const[apply,setApply]=useState('');
+  const[shareOn,setShareOn]=useState(true);
+  const[saving,setSaving]=useState(false);
+  const[bibleText,setBibleText]=useState('');
+  const[bibleLoading,setBibleLoading]=useState(true);
+
+  useEffect(()=>{
+    fetchBibleText(entry.book, entry.range).then(t=>{
+      setBibleText(t||entry.verse||'');
+      setBibleLoading(false);
+    });
+  },[]);
+
+  const hasContent = vRef.trim()||verse.trim()||text.trim()||apply.trim();
+
+  const save=async()=>{
+    if(!hasContent){ alert('묵상 내용을 한 가지라도 적어주세요 🙏'); return; }
+    setSaving(true);
+    try{
+      const me=window._me;
+      const name = me?.name || window._fb.auth.currentUser?.displayName || '성도';
+      await saveCheck(me.uid, TODAY);
+      if(shareOn) await saveShare(me.uid, name, {
+        date:TODAY, book:entry.book, range:entry.range,
+        verseRef:vRef, verse, text, apply
+      });
+      onSave();
+    }catch(e){alert('저장 실패. 네트워크를 확인해주세요.');}
+    finally{setSaving(false);}
+  };
+
+  return(
+    <div className="qt-app" style={{position:'fixed',inset:0,zIndex:50,background:'var(--bg)',overflowY:'auto'}}>
+      <div className="qt-write-head">
+        <button className="qt-write-cancel" onClick={onCancel}>취소</button>
+        <div style={{fontSize:17,fontWeight:700}}>오늘의 묵상</div>
+        <button className="qt-write-save" onClick={save} disabled={saving||!hasContent} style={{opacity:hasContent?1:0.4}}>
+          {saving?'저장 중…':'완료'}
+        </button>
+      </div>
+
+      <div className="qt-card hero" style={{margin:'18px 16px 0'}}>
+        <div className="qt-eyebrow">📖 두란노 생명의 삶</div>
+        <div className="qt-passage-book">{entry.book}</div>
+        <div className="qt-passage-range">{entry.range}</div>
+        <div style={{marginTop:12,padding:'12px 14px 12px 16px',background:'rgba(212,165,116,0.1)',borderLeft:'3px solid var(--gold)',borderRadius:'4px 12px 12px 4px',maxHeight:180,overflowY:'auto'}}>
+          {bibleLoading
+            ? <div style={{fontSize:13,color:'var(--text-3)'}}>본문 불러오는 중…</div>
+            : bibleText
+              ? <div style={{fontFamily:'Noto Serif KR,serif',fontSize:14,lineHeight:1.8,color:'var(--text)',opacity:0.92,whiteSpace:'pre-line'}}>{bibleText}</div>
+              : <div style={{fontSize:13,color:'var(--text-3)'}}>본문을 불러올 수 없어요</div>
+          }
+        </div>
+      </div>
+
+      <div style={{margin:'14px 22px 0',padding:'12px 16px',background:'var(--gold-soft)',borderRadius:12,fontSize:13,color:'var(--gold)',lineHeight:1.6}}>
+        💡 세 가지 중 <b>한 가지만</b> 써도 완료됩니다
+      </div>
+
+      <div className="qt-write-section">
+        <div className="qt-write-label">은혜 받은 구절 <span style={{color:'var(--text-3)',fontWeight:400,fontSize:11,textTransform:'none',letterSpacing:0}}>(선택)</span></div>
+        <input className="qt-verse-ref-input" value={vRef} onChange={e=>setVRef(e.target.value)} placeholder={`예: ${entry.book.slice(0,2)} ${entry.range.split('-')[0]}`}/>
+        <textarea className="qt-verse-input" rows={3} value={verse} onChange={e=>setVerse(e.target.value)} placeholder="마음에 와닿은 한 구절을 적어보세요"/>
+      </div>
+
+      <div className="qt-write-section">
+        <div className="qt-write-label">받은 은혜 · 깨달음 <span style={{color:'var(--text-3)',fontWeight:400,fontSize:11,textTransform:'none',letterSpacing:0}}>(선택)</span></div>
+        <textarea className="qt-write-area" rows={6} value={text} onChange={e=>setText(e.target.value)} placeholder="말씀을 통해 만난 것을 자유롭게 적어보세요"/>
+      </div>
+
+      <div className="qt-write-section">
+        <div className="qt-write-label">결단 · 적용 <span style={{color:'var(--text-3)',fontWeight:400,fontSize:11,textTransform:'none',letterSpacing:0}}>(선택)</span></div>
+        <textarea className="qt-write-area" rows={3} value={apply} onChange={e=>setApply(e.target.value)} placeholder="오늘 실천할 한 가지를 적어보세요"/>
+      </div>
+
+      <div className="qt-write-section" style={{paddingBottom:48}}>
+        <button className="qt-write-toggle" onClick={()=>setShareOn(s=>!s)}>
+          <span style={{textAlign:'left'}}>
+            <div style={{fontSize:17,fontWeight:600}}>셀과 나누기</div>
+            <div style={{fontSize:14,color:'var(--text-2)',marginTop:2}}>나눔 피드에 공유됩니다</div>
+          </span>
+          <span className={'qt-toggle'+(shareOn?' on':'')}/>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── 진도 상세 패널 ──
+function ProgressDetail({onBack}){
+  const[members,setMembers]=useState([]);
+  const[allChecks,setAllChecks]=useState([]);
+  const[loading,setLoading]=useState(true);
+  const[selected,setSelected]=useState(null); // 선택된 멤버
+  const[viewMode,setViewMode]=useState('all'); // 'all' | 'miss' | 'member'
+
+  const y=parseInt(TODAY.slice(0,4)),m=parseInt(TODAY.slice(5,7));
+  const dim=new Date(y,m,0).getDate();
+  const days=Array.from({length:dim},(_,i)=>String(i+1).padStart(2,'0'));
+  const month=`${y}-${String(m).padStart(2,'0')}`;
+  const tod=parseInt(TODAY.slice(8,10));
+
+  useEffect(()=>{
+    const{db,collection,onSnapshot}=window._fb;
+    const u1=onSnapshot(collection(db,'users'),s=>{setMembers(s.docs.map(d=>({id:d.id,...d.data()})));setLoading(false);});
+    const u2=onSnapshot(collection(db,'checks'),s=>setAllChecks(s.docs.map(d=>d.data())));
+    return()=>{u1();u2();};
+  },[]);
+
+  const stats=members.map(m=>{
+    const mc=allChecks.filter(c=>c.uid===m.id&&c.date.startsWith(month));
+    const doneSet=new Set(mc.map(c=>c.date.slice(8,10)));
+    const rate=tod>0?Math.round(mc.length/tod*100):0;
+    const joinedAt=m.createdAt?.toDate?m.createdAt.toDate():null;
+    return{...m,doneSet,rate,monthCount:mc.length,joinedAt};
+  }).sort((a,b)=>b.rate-a.rate);
+
+  const missToday=stats.filter(m=>!m.doneSet.has(String(tod).padStart(2,'0')));
+
+  const fmtDate=d=>d?`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`:'—';
+
+  const S={
+    wrap:{padding:'28px 24px',maxHeight:'100vh',overflowY:'auto'},
+    hd:{display:'flex',alignItems:'center',gap:16,marginBottom:20},
+    back:{padding:'8px 16px',borderRadius:10,background:'var(--surface)',color:'var(--text-2)',fontSize:14,fontWeight:600,border:'1px solid var(--divider)',cursor:'pointer'},
+    panel:{background:'var(--surface)',border:'1px solid var(--divider)',borderRadius:18,padding:'22px',marginBottom:16},
+    tabs:{display:'flex',gap:8,marginBottom:20},
+    tab:(a)=>({padding:'9px 18px',borderRadius:999,background:a?'var(--gold-soft)':'var(--surface-2)',color:a?'var(--gold)':'var(--text-2)',fontSize:14,fontWeight:600,border:0,cursor:'pointer',fontFamily:'inherit'}),
+    row:{display:'flex',alignItems:'center',gap:12,padding:'12px 4px',borderBottom:'1px solid var(--divider)'},
+    av:{width:38,height:38,borderRadius:'50%',background:'var(--gold-soft)',color:'var(--gold)',fontFamily:'serif',fontWeight:700,fontSize:15,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0},
+    dot:(d)=>({width:24,height:24,borderRadius:6,background:d?'var(--done-strong)':'var(--surface-2)',border:d?'none':'1px solid var(--divider)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,color:d?'#0b1117':'var(--text-3)',fontWeight:600,flexShrink:0}),
+  };
+
+  if(loading)return<div style={S.wrap}><div style={{textAlign:'center',padding:60,color:'var(--text-3)'}}>불러오는 중…</div></div>;
+
+  // 멤버 상세 보기
+  if(selected){
+    const sm=stats.find(s=>s.id===selected);
+    if(!sm)return null;
+    const fd=new Date(y,m-1,1).getDay();
+    const cells=[];
+    for(let i=0;i<fd;i++)cells.push({empty:true,k:'e'+i});
+    for(let d=1;d<=dim;d++){const ds=String(d).padStart(2,'0'),done=sm.doneSet.has(ds),isT=d===tod,isFu=d>tod;cells.push({d,ds,done,isT,isFu,k:'d'+d});}
+    return(
+      <div style={S.wrap}>
+        <div style={S.hd}>
+          <button style={S.back} onClick={()=>setSelected(null)}>← 목록으로</button>
+          <div style={{fontSize:20,fontWeight:700}}>{sm.name}님 진도</div>
+        </div>
+        <div style={S.panel}>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:12,marginBottom:20}}>
+            {[{l:'이번 달',v:`${sm.monthCount}일`},{l:'달성률',v:`${sm.rate}%`},{l:'가입일',v:fmtDate(sm.joinedAt)}].map(k=>(
+              <div key={k.l} style={{background:'var(--surface-2)',borderRadius:12,padding:'14px 14px 12px'}}>
+                <div style={{fontSize:13,color:'var(--text-2)'}}>{k.l}</div>
+                <div style={{fontSize:22,fontWeight:800,color:'var(--gold)',marginTop:4}}>{k.v}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:5}}>
+            {['일','월','화','수','목','금','토'].map(d=><div key={d} style={{textAlign:'center',fontSize:12,color:'var(--text-3)',padding:'6px 0'}}>{d}</div>)}
+            {cells.map(c=>{
+              if(c.empty)return<div key={c.k}/>;
+              const bg=c.done?'var(--done-strong)':c.isT?'var(--gold-soft)':c.isFu?'transparent':'var(--surface-2)';
+              const cl=c.done?'#0b1117':c.isT?'var(--gold)':'var(--text-3)';
+              const bd=c.isT?'2px solid var(--gold)':c.isFu?'1px dashed rgba(232,227,216,.2)':'none';
+              return<div key={c.k} style={{aspectRatio:'1',borderRadius:8,background:bg,border:bd,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:cl}}>{c.d}</div>;
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return(
+    <div style={S.wrap}>
+      <div style={S.hd}>
+        <button style={S.back} onClick={onBack}>← 뒤로</button>
+        <div style={{fontSize:22,fontWeight:700}}>📊 진도 현황</div>
+      </div>
+
+      {/* 요약 카드 */}
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12,marginBottom:16}}>
+        {[{l:'총 가입자',v:`${members.length}명`},{l:'오늘 완료',v:`${stats.filter(m=>m.doneSet.has(String(tod).padStart(2,'0'))).length}명`},{l:'오늘 미완료',v:`${missToday.length}명`}].map(k=>(
+          <div key={k.l} style={{background:'var(--surface)',border:'1px solid var(--divider)',borderRadius:14,padding:'16px 16px 14px'}}>
+            <div style={{fontSize:13,color:'var(--text-2)'}}>{k.l}</div>
+            <div style={{fontSize:28,fontWeight:800,color:'var(--gold)',marginTop:4}}>{k.v}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* 탭 */}
+      <div style={S.tabs}>
+        <button style={S.tab(viewMode==='all')} onClick={()=>setViewMode('all')}>전체 {members.length}명</button>
+        <button style={S.tab(viewMode==='miss')} onClick={()=>setViewMode('miss')}>오늘 미완료 {missToday.length}명</button>
+      </div>
+
+      <div style={S.panel}>
+        {/* 헤더 */}
+        <div style={{display:'grid',gridTemplateColumns:'160px 1fr',gap:8,marginBottom:8,padding:'0 4px'}}>
+          <div style={{fontSize:12,color:'var(--text-3)',fontWeight:600}}>이름 · 역할</div>
+          <div style={{display:'flex',gap:3}}>
+            {days.slice(0,tod).map(d=><div key={d} style={{width:24,textAlign:'center',fontSize:10,color:'var(--text-3)',fontWeight:600,flexShrink:0}}>{parseInt(d)}</div>)}
+          </div>
+        </div>
+
+        {(viewMode==='miss'?missToday:stats).map(m=>(
+          <div key={m.id} style={{...S.row,cursor:'pointer'}} onClick={()=>setSelected(m.id)}>
+            <div style={S.av}>{ini(m.name)}</div>
+            <div style={{width:110,minWidth:0,flexShrink:0}}>
+              <div style={{fontSize:14,fontWeight:700,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{m.name}</div>
+              <div style={{fontSize:12,color:'var(--text-3)',marginTop:1}}>{m.rate}% · {m.monthCount}일</div>
+            </div>
+            <div style={{display:'flex',gap:3,flex:1,overflow:'hidden'}}>
+              {days.slice(0,tod).map(d=><div key={d} style={S.dot(m.doneSet.has(d))}>{m.doneSet.has(d)?'✓':''}</div>)}
+            </div>
+          </div>
+        ))}
+
+        {(viewMode==='miss'?missToday:stats).length===0&&(
+          <div style={{padding:'32px 0',textAlign:'center',color:'var(--text-3)',fontSize:14}}>
+            {viewMode==='miss'?'🎉 오늘 모두 묵상 완료했어요!':'아직 가입한 성도가 없어요'}
+          </div>
+        )}
+      </div>
+      <div style={{fontSize:13,color:'var(--text-3)',textAlign:'center',marginTop:4}}>이름을 누르면 상세 달력을 볼 수 있어요</div>
+    </div>
+  );
+}
+
+// ── 본문 스케줄 관리 패널 (월별) ──
+function ScheduleAdmin({onBack}){
+  const now = new Date(TODAY);
+  const [selYear, setSelYear] = useState(now.getFullYear());
+  const [selMonth, setSelMonth] = useState(now.getMonth()+1);
+  const [schedule, setSchedule] = useState([]);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const monthKey = `${selYear}-${String(selMonth).padStart(2,'0')}`;
+  const daysInMonth = new Date(selYear, selMonth, 0).getDate();
+
+  // 해당 월 스케줄 Firebase에서 불러오기
+  useEffect(()=>{
+    setLoading(true);
+    const {db, collection, query, where, getDocs} = window._fb;
+    const q = query(collection(db,'schedule'), where('date','>=',`${monthKey}-01`), where('date','<=',`${monthKey}-31`));
+    getDocs(q).then(snap=>{
+      const fromDB = {};
+      snap.docs.forEach(d=>{ fromDB[d.data().date] = d.data(); });
+      // 코드에 있는 기본 스케줄도 병합 (DB 우선)
+      const base = SCHEDULE.filter(s=>s.date.startsWith(monthKey));
+      const baseMap = {};
+      base.forEach(s=>{ baseMap[s.date]=s; });
+      const rows = Array.from({length:daysInMonth},(_,i)=>{
+        const d = String(i+1).padStart(2,'0');
+        const date = `${monthKey}-${d}`;
+        return fromDB[date] || baseMap[date] || {date, book:'', range:''};
+      });
+      setSchedule(rows);
+      setLoading(false);
+    }).catch(()=>setLoading(false));
+  },[monthKey]);
+
+  const update=(idx,field,val)=>{setSchedule(prev=>{const n=[...prev];n[idx]={...n[idx],[field]:val};return n;});};
+
+  const saveAll=async()=>{
+    setSaving(true);
+    try{
+      const{db,doc,setDoc}=window._fb;
+      await Promise.all(schedule.filter(s=>s.book||s.range).map(s=>
+        setDoc(doc(db,'schedule',s.date),{book:s.book,range:s.range,date:s.date})
+      ));
+      setSaved(true); setTimeout(()=>setSaved(false),2500);
+    }catch(e){alert('저장 실패. 다시 시도해주세요.');}
+    finally{setSaving(false);}
+  };
+
+  const prevMonth=()=>{ if(selMonth===1){setSelYear(y=>y-1);setSelMonth(12);}else setSelMonth(m=>m-1); };
+  const nextMonth=()=>{ if(selMonth===12){setSelYear(y=>y+1);setSelMonth(1);}else setSelMonth(m=>m+1); };
+
+  const S={
+    panel:{background:'var(--surface)',border:'1px solid var(--divider)',borderRadius:18,padding:'22px 24px',maxWidth:900,margin:'0 auto'},
+    inp:{background:'var(--surface-2)',border:'1px solid var(--divider)',borderRadius:10,padding:'10px 12px',color:'var(--text)',fontSize:15,fontFamily:'inherit',outline:'none',width:'100%'},
+    saveBtn:{padding:'12px 28px',borderRadius:12,background:saved?'var(--done)':'var(--gold)',color:'#1a1410',fontSize:15,fontWeight:700,border:0,cursor:'pointer',transition:'background .3s',flexShrink:0},
+  };
+
+  return(
+    <div style={{padding:'28px 24px',maxHeight:'100vh',overflowY:'auto'}}>
+      <div style={{display:'flex',alignItems:'center',gap:16,marginBottom:24}}>
+        <button onClick={onBack} style={{padding:'8px 16px',borderRadius:10,background:'var(--surface)',color:'var(--text-2)',fontSize:14,fontWeight:600,border:'1px solid var(--divider)',cursor:'pointer'}}>← 뒤로</button>
+        <div style={{fontSize:22,fontWeight:700}}>📅 본문 스케줄 수정</div>
+      </div>
+
+      {/* 월 선택 */}
+      <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:20}}>
+        <button onClick={prevMonth} style={{width:40,height:40,borderRadius:10,background:'var(--surface)',border:'1px solid var(--divider)',color:'var(--text)',fontSize:20,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>‹</button>
+        <div style={{fontSize:22,fontWeight:700,minWidth:120,textAlign:'center'}}>{selYear}년 {selMonth}월</div>
+        <button onClick={nextMonth} style={{width:40,height:40,borderRadius:10,background:'var(--surface)',border:'1px solid var(--divider)',color:'var(--text)',fontSize:20,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>›</button>
+        <div style={{marginLeft:'auto',display:'flex',gap:10,alignItems:'center'}}>
+          {saved&&<span style={{fontSize:14,color:'var(--done)',fontWeight:600}}>✓ 저장됐어요!</span>}
+          <button style={S.saveBtn} onClick={saveAll} disabled={saving||loading}>{saving?'저장 중…':'전체 저장'}</button>
+        </div>
+      </div>
+
+      <div style={S.panel}>
+        <div style={{display:'grid',gridTemplateColumns:'56px 1fr 1fr',gap:10,marginBottom:10,padding:'0 4px'}}>
+          <div style={{fontSize:12,color:'var(--text-3)',fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase'}}>날짜</div>
+          <div style={{fontSize:12,color:'var(--text-3)',fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase'}}>책 이름</div>
+          <div style={{fontSize:12,color:'var(--text-3)',fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase'}}>본문 범위</div>
+        </div>
+        {loading?(
+          <div style={{padding:'32px 0',textAlign:'center',color:'var(--text-3)',fontSize:14}}>불러오는 중…</div>
+        ):schedule.map((s,i)=>{
+          const isToday=s.date===TODAY;
+          return(
+            <div key={s.date} style={{display:'grid',gridTemplateColumns:'56px 1fr 1fr',gap:10,marginBottom:8,alignItems:'center'}}>
+              <div style={{fontSize:14,fontWeight:700,color:isToday?'var(--gold)':'var(--text-2)',display:'flex',alignItems:'center',gap:4}}>
+                {parseInt(s.date.slice(8,10))}일
+                {isToday&&<span style={{fontSize:10,background:'var(--gold-soft)',color:'var(--gold)',padding:'1px 5px',borderRadius:4,fontWeight:600}}>오늘</span>}
+              </div>
+              <input style={{...S.inp,borderColor:isToday?'rgba(212,165,116,0.4)':'rgba(232,227,216,.1)'}} value={s.book} onChange={e=>update(i,'book',e.target.value)} placeholder="예: 고린도전서"/>
+              <input style={{...S.inp,borderColor:isToday?'rgba(212,165,116,0.4)':'rgba(232,227,216,.1)'}} value={s.range} onChange={e=>update(i,'range',e.target.value)} placeholder="예: 1:1-17"/>
+            </div>
+          );
+        })}
+        <div style={{marginTop:16,padding:'14px 16px',background:'rgba(212,165,116,0.08)',borderRadius:12,fontSize:13,color:'var(--text-2)',lineHeight:1.7}}>
+          💡 <b style={{color:'var(--text)'}}>사용 방법</b><br/>
+          • ‹ › 버튼으로 월을 바꿔가며 입력해요<br/>
+          • 입력 후 "전체 저장"을 누르면 Firebase에 저장돼요<br/>
+          • 저장된 스케줄은 성도 앱에 바로 반영돼요<br/>
+          • 미리 여러 달을 입력해두어도 돼요
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── 성도 관리 패널 ──
+function MemberAdmin({onBack}){
+  const[members,setMembers]=useState([]);const[loading,setLoading]=useState(true);const[search,setSearch]=useState('');const[editing,setEditing]=useState(null);
+  useEffect(()=>{
+    const{db,collection,onSnapshot}=window._fb;
+    return onSnapshot(collection(db,'users'),s=>{setMembers(s.docs.map(d=>({id:d.id,...d.data()})));setLoading(false);});
+  },[]);
+  const filtered=members.filter(m=>(m.name||'').includes(search)||(m.group||'').includes(search));
+  const saveEdit=async()=>{
+    if(!editing)return;
+    const{db,doc,updateDoc}=window._fb;
+    try{await updateDoc(doc(db,'users',editing.id),{name:editing.name,role:editing.role,group:editing.group,isLeader:editing.isLeader});setEditing(null);}
+    catch(e){alert('저장 실패');}
+  };
+  const deleteUser=async(m)=>{
+    if(!confirm(`${m.name}님의 계정을 삭제할까요?\n묵상 기록도 함께 삭제됩니다.`))return;
+    const{db,doc,deleteDoc,collection,query,where,getDocs}=window._fb;
+    try{
+      await deleteDoc(doc(db,'users',m.id));
+      // 해당 유저의 체크 기록 삭제
+      const q=query(collection(db,'checks'),where('uid','==',m.id));
+      const snap=await getDocs(q);
+      await Promise.all(snap.docs.map(d=>deleteDoc(doc(db,'checks',d.id))));
+    }catch(e){alert('삭제 실패. 다시 시도해주세요.');}
+  };
+  const S={card:{background:'var(--surface)',border:'1px solid var(--divider)',borderRadius:14,padding:'16px 18px',marginBottom:10},row:{display:'flex',alignItems:'center',gap:14},av:{width:42,height:42,borderRadius:'50%',background:'var(--gold-soft)',color:'var(--gold)',fontFamily:'serif',fontWeight:700,fontSize:16,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0},inp:{background:'var(--surface-2)',border:'1px solid var(--divider)',borderRadius:10,padding:'9px 12px',color:'var(--text)',fontSize:14,fontFamily:'inherit',outline:'none',width:'100%',marginBottom:8},sel:{background:'var(--surface-2)',border:'1px solid var(--divider)',borderRadius:10,padding:'9px 12px',color:'var(--text)',fontSize:14,fontFamily:'inherit',outline:'none',marginBottom:8}};
+  return(
+    <div style={{padding:'28px 24px',maxHeight:'100vh',overflowY:'auto'}}>
+      <div style={{display:'flex',alignItems:'center',gap:16,marginBottom:20}}>
+        <button onClick={onBack} style={{padding:'8px 16px',borderRadius:10,background:'var(--surface)',color:'var(--text-2)',fontSize:14,fontWeight:600,border:'1px solid var(--divider)'}}>← 뒤로</button>
+        <div style={{fontSize:22,fontWeight:700}}>👥 성도 관리</div>
+      </div>
+      <input style={{...S.inp,marginBottom:16,fontSize:16}} value={search} onChange={e=>setSearch(e.target.value)} placeholder="이름 또는 셀로 검색…"/>
+      {loading?<div style={{textAlign:'center',padding:40,color:'var(--text-3)'}}>불러오는 중…</div>:filtered.length===0?<div style={{textAlign:'center',padding:40,color:'var(--text-3)'}}>검색 결과가 없어요</div>:filtered.map(m=>(
+        <div key={m.id} style={S.card}>
+          {editing?.id===m.id?(
+            <div>
+              <div style={{fontSize:13,color:'var(--text-3)',marginBottom:12,fontWeight:600}}>✏️ 정보 수정</div>
+              <input style={S.inp} value={editing.name} onChange={e=>setEditing(p=>({...p,name:e.target.value}))} placeholder="이름"/>
+              <input style={S.inp} value={editing.role} onChange={e=>setEditing(p=>({...p,role:e.target.value}))} placeholder="역할 (예: 성도, 집사, 권사)"/>
+              <input style={S.inp} value={editing.group} onChange={e=>setEditing(p=>({...p,group:e.target.value}))} placeholder="셀 이름 (예: 드보라 셀)"/>
+              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12}}>
+                <input type="checkbox" id={`leader-${m.id}`} checked={editing.isLeader||false} onChange={e=>setEditing(p=>({...p,isLeader:e.target.checked}))} style={{width:18,height:18}}/>
+                <label htmlFor={`leader-${m.id}`} style={{fontSize:14,color:'var(--text)'}}>리더 권한 (대시보드 접근 가능)</label>
+              </div>
+              <div style={{display:'flex',gap:8}}>
+                <button onClick={saveEdit} style={{flex:1,height:42,borderRadius:10,background:'var(--gold)',color:'#1a1410',fontSize:15,fontWeight:700,border:0,cursor:'pointer'}}>저장</button>
+                <button onClick={()=>setEditing(null)} style={{flex:1,height:42,borderRadius:10,background:'var(--surface-2)',color:'var(--text-2)',fontSize:15,fontWeight:600,border:0,cursor:'pointer'}}>취소</button>
+              </div>
+            </div>
+          ):(
+            <div style={S.row}>
+              <div style={S.av}>{ini(m.name)}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:16,fontWeight:700,display:'flex',alignItems:'center',gap:8}}>
+                  {m.name||'이름 없음'}
+                  {m.isLeader&&<span style={{fontSize:11,background:'var(--gold-soft)',color:'var(--gold)',padding:'2px 7px',borderRadius:6,fontWeight:600}}>리더</span>}
+                </div>
+                <div style={{fontSize:13,color:'var(--text-3)',marginTop:2}}>{m.role||'성도'} · {m.group||'미배정'}</div>
+              </div>
+              <button onClick={()=>setEditing({...m})} style={{padding:'8px 14px',borderRadius:9,background:'var(--surface-2)',color:'var(--text-2)',fontSize:13,fontWeight:600,border:0,cursor:'pointer',flexShrink:0}}>수정</button>
+              <button onClick={()=>deleteUser(m)} style={{padding:'8px 14px',borderRadius:9,background:'rgba(213,90,73,0.15)',color:'var(--danger)',fontSize:13,fontWeight:600,border:0,cursor:'pointer',flexShrink:0}}>삭제</button>
+            </div>
+          )}
+        </div>
+      ))}
+      <div style={{marginTop:8,padding:'14px 16px',background:'rgba(212,165,116,0.08)',borderRadius:12,fontSize:13,color:'var(--text-2)',lineHeight:1.6}}>
+        💡 수정 버튼을 눌러 이름·역할·셀·리더 권한을 바꿀 수 있어요.<br/>삭제하면 해당 성도의 묵상 기록도 함께 지워져요.
+      </div>
+    </div>
+  );
+}
+
+// ── 리더 대시보드 (탭 추가) ──
+function Dashboard({onBack}){
+  const[members,setMembers]=useState([]);const[shares,setShares]=useState([]);const[todayUids,setTodayUids]=useState(new Set());const[allChecks,setAllChecks]=useState([]);const[loading,setLoading]=useState(true);
+  const[page,setPage]=useState('dash'); // 'dash' | 'schedule' | 'members' | 'progress'
+  useEffect(()=>{
+    const{db,collection,query,where,orderBy,onSnapshot,limit}=window._fb;
+    const u1=onSnapshot(collection(db,'users'),s=>{setMembers(s.docs.map(d=>({id:d.id,...d.data()})));setLoading(false);});
+    const u2=onSnapshot(query(collection(db,'checks'),where('date','==',TODAY)),s=>setTodayUids(new Set(s.docs.map(d=>d.data().uid))));
+    const u3=onSnapshot(collection(db,'checks'),s=>setAllChecks(s.docs.map(d=>d.data())));
+    const u4=onSnapshot(query(collection(db,'shares'),orderBy('createdAt','desc'),limit(10)),s=>setShares(s.docs.map(d=>({id:d.id,...d.data()}))));
+    return()=>{u1();u2();u3();u4();};
+  },[]);
+  const month=TODAY.slice(0,7),tod=parseInt(TODAY.slice(8,10));
+  const stats=members.map(m=>{const mc=allChecks.filter(c=>c.uid===m.id&&c.date.startsWith(month));return{...m,monthRate:tod>0?Math.round(mc.length/tod*100):0,todayDone:todayUids.has(m.id)};});
+  const entry=getEntry(),total=members.length,todayN=[...todayUids].length,todayRate=total>0?Math.round(todayN/total*100):0,avgMonth=stats.length>0?Math.round(stats.reduce((a,m)=>a+m.monthRate,0)/stats.length):0;
+  const rc=r=>r>=80?'good':r>=60?'mid':'low';
+  if(page==='schedule') return <div className="dash" style={{display:'block',background:'var(--bg)'}}><ScheduleAdmin onBack={()=>setPage('dash')}/></div>;
+  if(page==='members') return <div className="dash" style={{display:'block',background:'var(--bg)'}}><MemberAdmin onBack={()=>setPage('dash')}/></div>;
+  if(page==='progress') return <div className="dash" style={{display:'block',background:'var(--bg)'}}><ProgressDetail onBack={()=>setPage('dash')}/></div>;
+  if(loading)return<div className="dash" style={{display:'flex',alignItems:'center',justifyContent:'center'}}><div style={{textAlign:'center'}}><div className="spinner" style={{margin:'0 auto 16px'}}/><div style={{color:'#8a9199',fontSize:14}}>불러오는 중…</div></div></div>;
+  return(
+    <div className="dash">
+      <aside className="dash-side">
+        <div className="dash-logo"><div className="dash-logo-mark">✝️</div><div><div className="dash-logo-name">생명의 삶</div><div className="dash-logo-sub">Leader</div></div></div>
+        <div className="dash-nav-sec">전체</div>
+        <button className="dash-nav-item active"><span className="dash-dot"/>대시보드</button>
+        <button className="dash-nav-item" onClick={()=>setPage('progress')}><span className="dash-dot"/>진도 현황</button>
+        <button className="dash-nav-item"><span className="dash-dot"/>나눔 피드<span className="dash-nav-count">{shares.length}</span></button>
+        <div className="dash-nav-sec">관리</div>
+        <button className="dash-nav-item" onClick={()=>setPage('members')}><span className="dash-dot"/>성도 관리<span className="dash-nav-count">{total}명</span></button>
+        <button className="dash-nav-item" onClick={()=>setPage('schedule')}><span className="dash-dot"/>본문 스케줄</button>
+        <div className="dash-foot"><div className="dash-av">{ini(window._me?.name)}</div><div><div style={{fontSize:13,fontWeight:600}}>{window._me?.name}</div><div style={{fontSize:11.5,color:'var(--text-3)'}}>{window._me?.group} · 리더</div></div></div>
+      </aside>
+      <main className="dash-main">
+        <div className="dash-main-head">
+          <div><div style={{fontSize:12.5,letterSpacing:'.14em',textTransform:'uppercase',color:'var(--gold)',fontWeight:700}}>{new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'})}</div><div className="dash-main-title" style={{marginTop:6}}>대시보드</div><div className="dash-main-sub">📖 두란노 생명의 삶 · {entry.book} {entry.range}</div></div>
+          <button onClick={onBack} style={{padding:'10px 18px',borderRadius:12,background:'var(--surface)',color:'var(--text-2)',fontSize:14,fontWeight:600,border:'1px solid var(--divider)',flexShrink:0}}>← 앱으로</button>
+        </div>
+        <div className="dash-kpis">
+          {[{l:'오늘 완료자',v:todayN,u:`/${total}명`,d:'실시간'},{l:'오늘 완료율',v:todayRate,u:'%',d:todayRate>=70?'▲ 좋아요!':todayRate>=50?'— 평균':'▼ 독려 필요'},{l:'이번 달 평균',v:avgMonth,u:'%',d:'전체 멤버'},{l:'오늘 나눔',v:shares.length,u:'편',d:'실시간'}].map(k=>(
+            <div key={k.l} className="dash-kpi"><div className="dash-kpi-label">{k.l}</div><div className="dash-kpi-val">{k.v}<span className="unit">{k.u}</span></div><div className={'dash-kpi-delta'+(k.d.includes('—')?' flat':'')}><span className="live-dot"/>{k.d}</div></div>
+          ))}
+        </div>
+        <div className="dash-grid">
+          <div className="dash-panel">
+            <div className="dash-panel-head"><div className="dash-panel-title">멤버 진도 현황</div><div className="dash-panel-meta"><span className="live-dot"/>실시간 · {total}명</div></div>
+            {stats.length===0?<div style={{padding:'24px 0',textAlign:'center',color:'var(--text-3)',fontSize:14}}>아직 가입한 멤버가 없어요</div>:
+            <table className="dash-table"><thead><tr><th style={{width:'28%'}}>이름</th><th>역할</th><th style={{width:'32%'}}>이번 달 달성률</th><th style={{width:'10%',textAlign:'center'}}>오늘</th></tr></thead>
+            <tbody>{stats.sort((a,b)=>b.monthRate-a.monthRate).map(m=>(
+              <tr key={m.id}><td style={{fontWeight:600}}>{m.name}</td><td style={{color:'var(--text-2)'}}>{m.role||'성도'}</td>
+              <td><div style={{display:'flex',alignItems:'center',gap:10}}><div className="dash-bar-wrap" style={{flex:1}}><div className="dash-bar" style={{width:m.monthRate+'%'}}/></div><span className={'dash-pill '+rc(m.monthRate)}>{m.monthRate}%</span></div></td>
+              <td style={{textAlign:'center'}}><div className={'dash-status '+(m.todayDone?'done':'miss')} style={{margin:'0 auto'}}/></td></tr>
+            ))}</tbody></table>}
+          </div>
+          <div>
+            <div className="dash-panel" style={{marginBottom:16}}>
+              <div className="dash-panel-head"><div className="dash-panel-title">최근 나눔</div><div className="dash-panel-meta"><span className="live-dot"/>실시간</div></div>
+              {shares.length===0?<div style={{padding:'24px 0',textAlign:'center',color:'var(--text-3)',fontSize:14}}>아직 나눔이 없어요</div>:shares.map(s=>(
+                <div key={s.id} className="dash-feed-row"><div className="dash-feed-av">{ini(s.name)}</div><div style={{flex:1,minWidth:0}}><div className="dash-feed-txt"><span className="dash-feed-name">{s.name}</span>님이 묵상을 나누었습니다</div>{s.text&&<div className="dash-feed-quote">{s.text}</div>}<div className="dash-feed-time">{fmtTime(s.createdAt)} · 아멘 {s.amen||0}</div></div></div>
+              ))}
+            </div>
+            <div className="dash-panel">
+              <div className="dash-panel-title" style={{marginBottom:14}}>⚙️ 관리</div>
+              <button onClick={()=>setPage('progress')} style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',padding:'14px 16px',borderRadius:12,background:'var(--surface-2)',border:0,cursor:'pointer',marginBottom:8,color:'var(--text)',fontSize:14,fontWeight:600,fontFamily:'inherit'}}>
+                <span>📊 진도 상세 현황</span><span style={{color:'var(--text-3)'}}>→</span>
+              </button>
+              <button onClick={()=>setPage('members')} style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',padding:'14px 16px',borderRadius:12,background:'var(--surface-2)',border:0,cursor:'pointer',marginBottom:8,color:'var(--text)',fontSize:14,fontWeight:600,fontFamily:'inherit'}}>
+                <span>👥 성도 계정 관리</span><span style={{color:'var(--text-3)'}}>→</span>
+              </button>
+              <button onClick={()=>setPage('schedule')} style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',padding:'14px 16px',borderRadius:12,background:'var(--surface-2)',border:0,cursor:'pointer',color:'var(--text)',fontSize:14,fontWeight:600,fontFamily:'inherit'}}>
+                <span>📅 본문 스케줄 수정</span><span style={{color:'var(--text-3)'}}>→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function App(){
+  const[tab,setTab]=useState('home');const[done,setDone]=useState(false);const[cs,setCs]=useState(new Set());const[streak,setStreak]=useState(0);const[writing,setWriting]=useState(false);const[toast,setToast]=useState(null);const[dash,setDash]=useState(false);
+  const[today,setToday]=useState(getToday()); // 날짜 state로 관리
+  const me=window._me;
+
+  // 자정 되면 날짜 자동 갱신
+  useEffect(()=>{
+    const checkDate=()=>{
+      const newDate=getToday();
+      if(newDate!==today){
+        setToday(newDate);
+        setDone(false); // 새날 완료 초기화
+      }
+    };
+    // 자정까지 남은 시간 계산
+    const now=new Date();
+    const midnight=new Date(now);
+    midnight.setHours(24,0,5,0); // 자정 + 5초 여유
+    const msToMidnight=midnight-now;
+    const t=setTimeout(()=>{
+      checkDate();
+      // 이후 매 1분마다 체크
+      const interval=setInterval(checkDate,60000);
+      return()=>clearInterval(interval);
+    }, msToMidnight);
+    return()=>clearTimeout(t);
+  },[today]);
+  useEffect(()=>{
+    if(!me)return;
+    const{db,collection,query,where,onSnapshot}=window._fb;
+    return onSnapshot(query(collection(db,'checks'),where('uid','==',me.uid)),snap=>{
+      const dates=new Set(snap.docs.map(d=>d.data().date));
+      setCs(dates);setDone(dates.has(TODAY));
+      let s=0,d=new Date(TODAY);
+      while(s<=365){const ds=d.toISOString().slice(0,10);if(dates.has(ds)){s++;d.setDate(d.getDate()-1);}else break;}
+      setStreak(s);
+    });
+  },[me?.uid]);
+  const monthDone=[...cs].filter(d=>d.startsWith(TODAY.slice(0,7))).length;
+  const markDone=async()=>{if(done)return;try{await saveCheck(me.uid,TODAY);showToast(`${streak+1}일 연속! 🎉`);}catch(e){alert('저장 실패');}};
+  const showToast=msg=>{setToast(msg);setTimeout(()=>setToast(null),2400);};
+  const logout=async()=>{const{auth,signOut}=window._fb;await signOut(auth);};
+  if(dash)return<Dashboard onBack={()=>setDash(false)}/>;
+  return(
+    <div className="qt-app" style={{position:'relative'}}>
+      <div className="qt-scroll">
+        {tab==='home'&&<HomeScreen done={done} onWrite={()=>setWriting(true)} onMarkDone={markDone} completedSet={cs} streak={streak} monthDone={monthDone}/>}
+        {tab==='cal'&&<CalendarScreen completedSet={cs} streak={streak}/>}
+        {tab==='share'&&<ShareScreen uid={me?.uid}/>}
+        {tab==='more'&&<MoreScreen streak={streak} onLogout={logout} onDash={()=>setDash(true)}/>}
+      </div>
+      <div className="qt-tabs">
+        {[{id:'home',l:'오늘',i:IC.home},{id:'cal',l:'캘린더',i:IC.cal},{id:'share',l:'나눔',i:IC.chat},{id:'more',l:'더보기',i:IC.more}].map(t=>(
+          <button key={t.id} className={'qt-tab'+(tab===t.id?' active':'')} onClick={()=>setTab(t.id)}><span className="qt-tab-icon">{t.i(tab===t.id?'var(--gold)':'var(--text-3)')}</span><span>{t.l}</span></button>
+        ))}
+      </div>
+      {writing&&<WriteScreen onCancel={()=>setWriting(false)} onSave={()=>{setWriting(false);showToast('묵상이 저장되었어요 ✨');}}/>}
+      {toast&&<div className="qt-toast">{toast}</div>}
+    </div>
+  );
+}
+
+window._mountApp=()=>{
+  // Firebase에서 이번 달 스케줄 미리 로드
+  const {db,collection,query,where,getDocs} = window._fb;
+  const month = TODAY.slice(0,7);
+  getDocs(query(collection(db,'schedule'),where('date','>=',`${month}-01`),where('date','<=',`${month}-31`))).then(snap=>{
+    window._scheduleCache = window._scheduleCache || {};
+    snap.docs.forEach(d=>{ window._scheduleCache[d.data().date] = d.data(); });
+  }).catch(()=>{});
+  ReactDOM.createRoot(document.getElementById('app')).render(<App/>);
+};
+</script>
+<script>
+// ── PWA 서비스 워커 등록 ──
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE = 'qt-scbaptist-v1';
+    const PRECACHE = ['/'];
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(PRECACHE)));
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', e => {
+      if (e.request.method !== 'GET') return;
+      e.respondWith(
+        fetch(e.request).then(res => {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+          return res;
+        }).catch(() => caches.match(e.request))
+      );
+    });
+  `;
+  const blob = new Blob([swCode], {type:'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(()=>{});
+}
+
+// ── PWA 설치 배너 (안드로이드 크롬) ──
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // 로그인 완료 후 5초 뒤 배너 표시
+  setTimeout(() => {
+    if (deferredPrompt && document.getElementById('app').classList.contains('visible')) {
+      showInstallBanner();
+    }
+  }, 5000);
+});
+
+function showInstallBanner() {
+  if (document.getElementById('pwa-banner')) return;
+  const banner = document.createElement('div');
+  banner.id = 'pwa-banner';
+  banner.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:396px;background:#1a2330;border:1px solid rgba(212,165,116,0.3);border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:toast-in .3s ease;font-family:Noto Sans KR,sans-serif';
+  banner.innerHTML = `
+    <div style="width:44px;height:44px;border-radius:12px;background:rgba(212,165,116,0.16);display:flex;align-items:center;justify-content:center;font-family:serif;font-size:24px;color:#d4a574;flex-shrink:0">묵</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:15px;font-weight:700;color:#e8e3d8">홈화면에 설치하기</div>
+      <div style="font-size:13px;color:#8a9199;margin-top:2px">앱처럼 바로 열 수 있어요</div>
+    </div>
+    <button onclick="installPWA()" style="padding:9px 16px;border-radius:10px;background:#d4a574;color:#1a1410;font-size:14px;font-weight:700;border:0;cursor:pointer;font-family:inherit;flex-shrink:0">설치</button>
+    <button onclick="document.getElementById('pwa-banner').remove()" style="padding:8px;background:none;border:0;cursor:pointer;color:#5b6470;font-size:20px;flex-shrink:0;line-height:1">×</button>
+  `;
+  document.body.appendChild(banner);
+}
+
+window.installPWA = async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('pwa-banner')?.remove();
+};
+</script>
+</body>
+</html>
