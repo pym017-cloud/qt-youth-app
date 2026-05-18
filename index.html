@@ -107,7 +107,7 @@
 
     /* 본문 카드 */
     .qt-passage-card{margin:0 16px 12px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--card-shadow);padding:20px 18px}
-    .qt-passage-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--orange);font-weight:800;letter-spacing:.06em;background:var(--orange-soft);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+    .qt-passage-tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--orange);font-weight:800;letter-spacing:.06em;background:var(--orange-soft);padding:4px 10px;border-radius:999px;margin-bottom:10px}
     .qt-passage-title{font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.02em;margin-bottom:3px}
     .qt-passage-ref{font-size:14px;color:var(--orange);font-weight:700;margin-bottom:10px}
     .qt-passage-verse{padding:12px 14px 12px 16px;background:var(--orange-soft);border-left:3px solid var(--orange);border-radius:4px 12px 12px 4px;font-family:'Noto Serif KR',serif;font-size:13.5px;line-height:1.7;color:var(--text);margin-bottom:14px;max-height:80px;overflow-y:auto}
@@ -130,7 +130,6 @@
     .qt-memory-label{font-size:11px;color:var(--orange-dark);font-weight:800;letter-spacing:.06em;margin-bottom:8px}
     .qt-memory-verse{font-family:'Noto Serif KR',serif;font-size:16px;line-height:1.7;color:var(--text);font-weight:600;margin-bottom:10px}
     .qt-memory-ref{font-size:13px;color:var(--orange);font-weight:700}
-    .qt-memory-more{font-size:13px;color:var(--text-3);font-weight:600;margin-top:6px;display:flex;align-items:center;gap:4px}
 
     /* 퀵메뉴 */
     .qt-quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px;margin-bottom:12px}
@@ -138,18 +137,6 @@
     .qt-quick-item:active{transform:scale(.95)}
     .qt-quick-icon{font-size:26px}
     .qt-quick-label{font-size:12px;font-weight:700;color:var(--text);text-align:center}
-
-    /* 가정예배 */
-    .qt-family-section{padding:4px 20px 10px}
-    .qt-family-label{font-size:13px;color:var(--orange);font-weight:800;letter-spacing:.04em;margin-bottom:8px}
-    .qt-family-card{background:var(--surface);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--card-shadow);display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:10px;transition:transform .15s}
-    .qt-family-card:active{transform:scale(.98)}
-    .qt-family-icon{font-size:32px;flex-shrink:0}
-    .qt-family-name{font-size:15px;font-weight:800;color:var(--text)}
-    .qt-family-meta{font-size:12px;color:var(--text-3);margin-top:2px;font-weight:600}
-    .qt-family-dots{display:flex;gap:5px;margin-top:6px}
-    .qt-family-dot{width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff}
-    .qt-family-cta{display:block;width:100%;height:50px;border-radius:14px;background:var(--orange);color:#fff;font-size:15px;font-weight:800;box-shadow:0 4px 14px rgba(255,159,28,.3)}
 
     /* 지난 묵상 */
     .qt-past-card{margin:0 16px 12px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--card-shadow);padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:transform .15s}
@@ -219,30 +206,10 @@
 
     /* 묵상 작성 */
     .qt-write-screen{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto}
-    .qt-write-head{padding:18px 20px 0;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-    .qt-write-cancel{font-size:15px;color:var(--text-3);font-weight:700;padding:6px 2px}
-    .qt-write-done{font-size:15px;color:var(--orange);font-weight:900;padding:6px 2px}
-    .qt-write-section{padding:16px 20px 0}
-    .qt-write-label{font-size:11px;color:var(--orange);font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}
-    .qt-write-area{width:100%;background:var(--surface);border-radius:14px;border:2px solid transparent;padding:13px 15px;color:var(--text);font-family:inherit;font-size:15px;line-height:1.65;resize:none;outline:none;transition:border-color .2s;font-weight:500;box-shadow:0 2px 8px rgba(255,159,28,.08)}
-    .qt-write-area:focus{border-color:var(--orange)}
-    .qt-write-area::placeholder{color:var(--text-3)}
-    .qt-verse-ref-in{width:100%;background:transparent;border:0;border-bottom:2px solid var(--divider);padding:5px 0;color:var(--orange);font-weight:800;font-size:12px;font-family:inherit;outline:none;margin-bottom:7px;letter-spacing:.06em}
-    .qt-verse-ref-in:focus{border-bottom-color:var(--orange)}
-    .qt-verse-in{width:100%;background:var(--orange-soft);border-left:3px solid var(--orange);border-radius:4px 13px 13px 4px;padding:12px 14px;color:var(--text);font-family:'Noto Serif KR',serif;font-size:15px;line-height:1.65;resize:none;outline:none;border-top:none;border-right:none;border-bottom:none}
-    .qt-share-toggle{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:14px;padding:14px 16px;margin-top:12px;width:100%;box-shadow:0 2px 8px rgba(255,159,28,.08)}
     .qt-toggle{width:50px;height:28px;border-radius:28px;background:var(--bg);position:relative;transition:background .2s;flex-shrink:0}
     .qt-toggle::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--text-3);transition:transform .2s}
     .qt-toggle.on{background:var(--orange)}.qt-toggle.on::after{transform:translateX(22px);background:#fff}
-    .qt-tip-box{margin:12px 18px 0;padding:10px 14px;background:var(--orange-soft);border-radius:12px;font-size:12px;color:var(--orange-dark);font-weight:700}
-
-    /* 토스트 */
-    .qt-toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);padding:13px 22px;border-radius:999px;background:var(--orange);color:#fff;font-size:14px;font-weight:800;box-shadow:0 6px 20px rgba(255,159,28,.4);z-index:500;animation:toast-in .25s ease;white-space:nowrap}
-    @keyframes toast-in{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translateX(-50%)}}
-    .qt-empty{padding:48px 24px;text-align:center;color:var(--text-3)}
-    .qt-empty-icon{font-size:48px;margin-bottom:12px}
-    .qt-empty-msg{font-size:15px;line-height:1.6;font-weight:600}
-
+    
     /* 대시보드 */
     .dash-wrap{position:fixed;inset:0;background:var(--bg);z-index:60;overflow-y:auto}
     .dash-head{background:linear-gradient(135deg,var(--orange),#FFB444);padding:22px 20px 18px;color:#fff}
@@ -434,7 +401,7 @@ const SCHEDULE=[
   {date:'2026-05-07',book:'룻기',range:'4:1-6',title:'성문에서의 협상',verse:'네가 룻에게서 사서 그 죽은 자의 기업을 그의 이름으로 세워야 할지니라 (룻 4:5)'},
   {date:'2026-05-08',book:'룻기',range:'4:7-12',title:'결혼 선포',verse:'여호와께서 네 집에 들어가는 여인으로 라헬과 레아 같게 하시기를 원하며 (룻 4:11)'},
   {date:'2026-05-09',book:'룻기',range:'4:13-22',title:'오벳의 탄생',verse:'나오미가 아기를 받아 품에 품고 그의 양육자가 되니 (룻 4:16)'},
-  {date:'2026-05-10',book:'고린도전서',range:'1:1-17',title:'복음을 전하게 하심',verse:'그리스도께서 나를 보내심은 복음을 전하게 하려 하심이라 (고전 1:17)'},
+  {date:'2026-05-10',book:'고린도전서',range:'1:1-17',title:'복음을 전하게 하심',verse:'그ريس도께서 나를 보내심은 복음을 전하게 하려 하심이라 (고전 1:17)'},
   {date:'2026-05-11',book:'고린도전서',range:'1:18-25',title:'십자가의 능력',verse:'십자가의 도가 구원을 받는 우리에게는 하나님의 능력이라 (고전 1:18)'},
   {date:'2026-05-12',book:'고린도전서',range:'1:26-31',title:'낮은 자를 택하심',verse:'하나님께서 세상의 미련한 것들을 택하사 지혜 있는 자들을 부끄럽게 하려 하시고 (고전 1:27)'},
   {date:'2026-05-13',book:'고린도전서',range:'2:1-9',title:'십자가 외에는',verse:'예수 그리스도와 그가 십자가에 못 박히신 것 외에는 아무 것도 알지 아니하기로 작정하였음이라 (고전 2:2)'},
@@ -459,7 +426,6 @@ const SCHEDULE=[
 ];
 
 const MEMORY={verse:'우리가 환난 중에도 즐거워하나니 이는 환난은 인내를, 인내는 연단을, 연단은 소망을 이루는 줄 앎이로다',ref:'로마서 5:3-4'};
-
 const CCM={title:'소망을 품고 - 제이어스',url:'https://www.youtube.com/watch?v=0BggGlBBluA'};
 
 const BADGES=[
@@ -481,7 +447,7 @@ const ini=n=>n?(n.length>=2?n.slice(-2,-1):n[0]):'?';
 const avColor=n=>AV_COLORS[(n||'').charCodeAt(0)%AV_COLORS.length];
 const fmtTime=ts=>{if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts),h=d.getHours(),m=String(d.getMinutes()).padStart(2,'0');return`${h<12?'오전':'오후'} ${h%12||12}:${m}`;};
 
-async function saveCheck(uid,date){const{db,doc,setDoc,updateDoc,increment,serverTimestamp}=window._fb;await setDoc(doc(db,'checks_youth',`${uid}_${date}`),{uid,date,completedAt:serverTimestamp()});try{await updateDoc(doc(db,'users_youth',uid),{points:increment(10)});}catch(e){}}
+async function saveCheck(uid,date){const{db,doc,setDoc,updateDoc,increment,serverTimestamp}=window._fb;await setDoc(doc(db holiday,`checks_youth`,`${uid}_${date}`),{uid,date,completedAt:serverTimestamp()});try{await updateDoc(doc(db,'users_youth',uid),{points:increment(10)});}catch(e){}}
 async function saveShare(uid,name,data){const{db,collection,addDoc,serverTimestamp}=window._fb;await addDoc(collection(db,'shares_youth'),{uid,name:name||window._me?.name||'친구',...data,createdAt:serverTimestamp(),amen:0,comments:0});}
 async function doAmenToggle(id,a){const{db,doc,updateDoc,increment}=window._fb;await updateDoc(doc(db,'shares_youth',id),{amen:increment(a?-1:1)});}
 
@@ -540,14 +506,14 @@ function HomeScreen({done,onWrite,onMarkDone,completedSet,streak,points,onViewNo
     </div>
 
     {/* 오늘의 찬양 */}
-    <div className="qt-ccm-card" onClick={()=>window.open(CCM.url,'_blank')} style={{cursor:'pointer'}}>
+    <button className="qt-ccm-card" role="button" tabIndex={0} onClick={()=>window.open(CCM.url,'_blank')} style={{width:'calc(100% - 32px)', textAlign:'left', border:'none', display:'flex'}}>
       <div className="qt-ccm-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" fill="white"/></svg></div>
       <div style={{flex:1,minWidth:0}}>
         <div className="qt-ccm-label">오늘의 찬양 (CCM) · 유튜브 바로가기 ▶</div>
         <div className="qt-ccm-title">{CCM.title}</div>
       </div>
       <div className="qt-ccm-play"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--orange)"/></svg></div>
-    </div>
+    </button>
 
     {/* 암송 구절 */}
     <div className="qt-memory-card">
@@ -564,29 +530,29 @@ function HomeScreen({done,onWrite,onMarkDone,completedSet,streak,points,onViewNo
         {icon:'📖',label:'말씀 암송',action:onViewMemory},
         {icon:'👥',label:'나눔',action:onViewShare},
       ].map(i=>(
-        <div key={i.label} className="qt-quick-item" onClick={i.action} style={{cursor:'pointer'}}>
+        <button key={i.label} className="qt-quick-item" role="button" tabIndex={0} onClick={i.action} style={{border:'none', width:'100%'}}>
           <div className="qt-quick-icon">{i.icon}</div>
           <div className="qt-quick-label">{i.label}</div>
-        </div>
+        </button>
       ))}
     </div>
 
     {/* 지난 묵상 */}
     <div style={{padding:'0 16px'}}>
-      <div className="qt-past-card" onClick={onViewNote} style={{cursor:'pointer'}}>
+      <button className="qt-past-card" role="button" tabIndex={0} onClick={onViewNote} style={{width:'100%', textAlign:'left', border:'none', display:'flex'}}>
         <div className="qt-past-icon">📚</div>
         <div>
           <div className="qt-past-title">지난 묵상 다시보기</div>
           <div className="qt-past-sub">내가 쓴 묵상글을 다시 읽어봐요</div>
         </div>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{marginLeft:'auto',flexShrink:0}}><path d="M9 6l6 6-6 6" stroke="var(--text-3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-      </div>
+      </button>
     </div>
     <div style={{height:24}}/>
   </>);
 }
 
-// ── [추가] 1번 이미지: 성경읽기 메인 화면 컴포넌트 ──
+// ── 1번 이미지: 성경읽기 메인 화면 컴포넌트 (접근성 고정 완료) ──
 function BibleReadingScreen() {
   return (
     <>
@@ -595,53 +561,53 @@ function BibleReadingScreen() {
       </div>
       
       {/* 상단 공동체 배너 */}
-      <div style={{margin:'0 16px 16px', background:'linear-gradient(135deg, #3cd3ad, #4cb8c4)', borderRadius:18, padding:'20px 18px', color:'#fff', position:'relative', boxShadow:'0 4px 15px rgba(60,211,173,0.25)'}}>
+      <div style={{margin:'0 16px 16px', background:'linear-gradient(135deg, #2bbba4, #3da0ac)', borderRadius:18, padding:'20px 18px', color:'#fff', position:'relative', boxShadow:'0 4px 15px rgba(60,211,173,0.25)'}}>
         <div style={{fontSize:12, opacity:0.9, fontWeight:700}}>공동체 성경읽기</div>
         <div style={{fontSize:24, fontWeight:900, marginTop:4, letterSpacing:'-0.02em'}}>오늘 시작해요!</div>
-        <div style={{fontSize:13, opacity:0.85, marginTop:4}}>오늘부터 매일 성경읽기를 시작해보세요!</div>
+        <div style={{fontSize:13, opacity:0.9, marginTop:4}}>오늘부터 매일 성경읽기를 시작해보세요!</div>
         <div style={{display:'flex', justifyContent:'space-between', fontSize:12, marginTop:18, fontWeight:700}}>
           <span>연간 진행률</span>
           <span>0% (0/365일)</span>
         </div>
         <div style={{height:6, background:'rgba(255,255,255,0.25)', borderRadius:3, marginTop:6, overflow:'hidden'}}>
-          <div style={{width:'0%', height:'100%', background:'#fff'}} />
+          <div style={{width:'0%', height:'100%', background:'#fff'))}} />
         </div>
         <div style={{position:'absolute', right:20, top:20, textAlign:'center'}}>
           <span style={{fontSize:32}}>🍯</span>
-          <div style={{fontSize:10, background:'rgba(0,0,0,0.15)', padding:'2px 6px', borderRadius:8, marginTop:2, fontWeight:700}}>시작이 반!</div>
+          <div style={{fontSize:11, background:'rgba(0,0,0,0.2)', padding:'2px 6px', borderRadius:8, marginTop:2, fontWeight:700}}>시작이 반!</div>
         </div>
       </div>
 
       {/* 날짜 표시 헤더 */}
       <div style={{padding:'0 18px 10px', display:'flex', alignItems:'center', gap:8}}>
-        <span style={{background:'#e6fbf4', color:'#0ca878', padding:'4px 10px', borderRadius:8, fontSize:12, fontWeight:800}}>Day 138</span>
-        <span style={{fontSize:14, color:'var(--text-2)', fontWeight:600}}>2026년 5월 18일</span>
+        <span style={{background:'#e6fbf4', color:'#0a825d', padding:'4px 10px', borderRadius:8, fontSize:12, fontWeight:800}}>Day 138</span>
+        <span style={{fontSize:13, color:'var(--text-2)', fontWeight:600}}>2026년 5월 18일</span>
       </div>
 
       {/* 통독 배정표 가로 리스트 */}
       <div style={{padding:'0 16px', display:'flex', flexDirection:'column', gap:10}}>
         {[
-          {type:'구약', title:'역대상 18-20', labelIcon:'📘'},
-          {type:'신약', title:'사도행전 9', labelIcon:'📗'},
-          {type:'시편/잠언', title:'시편 108', labelIcon:'📙'}
+          {type:'구약', title:'역대상 18-20'},
+          {type:'신약', title:'사도행전 9'},
+          {type:'시편/잠언', title:'시편 108'}
         ].map((item, idx) => (
-          <div key={idx} style={{background:'var(--surface)', borderRadius:16, padding:'16px 18px', display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'var(--card-shadow)'}}>
+          <button key={idx} role="button" tabIndex={0} style={{width:'100%', border:'none', background:'var(--surface)', borderRadius:16, padding:'16px 18px', display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'var(--card-shadow)', textAlign:'left'}}>
             <div style={{display:'flex', alignItems:'center', gap:14}}>
               <div style={{width:24, height:24, borderRadius:'50%', border:'2px solid var(--divider)', background:'#fff'}} />
               <div>
-                <div style={{fontSize:11, color:'var(--text-3)', fontWeight:700}}>{item.type}</div>
+                <div style={{fontSize:12, color:'var(--text-3)', fontWeight:700}}>{item.type}</div>
                 <div style={{fontSize:16, fontWeight:800, color:'var(--text)', marginTop:1}}>{item.title}</div>
               </div>
             </div>
-            <button style={{width:38, height:38, borderRadius:12, background:'var(--orange-soft)', display:'flex', alignItems:'center', justifyContent:'center'}}>
+            <div style={{width:38, height:38, borderRadius:12, background:'var(--orange-soft)', display:'flex', alignItems:'center', justifyContent:'center'}}>
               <span style={{color:'var(--orange)', fontSize:16}}>📖</span>
-            </button>
-          </div>
+            </div>
+          </button>
         ))}
       </div>
 
       {/* 이번달 읽기 현황 */}
-      <div style={{margin:'14px 16px 0', background:'var(--surface)', borderRadius:16, padding:'16px 18px', display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'var(--card-shadow)'}}>
+      <button style={{width:'calc(100% - 32px)', border:'none', margin:'14px 16px 0', background:'var(--surface)', borderRadius:16, padding:'16px 18px', display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'var(--card-shadow)', textAlign:'left'}}>
         <div style={{display:'flex', alignItems:'center', gap:12}}>
           <span style={{fontSize:22}}>📅</span>
           <div>
@@ -650,9 +616,9 @@ function BibleReadingScreen() {
           </div>
         </div>
         <span style={{color:'var(--text-3)', fontSize:12}}>▼</span>
-      </div>
+      </button>
 
-      {/* 마일스톤 리스트 */}
+      {/* 마일스톤 리스트 (명도 대비 가독성 확보) */}
       <div style={{margin:'14px 16px 24px', background:'var(--surface)', borderRadius:16, padding:'16px 18px', boxShadow:'var(--card-shadow)'}}>
         <div style={{fontSize:14, fontWeight:800, color:'var(--text)', marginBottom:12}}>마일스톤</div>
         {[
@@ -662,15 +628,15 @@ function BibleReadingScreen() {
           {title:'200일 달성', desc:'성경 전사', target:'200일 남음', icon:'🏆'},
           {title:'1년 통독 완료!', desc:'놀라운 축복!', target:'365일 남음', icon:'👑'}
         ].map((m, i) => (
-          <div key={i} style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'11px 0', borderBottom:i<4?'1px solid rgba(0,0,0,0.03)':'none', opacity:0.45}}>
+          <div key={i} style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'11px 0', borderBottom:i<4?'1px solid rgba(0,0,0,0.03)':'none', opacity:0.78}}>
             <div style={{display:'flex', alignItems:'center', gap:12}}>
               <span style={{fontSize:20}}>{m.icon}</span>
               <div>
-                <div style={{fontSize:13, fontWeight:700, color:'var(--text)'}}>{m.title}</div>
-                <div style={{fontSize:11, color:'var(--text-3)'}}>{m.desc}</div>
+                <div style={{fontSize:13, fontWeight:700, color:'#2c210e'}}>{m.title}</div>
+                <div style={{fontSize:12, color:'var(--text-2)'}}>{m.desc}</div>
               </div>
             </div>
-            <span style={{fontSize:11, color:'var(--text-3)', fontWeight:600}}>{m.target}</span>
+            <span style={{fontSize:12, color:'var(--text-2)', fontWeight:600}}>{m.target}</span>
           </div>
         ))}
       </div>
@@ -798,7 +764,7 @@ function MoreScreen({streak,points,onLogout,onDash}){
   </>);
 }
 
-// ── 성경 본문 절번호 표시 함수 (줄바꿈 디자인 개선) ──
+// ── 성경 본문 뷰어 컴포넌트 ──
 function BiblePassage({book, range}){
   const[text,setText]=useState('');
   const[loading,setLoading]=useState(true);
@@ -823,13 +789,12 @@ function BiblePassage({book, range}){
 
   if(loading) return <div style={{fontSize:13,color:'var(--text-3)',padding:'8px 0'}}>본문 불러오는 중…</div>;
   if(!text||!text.length) {
-    // 2번 이미지 기준 기본 로마서 예시 연동
     return (
-      <div style={{fontSize:15, lineHeight:1.8, color:'var(--text)'}}>
+      <div style={{fontSize:15, lineHeight:1.8, color:'var(--text)', fontFamily:'inherit'}}>
         <div style={{marginBottom:10}}><span style={{color:'var(--orange)', fontWeight:900, marginRight:8}}>1</span>그러므로 우리가 믿음으로 의롭다 하심을 얻었은즉 우리 주 예수 그리스도로 말미암아 하나님으로 더불어 화평을 누리자</div>
         <div style={{marginBottom:10}}><span style={{color:'var(--orange)', fontWeight:900, marginRight:8}}>2</span>또한 그로 말미암아 우리가 믿음으로 서있는 이 은혜에 들어감을 얻었으며 하나님의 영광을 바라고 즐거워하느니라</div>
         <div style={{marginBottom:10}}><span style={{color:'var(--orange)', fontWeight:900, marginRight:8}}>3</span>다만 이뿐 아니라 우리가 환난 중에도 즐거워하나니 이는 환난은 인내를,</div>
-        <div style={{marginBottom:10}}><span style={{color:'var(--orange)', fontWeight:900, marginRight:8}}>4</span>인내는 연단을, 연단은 소망을 이루는 줄 쎎이로다</div>
+        <div style={{marginBottom:10}}><span style={{color:'var(--orange)', fontWeight:900, marginRight:8}}>4</span>인내는 연단을, 연단은 소망을 이루는 줄 앎이로다</div>
         <div style={{marginBottom:10}}><span style={{color:'var(--orange)', fontWeight:900, marginRight:8}}>5</span>소망이 부끄럽게 아니함은 우리에게 주신 성령으로 말미암아 하나님의 사랑이 우리 마음에 부은 바 됨이니</div>
       </div>
     );
@@ -846,7 +811,7 @@ function BiblePassage({book, range}){
   );
 }
 
-// ── 묵상 작성 (2번 이미지 디자인 적용) ──
+// ── 묵상 작성화면 (2번 이미지 디자인 적용 및 해상도 크래시 수정 완료) ──
 function WriteScreen({onCancel,onSave}){
   const entry=getEntry();
   const[activeTab,setActiveTab]=useState('devotion');
@@ -859,7 +824,6 @@ function WriteScreen({onCancel,onSave}){
   const[saving,setSaving]=useState(false);
   const[showFullBible,setShowFullBible]=useState(true);
 
-  // 2번 이미지 인터랙션 상태 관리 추가
   const[bibleType, setBibleType]=useState('개역한글');
   const[voiceActor, setVoiceActor]=useState('선희');
   const[audioSpeed, setAudioSpeed]=useState('보통');
@@ -891,20 +855,17 @@ function WriteScreen({onCancel,onSave}){
   const QUESTIONS_MAP={
     '2026-05-18':['하나님 나라는 말이 아닌 능력이에요. 내 삶에서 말보다 행동으로 보여준 것이 있나요?','교만한 사람 앞에서 온유함을 보이는 것이 왜 어려울까요?','아버지처럼 나를 대하시는 하나님을 경험한 적 있나요?'],
   };
-
   const QUESTIONS=QUESTIONS_MAP[TODAY]||[
     `오늘 ${entry.book} ${entry.range} 말씀에서 가장 마음에 와닿은 구절은 무엇인가요?`,
     `이 말씀이 나의 삶과 어떻게 연결되나요?`,
   ];
 
   const HELPS={
-    '2026-05-18':{help:'하나님 나라는 말이 아닌 능력이에요! 우리가 믿음을 말로만 하는 건 아닌지 점검해봐요.',apply:'말로만 하지 말고 오늘은 행동으로 보여봐요. 작은 친절이 하나님 나라의 능력이에요.',prayer:'주님, 제 믿음이 말뿐이 아닌 삶과 행동의 능력으로 나타나게 해주세요.',practice:'오늘 말 대신 구체적인 행동으로 누군가를 돕는 일을 해보세요.'},
+    '2026-05-18':{help:'하나님 나라는 말이 아닌 능력이에요! 우리가 믿음을 말로만 하는 건 아닌지 점검해봐요.',apply:'말로만 하지 말고 오늘은 행동으로 보여봐요. 작은 친절이 하나님 나라의 능력이에요.'},
   };
   const todayHelp=HELPS[TODAY]||{
     help:`오늘 ${entry.book} ${entry.range} 말씀에서 하나님이 나에게 하시는 말씀을 찾아 마음에 담아보세요.`,
     apply:'아주 작은 일부터 적용하여 삶 가운데서 직접 행동으로 조용히 실천해봐요!',
-    prayer:`주님, 오늘 주신 귀한 말씀을 통해 저를 새롭게 빚어주세요. 삶의 능력이 되게 하소서.`,
-    practice:'오늘 한 사람에게 따뜻한 진심 어린 위로의 격려를 건네보세요.',
   };
 
   return(
@@ -918,409 +879,3 @@ function WriteScreen({onCancel,onSave}){
             {saving?'저장중…':'완료 ✅'}
           </button>
         </div>
-        <div style={{display:'flex',gap:0}}>
-          {TABS.map(t=>(
-            <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{flex:1,height:40,fontSize:14,fontWeight:800,color:activeTab===t.id?'var(--orange)':'var(--text-3)',background:'transparent',borderBottom:activeTab===t.id?'2.5px solid var(--orange)':'2.5px solid transparent',transition:'all .15s'}}>
-              {t.icon} {t.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div style={{flex:1,overflowY:'auto',paddingBottom:80}}>
-        {/* 본문 타이틀 명칭 */}
-        <div style={{padding:'16px 18px 0',textAlign:'center'}}>
-          <div style={{fontSize:22,fontWeight:900,color:'var(--text)',letterSpacing:'-.02em'}}>{entry.book} {entry.range}</div>
-        </div>
-
-        {/* ── [추가] 2번 이미지: 번역본 선택 및 오디오 컨트롤 레이아웃 ── */}
-        <div style={{margin:'14px 18px 0', padding:'16px', background:'var(--surface)', borderRadius:14, boxShadow:'var(--card-shadow)'}}>
-          
-          {/* 성경 본문 탭 버튼 그룹 */}
-          <div style={{display:'flex', gap:6, marginBottom:14}}>
-            {['개역한글', '한글킹제임스', 'NIV(영어)'].map((type)=>(
-              <button key={type} onClick={()=>setBibleType(type)} style={{padding:'7px 14px', borderRadius:10, fontSize:13, fontWeight:700, background:bibleType===type?'var(--orange)':'var(--bg)', color:bibleType===type?'#fff':'var(--text-2)', border:bibleType===type?'none':'1px solid var(--divider)', transition:'all 0.15s'}}>
-                {type}
-              </button>
-            ))}
-          </div>
-
-          {/* 오디오 가이드 박스 */}
-          <div style={{background:'#f2f5ff', borderRadius:14, padding:14, border:'1px solid rgba(79,70,229,0.06)'}}>
-            <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:10}}>
-              <span style={{fontSize:12, fontWeight:700, color:'var(--text-2)'}}>음성:</span>
-              {[
-                {id:'선희', bg:'#ec4899', label:'👩‍💼 선희'},
-                {id:'인준', bg:'#3b82f6', label:'👨‍💼 인준'},
-                {id:'현수', bg:'#10b981', label:'🧑‍🎓 현수 신형'}
-              ].map((actor)=>(
-                <button key={actor.id} onClick={()=>setVoiceActor(actor.id)} style={{padding:'4px 9px', borderRadius:8, fontSize:11, fontWeight:700, background:voiceActor===actor.id?actor.bg:'rgba(0,0,0,0.04)', color:voiceActor===actor.id?'#fff':'var(--text-2)'}}>
-                  {actor.label}
-                </button>
-              ))}
-            </div>
-
-            {/* 오디오 재생 바 컨트롤러 */}
-            <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:10}}>
-              <button onClick={()=>setIsPlaying(!isPlaying)} style={{width:34, height:34, borderRadius:'50%', background:'#4f46e5', display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', boxShadow:'0 3px 8px rgba(79,70,229,0.2)'}}>
-                {isPlaying ? '⏸' : '▶'}
-              </button>
-              <div style={{flex:1, height:5, background:'rgba(0,0,0,0.08)', borderRadius:3, position:'relative'}}>
-                <div style={{width:isPlaying?'60%':'15%', height:'100%', background:'#4f46e5', borderRadius:3, transition:'width 0.3s'}} />
-              </div>
-              <span style={{fontSize:12, fontWeight:700, color:'#4f46e5', whiteSpace:'nowrap'}}>🎧 {entry.book} 듣기</span>
-            </div>
-
-            {/* 오디오 배속 조절 단추 */}
-            <div style={{display:'flex', alignItems:'center', gap:8}}>
-              <span style={{fontSize:12, fontWeight:700, color:'var(--text-2)'}}>속도:</span>
-              {['느리게', '보통', '빠르게', '매우빠르게'].map((speed)=>(
-                <button key={speed} onClick={()=>setAudioSpeed(speed)} style={{padding:'3px 8px', borderRadius:6, fontSize:11, fontWeight:700, background:audioSpeed===speed?'#4f46e5':'#fff', color:audioSpeed===speed?'#fff':'var(--text-2)', border:'1px solid rgba(0,0,0,0.08)'}}>
-                  {speed}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* 형광펜 도구 단추 활성화 */}
-          <button style={{marginTop:12, padding:'6px 12px', borderRadius:8, background:'#fff', border:'1px solid var(--divider)', fontSize:12, fontWeight:700, color:'var(--text-2)', display:'inline-flex', alignItems:'center', gap:4}}>
-            📝 형광펜 / 밑줄 / 각주
-          </button>
-        </div>
-
-        {/* 성경 본문 컨텍스트 렌더링 */}
-        <div style={{margin:'12px 18px 0',padding:'16px',background:'var(--surface)',borderRadius:14, boxShadow:'var(--card-shadow)'}}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-            <div style={{fontSize:12,color:'var(--text-3)',fontWeight:700}}>📖 성경 본문 ({bibleType})</div>
-          </div>
-          <BiblePassage book={entry.book} range={entry.range}/>
-        </div>
-
-        {/* 핵심 질문 영역 */}
-        <div style={{margin:'12px 18px 0',padding:'14px 16px',background:'var(--surface)',borderRadius:14}}>
-          <div style={{fontSize:11,color:'var(--text-3)',fontWeight:700,marginBottom:10}}>핵심 질문</div>
-          {QUESTIONS.map((q, i)=>(
-            <div key={i} style={{display:'flex',gap:8,marginBottom:10,alignItems:'flex-start'}}>
-              <div style={{width:22,height:22,borderRadius:6,background:'var(--orange)',color:'#fff',fontSize:11,fontWeight:900,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>Q{i+1}</div>
-              <div style={{fontSize:13,color:'var(--text)',lineHeight:1.6,fontWeight:500}}>{q}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* 청소년 묵상 도움 */}
-        <div style={{margin:'12px 18px 0',background:'var(--surface)',borderRadius:14,overflow:'hidden',border:'1px solid rgba(255,159,28,.12)'}}>
-          <div style={{padding:'12px 16px',background:'var(--orange-soft)',display:'flex',alignItems:'center',gap:8}}>
-            <span style={{fontSize:16}}>🌿</span>
-            <div style={{fontSize:13,fontWeight:800,color:'var(--orange-dark)'}}>청소년 묵상 도움</div>
-          </div>
-          <div style={{padding:'14px 16px',borderBottom:'1px solid var(--divider)'}}>
-            <div style={{fontSize:14,lineHeight:1.75,color:'var(--text)'}}>{todayHelp.help}</div>
-          </div>
-          <div style={{padding:'14px 16px',borderBottom:'1px solid var(--divider)'}}>
-            <div style={{fontSize:12,fontWeight:800,color:'var(--orange)',marginBottom:6}}>적용 도움</div>
-            <div style={{fontSize:13,lineHeight:1.7,color:'var(--text-2)'}}>{todayHelp.apply}</div>
-          </div>
-        </div>
-
-        {/* 입력 및 작성 폼 */}
-        <div style={{margin:'12px 18px 0',padding:'14px 16px',background:'var(--surface)',borderRadius:14}}>
-          <div style={{fontSize:12,color:'var(--orange)',fontWeight:800,letterSpacing:'.04em',marginBottom:10}}>
-            {activeTab==='devotion'?'✏️ 묵상 글쓰기':activeTab==='apply'?'🎯 오늘의 적용':'🙏 기도 제목'}
-          </div>
-          {activeTab==='devotion'&&(
-            <div>
-              <input style={{width:'100%',background:'var(--bg)',border:'2px solid transparent',borderRadius:11,padding:'10px 13px',color:'var(--orange)',fontWeight:800,fontSize:12,fontFamily:'inherit',outline:'none',letterSpacing:'.06em',marginBottom:6}} value={verseRef} onChange={e=>setVerseRef(e.target.value)} placeholder="은혜 받은 구절 번호 (예: 고전 4:20)" onFocus={e=>e.target.style.borderColor='var(--orange)'} onBlur={e=>e.target.style.borderColor='transparent'}/>
-              <textarea style={{width:'100%',background:'var(--orange-soft)',borderLeft:'3px solid var(--orange)',borderRadius:'4px 12px 12px 4px',padding:'11px 13px',color:'var(--text)',fontFamily:'Noto Serif KR,serif',fontSize:14,lineHeight:1.65,resize:'none',outline:'none',border:'none',borderLeft:'3px solid var(--orange)',marginBottom:10}} rows={2} value={verse} onChange={e=>setVerse(e.target.value)} placeholder="마음에 와닿은 본문 한 줄을 기록해보세요"/>
-              <textarea style={{width:'100%',background:'var(--bg)',borderRadius:12,border:'2px solid transparent',padding:'12px 14px',color:'var(--text)',fontFamily:'inherit',fontSize:14,lineHeight:1.65,resize:'none',outline:'none',fontWeight:500}} rows={5} value={devotion} onChange={e=>setDevotion(e.target.value)} placeholder="말씀을 통해 깨달은 감동을 자유롭게 남겨보세요 😊" onFocus={e=>e.target.style.borderColor='var(--orange)'} onBlur={e=>e.target.style.borderColor='transparent'}/>
-            </div>
-          )}
-          {activeTab==='apply'&&(
-            <textarea style={{width:'100%',background:'var(--bg)',borderRadius:12,border:'2px solid transparent',padding:'12px 14px',color:'var(--text)',fontFamily:'inherit',fontSize:14,lineHeight:1.65,resize:'none',outline:'none',fontWeight:500}} rows={6} value={apply} onChange={e=>setApply(e.target.value)} placeholder="오늘 하루 내 삶에서 구체적으로 적용할 행동을 적어봐요 ✍️" onFocus={e=>e.target.style.borderColor='var(--orange)'} onBlur={e=>e.target.style.borderColor='transparent'}/>
-          )}
-          {activeTab==='prayer'&&(
-            <textarea style={{width:'100%',background:'var(--bg)',borderRadius:12,border:'2px solid transparent',padding:'12px 14px',color:'var(--text)',fontFamily:'inherit',fontSize:14,lineHeight:1.65,resize:'none',outline:'none',fontWeight:500}} rows={6} value={prayer} onChange={e=>setPrayer(e.target.value)} placeholder="말씀에 근거한 오늘의 기도 제목을 기록해봐요 🙏" onFocus={e=>e.target.style.borderColor='var(--orange)'} onBlur={e=>e.target.style.borderColor='transparent'}/>
-          )}
-          <button style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',background:'var(--bg)',borderRadius:12,padding:'12px 14px',marginTop:8}} onClick={()=>setShareOn(s=>!s)}>
-            <span style={{fontSize:14,fontWeight:800,color:'var(--text)'}}>친구들과 나누기 💬</span>
-            <span className={'qt-toggle'+(shareOn?' on':'')}/>
-          </button>
-        </div>
-
-        <div style={{padding:'14px 18px 0'}}>
-          <button onClick={save} disabled={saving||!hasContent} style={{width:'100%',height:54,borderRadius:16,background:hasContent?'var(--orange)':'var(--bg)',color:hasContent?'#fff':'var(--text-3)',fontSize:17,fontWeight:900,border:hasContent?'none':'2px solid var(--divider)',cursor:'pointer',boxShadow:hasContent?'0 4px 16px rgba(255,159,28,.35)':'none'}}>
-            {saving?'저장 중…':'✏️ 묵상 완독 기록하기'}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── 기도 노트 ──
-function PrayerNoteScreen({onClose,uid}){
-  const[prayers,setPrayers]=useState([]);const[loading,setLoading]=useState(true);const[filter,setFilter]=useState('전체');const[adding,setAdding]=useState(false);const[newTitle,setNewTitle]=useState('');const[saving,setSaving]=useState(false);
-  useEffect(()=>{
-    const{db,collection,query,where,onSnapshot}=window._fb;
-    const q=query(collection(db,'prayers_youth'),where('uid','==',uid));
-    return onSnapshot(q,snap=>{let docs=snap.docs.map(d=>({id:d.id,...d.data()}));docs.sort((a,b)=>(b.createdAt?.toDate?.()||0)-(a.createdAt?.toDate?.()||0));setPrayers(docs);setLoading(false);});
-  },[uid]);
-  const addPrayer=async()=>{
-    if(!newTitle.trim())return;setSaving(true);
-    const{db,collection,addDoc,serverTimestamp}=window._fb;
-    await addDoc(collection(db,'prayers_youth'),{uid,title:newTitle,status:'기도중',createdAt:serverTimestamp()});
-    setNewTitle('');setAdding(false);setSaving(false);
-  };
-  const toggleStatus=async(p)=>{
-    const{db,doc,updateDoc}=window._fb;
-    await updateDoc(doc(db,'prayers_youth',p.id),{status:p.status==='기도중'?'응답됨':'기도중'});
-  };
-  const filtered=filter==='전체'?prayers:prayers.filter(p=>p.status===filter);
-  const prayingCount=prayers.filter(p=>p.status==='기도중').length;
-  const answeredCount=prayers.filter(p=>p.status==='응답됨').length;
-  return(
-    <div style={{position:'fixed',inset:0,zIndex:60,background:'var(--bg)',overflowY:'auto'}}>
-      <div style={{padding:'18px 20px 0',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
-        <button onClick={onClose} style={{fontSize:14,color:'var(--text-3)',fontWeight:700,padding:'6px 0'}}>← 닫기</button>
-        <div style={{fontSize:17,fontWeight:900}}>기도 노트 🙏</div>
-        <div style={{width:48}}/>
-      </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,padding:'0 16px',marginBottom:14}}>
-        {[{l:'전체',v:prayers.length,c:'var(--text)'},{l:'기도 중',v:prayingCount,c:'var(--orange)'},{l:'응답됨',v:answeredCount,c:'var(--green)'}].map(s=>(
-          <div key={s.l} style={{background:'var(--surface)',borderRadius:14,padding:'14px 10px',textAlign:'center',boxShadow:'0 2px 8px rgba(255,159,28,.08)'}}>
-            <div style={{fontSize:26,fontWeight:900,color:s.c}}>{s.v}</div>
-            <div style={{fontSize:12,color:'var(--text-3)',fontWeight:600,marginTop:3}}>{s.l}</div>
-          </div>
-        ))}
-      </div>
-      {adding?(
-        <div style={{padding:'0 16px',marginBottom:14}}>
-          <input style={{width:'100%',padding:'14px 16px',borderRadius:14,background:'var(--surface)',border:'2px solid var(--orange)',fontSize:15,fontFamily:'inherit',outline:'none',color:'var(--text)',marginBottom:10}} value={newTitle} onChange={e=>setNewTitle(e.target.value)} placeholder="기도 제목을 입력해요" autoFocus/>
-          <div style={{display:'flex',gap:8}}>
-            <button onClick={addPrayer} disabled={saving} style={{flex:1,height:48,borderRadius:12,background:'var(--orange)',color:'#fff',fontSize:15,fontWeight:800,border:0,cursor:'pointer'}}>추가</button>
-            <button onClick={()=>setAdding(false)} style={{flex:1,height:48,borderRadius:12,background:'var(--surface)',color:'var(--text-3)',fontSize:15,fontWeight:700,border:0,cursor:'pointer'}}>취소</button>
-          </div>
-        </div>
-      ):(
-        <div style={{padding:'0 16px',marginBottom:14}}>
-          <button onClick={()=>setAdding(true)} style={{width:'100%',height:52,borderRadius:14,background:'var(--orange)',color:'#fff',fontSize:16,fontWeight:800,border:0,cursor:'pointer',boxShadow:'0 4px 14px rgba(255,159,28,.3)'}}>+ 새 기도 제목 추가</button>
-        </div>
-      )}
-      <div style={{display:'flex',gap:8,padding:'0 16px',marginBottom:14}}>
-        {['전체','기도 중','응답됨'].map(f=>(
-          <button key={f} onClick={()=>setFilter(f==='기도 중'?'기도중':f==='응답됨'?'응답됨':'전체')} style={{padding:'8px 16px',borderRadius:999,background:filter===(f==='기도 중'?'기도중':f==='응답됨'?'응답됨':'전체')?'var(--orange)':'var(--surface)',color:filter===(f==='기도 중'?'기도중':f==='응답됨'?'응답됨':'전체')?'#fff':'var(--text-2)',fontSize:13,fontWeight:700,boxShadow:'0 2px 8px rgba(255,159,28,.1)'}}>
-            {f}{f==='기도 중'?' 🙏':f==='응답됨'?' ✅':''}
-          </button>
-        ))}
-      </div>
-      {filtered.map(p=>(
-        <div key={p.id} style={{background:'var(--surface)',borderRadius:16,padding:'16px 18px',margin:'0 16px 10px',display:'flex',alignItems:'center',gap:12,boxShadow:'0 2px 8px rgba(255,159,28,.06)'}}>
-          <button onClick={()=>toggleStatus(p)} style={{width:32,height:32,borderRadius:50,background:p.status==='응답됨'?'var(--green-soft)':'var(--orange-soft)',border:`2px solid ${p.status==='응답됨'?'var(--green)':'var(--orange)'}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,cursor:'pointer'}}>
-            {p.status==='응답됨'?'✓':'🙏'}
-          </button>
-          <div style={{flex:1}}>
-            <div style={{fontSize:15,fontWeight:700,color:p.status==='응답됨'?'var(--text-3)':'var(--text)',textDecoration:p.status==='응답됨'?'line-through':''}}>{p.title}</div>
-            <div style={{fontSize:11,color:p.status==='응답됨'?'var(--green)':'var(--orange)',fontWeight:700,marginTop:2}}>{p.status}</div>
-          </div>
-        </div>
-      ))}
-      <div style={{height:40}}/>
-    </div>
-  );
-}
-
-// ── 말씀 암송 ──
-function MemoryScreen({onClose}){
-  const[revealed,setRevealed]=useState(false);const[done,setDone]=useState(false);
-  return(
-    <div style={{position:'fixed',inset:0,zIndex:60,background:'var(--bg)',overflowY:'auto'}}>
-      <div style={{padding:'18px 20px 0',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
-        <button onClick={onClose} style={{fontSize:14,color:'var(--text-3)',fontWeight:700,padding:'6px 0'}}>← 닫기</button>
-        <div style={{fontSize:17,fontWeight:900}}>말씀 암송 📖</div>
-        <div style={{width:48}}/>
-      </div>
-      <div style={{margin:'0 16px 14px',background:'var(--surface)',borderRadius:16,padding:'16px 18px',boxShadow:'0 2px 8px rgba(255,159,28,.08)'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-          <div style={{fontSize:14,fontWeight:800,color:'var(--text)'}}>이번 주 암송 현황</div>
-          <div style={{fontSize:14,fontWeight:800,color:'var(--orange)'}}>{done?'1/7':'0/7'}</div>
-        </div>
-        <div style={{display:'flex',gap:8,justifyContent:'center'}}>
-          {['주일','월','화','수','목','금','토'].map((d,i)=>(
-            <div key={d} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
-              <div style={{width:34,height:34,borderRadius:50,background:done&&i===0?'var(--orange)':'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                {done&&i===0?<span style={{fontSize:14}}>✓</span>:<span style={{fontSize:18}}>○</span>}
-              </div>
-              <div style={{fontSize:10,color:'var(--text-3)',fontWeight:600}}>{d}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div style={{margin:'0 16px 12px',borderRadius:18,background:'linear-gradient(135deg,var(--orange),#FFB444)',padding:'28px 22px',boxShadow:'0 6px 24px rgba(255,159,28,.3)',cursor:'pointer',minHeight:180,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center'}} onClick={()=>setRevealed(r=>!r)}>
-        <div style={{fontSize:12,color:'rgba(255,255,255,.8)',fontWeight:700,marginBottom:8}}>오늘의 암송 구절</div>
-        <div style={{fontSize:22,fontWeight:900,color:'#fff',marginBottom:8}}>{MEMORY.ref}</div>
-        {revealed?(
-          <div style={{fontFamily:'Noto Serif KR,serif',fontSize:15,lineHeight:1.75,color:'#fff',marginTop:8}}>{MEMORY.verse}</div>
-        ):(
-          <>
-            <div style={{fontSize:14,color:'rgba(255,255,255,.75)',fontWeight:600}}>이 구절을 기억하시나요?</div>
-            <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginTop:4}}>탭하여 본문 확인</div>
-          </>
-        )}
-      </div>
-      <div style={{padding:'0 16px'}}>
-        <button onClick={()=>{setDone(true);setRevealed(true);}} style={{width:'100%',height:52,borderRadius:14,background:done?'var(--green-soft)':'var(--surface)',color:done?'var(--green)':'var(--text)',fontSize:16,fontWeight:800,border:done?'2px solid var(--green)':'2px solid var(--divider)',cursor:'pointer',marginBottom:10}}>
-          {done?'✅ 암송 완료!':'다시 보기'}
-        </button>
-        {!done&&<button onClick={()=>setDone(true)} style={{width:'100%',height:52,borderRadius:14,background:'var(--orange)',color:'#fff',fontSize:16,fontWeight:800,border:0,cursor:'pointer',boxShadow:'0 4px 14px rgba(255,159,28,.3)'}}>
-          ✓ 암송했어요!
-        </button>}
-      </div>
-      <div style={{height:40}}/>
-    </div>
-  );
-}
-
-function MyNotesScreen({onClose,uid}){
-  const[notes,setNotes]=useState([]);const[loading,setLoading]=useState(true);
-  useEffect(()=>{
-    const{db,collection,query,where,onSnapshot}=window._fb;
-    const q=query(collection(db,'shares_youth'),where('uid','==',uid));
-    return onSnapshot(q,snap=>{
-      let docs=snap.docs.map(d=>({id:d.id,...d.data()}));
-      docs.sort((a,b)=>(b.createdAt?.toDate?.()||0)-(a.createdAt?.toDate?.()||0));
-      setNotes(docs);setLoading(false);
-    });
-  },[uid]);
-  const fmtDate=ts=>{if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts);return`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;};
-  return(
-    <div style={{position:'fixed',inset:0,zIndex:60,background:'var(--bg)',overflowY:'auto'}}>
-      <div style={{padding:'18px 20px 0',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
-        <button onClick={onClose} style={{fontSize:14,color:'var(--text-3)',fontWeight:700,padding:'6px 0'}}>← 닫기</button>
-        <div style={{fontSize:17,fontWeight:900,color:'var(--text)'}}>내 묵상 노트 📖</div>
-        <div style={{width:48}}/>
-      </div>
-      <div style={{padding:'4px 20px 14px',fontSize:13,color:'var(--text-3)',fontWeight:600}}>총 {notes.length}편</div>
-      {notes.map(n=>(
-        <div key={n.id} style={{background:'var(--surface)',borderRadius:18,padding:'18px 18px 14px',margin:'0 16px 10px',boxShadow:'0 2px 12px rgba(255,159,28,.08)'}}>
-          <div>
-            <div style={{fontSize:12,color:'var(--orange)',fontWeight:800}}>{fmtDate(n.createdAt)}</div>
-            <div style={{fontSize:16,fontWeight:900,color:'var(--text)',marginTop:2}}>{n.title||n.book+' '+n.range}</div>
-          </div>
-          {n.verseRef&&<div style={{padding:'10px 13px 10px 15px',background:'var(--orange-soft)',borderLeft:'3px solid var(--orange)',borderRadius:'4px 11px 11px 4px',margin:'10px 0'}}>
-            <div style={{fontSize:11,color:'var(--orange)',fontWeight:800}}>{n.verseRef}</div>
-            {n.verse&&<div style={{fontFamily:'Noto Serif KR,serif',fontSize:14,color:'var(--text)'}}>"{n.verse}"</div>}
-          </div>}
-          {n.text&&<div style={{fontSize:14,lineHeight:1.7,color:'var(--text)'}}>{n.text}</div>}
-        </div>
-      ))}
-      <div style={{height:40}}/>
-    </div>
-  );
-}
-
-// ── 선생님 대시보드 ──
-function Dashboard({onBack}){
-  const[members,setMembers]=useState([]);const[shares,setShares]=useState([]);const[todayUids,setTodayUids]=useState(new Set());const[allChecks,setAllChecks]=useState([]);const[loading,setLoading]=useState(true);
-  useEffect(()=>{
-    const{db,collection,query,where,orderBy,onSnapshot,limit}=window._fb;
-    const u1=onSnapshot(collection(db,'users_youth'),s=>{setMembers(s.docs.map(d=>({id:d.id,...d.data()})));setLoading(false);});
-    const u2=onSnapshot(query(collection(db,'checks_youth'),where('date','==',TODAY)),s=>setTodayUids(new Set(s.docs.map(d=>d.data().uid))));
-    const u3=onSnapshot(collection(db,'checks_youth'),s=>setAllChecks(s.docs.map(d=>d.data())));
-    const u4=onSnapshot(query(collection(db,'shares_youth'),orderBy('createdAt','desc'),limit(6)),s=>setShares(s.docs.map(d=>({id:d.id,...d.data()}))));
-    return()=>{u1();u2();u3();u4();};
-  },[]);
-  const month=TODAY.slice(0,7),tod=parseInt(TODAY.slice(8,10));
-  const stats=members.map(m=>{const mc=allChecks.filter(c=>c.uid===m.id&&c.date.startsWith(month));return{...m,monthRate:tod>0?Math.round(mc.length/tod*100):0,todayDone:todayUids.has(m.id)};});
-  const total=members.length,todayN=[...todayUids].length,todayRate=total>0?Math.round(todayN/total*100):0,avgMonth=stats.length>0?Math.round(stats.reduce((a,m)=>a+m.monthRate,0)/stats.length):0;
-  const rc=r=>r>=80?'good':r>=60?'mid':'low';
-  if(loading)return<div className="dash-wrap" style={{display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'var(--text-2)'}}>불러오는 중…</div>;
-  return(
-    <div className="dash-wrap">
-      <div className="dash-head">
-        <div className="dash-head-top"><div className="dash-head-title">📊 선생님 대시보드</div><button className="dash-back" onClick={onBack}>← 앱으로</button></div>
-      </div>
-      <div className="dash-kpis">
-        {[{l:'오늘 완료',v:todayN,u:`/${total}명`,s:'실시간'},{l:'오늘 완료율',v:todayRate,u:'%',s:todayRate>=70?'잘하고 있어요 🎉':'독려 필요'},{l:'이번 달 평균',v:avgMonth,u:'%',s:'전체 학생'},{l:'오늘 나눔',v:shares.length,u:'편',s:'실시간'}].map(k=>(
-          <div key={k.l} className="dash-kpi"><div className="dash-kpi-label">{k.l}</div><div className="dash-kpi-val">{k.v}<span className="u">{k.u}</span></div><div className="dash-kpi-sub"><span className="live-dot"/>{k.s}</div></div>
-        ))}
-      </div>
-      <div className="dash-panel" style={{marginBottom:24}}>
-        <div className="dash-panel-title">학생 진도 현황 ({total}명)</div>
-        {stats.sort((a,b)=>b.monthRate-a.monthRate).map(m=>(
-          <div key={m.id} className="dash-row">
-            <div className="dash-av" style={{background:avColor(m.name)}}>{ini(m.name)}</div>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:5}}><div className="dash-name">{m.name}</div><span className={'dash-pill '+rc(m.monthRate)}>{m.monthRate}%</span></div>
-              <div className="dash-bar-wrap"><div className="dash-bar-fill" style={{width:m.monthRate+'%'}}/></div>
-            </div>
-            <div className={'dash-dot '+(m.todayDone?'done':'miss')}/>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ── 메인 App 컨트롤러 ──
-function App(){
-  const[tab,setTab]=useState('home');const[done,setDone]=useState(false);const[cs,setCs]=useState(new Set());const[streak,setStreak]=useState(0);const[points,setPoints]=useState(0);const[writing,setWriting]=useState(false);const[toast,setToast]=useState(null);const[dash,setDash]=useState(false);const[shareCount,setShareCount]=useState(0);const[attendCount,setAttendCount]=useState(0);const[viewingNotes,setViewingNotes]=useState(false);const[viewingPrayer,setViewingPrayer]=useState(false);const[viewingMemory,setViewingMemory]=useState(false);
-  const me=window._me;
-  useEffect(()=>{
-    if(!me)return;
-    const{db,collection,query,where,onSnapshot}=window._fb;
-    const u1=onSnapshot(query(collection(db,'checks_youth'),where('uid','==',me.uid)),snap=>{
-      const dates=new Set(snap.docs.map(d=>d.data().date));setCs(dates);setDone(dates.has(TODAY));
-      let s=0,d=new Date(TODAY);while(s<=365){const ds=d.toISOString().slice(0,10);if(dates.has(ds)){s++;d.setDate(d.getDate()-1);}else break;}setStreak(s);
-    });
-    const u2=onSnapshot(query(collection(db,'users_youth'),where('__name__','==',me.uid)),snap=>{if(!snap.empty)setPoints(snap.docs[0].data().points||0);});
-    const u3=onSnapshot(query(collection(db,'shares_youth'),where('uid','==',me.uid)),snap=>setShareCount(snap.size));
-    const u4=onSnapshot(query(collection(db,'attend_youth'),where('uid','==',me.uid)),snap=>setAttendCount(snap.size));
-    return()=>{u1();u2();u3();u4();};
-  },[me?.uid]);
-
-  const markDone=async()=>{if(done)return;try{await saveCheck(me.uid,TODAY);showToast('묵상 완료! +10P 🎉');}catch(e){alert('저장 실패');}};
-  const showToast=msg=>{setToast(msg);setTimeout(()=>setToast(null),2400);};
-  const logout=async()=>{const{auth,signOut}=window._fb;await signOut(auth);};
-
-  if(dash)return<Dashboard onBack={()=>setDash(false)}/>;
-  if(viewingNotes)return<MyNotesScreen onClose={()=>setViewingNotes(false)} uid={me?.uid}/>;
-  if(viewingPrayer)return<PrayerNoteScreen onClose={()=>setViewingPrayer(false)} uid={me?.uid}/>;
-  if(viewingMemory)return<MemoryScreen onClose={()=>setViewingMemory(false)}/>;
-
-  // ── [수정] 1번 이미지에 맞춰 하단 성경읽기(bible) 탭바 배치 추가 ──
-  const TABS=[
-    {id:'home',l:'홈',i:'🏠'},
-    {id:'bible',l:'성경읽기',i:'📖'},
-    {id:'cal',l:'진도',i:'📅'},
-    {id:'share',l:'나눔',i:'💬'},
-    {id:'badge',l:'뱃지',i:'🏆'},
-    {id:'more',l:'더보기',i:'👤'},
-  ];
-
-  return(
-    <div className="qt-app" style={{position:'relative'}}>
-      <div className="qt-scroll">
-        {tab==='home'&&<HomeScreen done={done} onWrite={()=>setWriting(true)} onMarkDone={markDone} completedSet={cs} streak={streak} points={points} onViewNote={()=>setViewingNotes(true)} onViewPrayer={()=>setViewingPrayer(true)} onViewMemory={()=>setViewingMemory(true)} onViewShare={()=>setTab('share')}/>}
-        {tab==='bible'&&<BibleReadingScreen />}
-        {tab==='cal'&&<CalendarScreen completedSet={cs} streak={streak}/>}
-        {tab==='share'&&<ShareScreen uid={me?.uid}/>}
-        {tab==='badge'&&<BadgeScreen completedSet={cs} streak={streak} points={points} shareCount={shareCount} attendCount={attendCount}/>}
-        {tab==='more'&&<MoreScreen streak={streak} points={points} onLogout={logout} onDash={()=>setDash(true)}/>}
-      </div>
-      <div className="qt-tabs">
-        {TABS.map(t=>(
-          <button key={t.id} className={'qt-tab'+(tab===t.id?' active':'')} onClick={()=>setTab(t.id)}>
-            <span className="qt-tab-icon">{t.i}</span>
-            <span>{t.l}</span>
-          </button>
-        ))}
-      </div>
-      {writing&&<WriteScreen onCancel={()=>setWriting(false)} onSave={()=>{setWriting(false);showToast('묵상 완료! +10P 🙌');}}/>}
-      {toast&&<div className="qt-toast">{toast}</div>}
-    </div>
-  );
-}
-
-window._mountApp=()=>ReactDOM.createRoot(document.getElementById('app')).render(<App/>);
-</script>
-</body>
-</html>
