@@ -760,34 +760,71 @@ function MoreScreen({streak,points,onLogout,onDash}){
 
 // ── 성경 본문 절번호 표시 함수 ──
 function BiblePassage({book, range}){
-  const[text,setText]=useState('');
+  const[text,setText]=useState([]);
   const[loading,setLoading]=useState(true);
 
   useEffect(()=>{
-    const BOOK_MAP={'룻기':'rut','고린도전서':'1co','고린도후서':'2co','마태복음':'mat','마가복음':'mrk','누가복음':'luk','요한복음':'jhn','사도행전':'act','로마서':'rom','갈라디아서':'gal','에베소서':'eph','빌립보서':'php','골로새서':'col','데살로니가전서':'1th','데살로니가후서':'2th','디모데전서':'1ti','디모데후서':'2ti','히브리서':'heb','야고보서':'jas','베드로전서':'1pe','베드로후서':'2pe','요한일서':'1jn','요한계시록':'rev','시편':'psa','잠언':'pro','창세기':'gen','출애굽기':'exo','신명기':'deu','여호수아':'jos','사사기':'jdg','사무엘상':'1sa','사무엘하':'2sa','열왕기상':'1ki','열왕기하':'2ki','이사야':'isa','예레미야':'jer','에스겔':'eze','다니엘':'dan'};
+    setText([]);setLoading(true);
+    const BOOK_MAP={
+      '룻기':'rut','고린도전서':'1co','고린도후서':'2co',
+      '마태복음':'mat','마가복음':'mrk','누가복음':'luk','요한복음':'jhn',
+      '사도행전':'act','로마서':'rom','갈라디아서':'gal','에베소서':'eph',
+      '빌립보서':'php','골로새서':'col','데살로니가전서':'1th','데살로니가후서':'2th',
+      '디모데전서':'1ti','디모데후서':'2ti','히브리서':'heb','야고보서':'jas',
+      '베드로전서':'1pe','베드로후서':'2pe','요한일서':'1jn','요한계시록':'rev',
+      '시편':'psa','잠언':'pro','창세기':'gen','출애굽기':'exo','신명기':'deu',
+      '여호수아':'jos','사사기':'jdg','사무엘상':'1sa','사무엘하':'2sa',
+      '열왕기상':'1ki','열왕기하':'2ki','이사야':'isa','예레미야':'jer',
+      '에스겔':'eze','다니엘':'dan','오바댜':'oba','요나':'jon','나훔':'nah',
+      '호세아':'hos','아모스':'amo','미가':'mic','하박국':'hab','스바냐':'zep',
+      '학개':'hag','스가랴':'zec','말라기':'mal',
+    };
     const bookEn=BOOK_MAP[book];
-    if(!bookEn){setText('');setLoading(false);return;}
-    const match=range.match(/^(\d+):(\d+)(?:-(\d+))?$/);
-    if(!match){setLoading(false);return;}
-    const chap=parseInt(match[1]),vStart=parseInt(match[2]),vEnd=match[3]?parseInt(match[3]):vStart;
+    if(!bookEn){setLoading(false);return;}
+
+    // range 파싱: "5:1-13" 또는 "1:17-2:10" 형태 모두 처리
+    const simpleMatch=range.match(/^(\d+):(\d+)[-~](\d+)$/);
+    const singleMatch=range.match(/^(\d+):(\d+)$/);
+    const crossMatch=range.match(/^(\d+):(\d+)[-~](\d+):(\d+)$/);
+
+    let chap,vStart,vEnd,chap2=null,vEnd2=null;
+    if(simpleMatch){
+      chap=parseInt(simpleMatch[1]);vStart=parseInt(simpleMatch[2]);vEnd=parseInt(simpleMatch[3]);
+    } else if(crossMatch){
+      chap=parseInt(crossMatch[1]);vStart=parseInt(crossMatch[2]);
+      chap2=parseInt(crossMatch[3]);vEnd2=parseInt(crossMatch[4]);vEnd=999;
+    } else if(singleMatch){
+      chap=parseInt(singleMatch[1]);vStart=parseInt(singleMatch[2]);vEnd=vStart;
+    } else {setLoading(false);return;}
+
     fetch(`https://cdn.jsdelivr.net/gh/scrollmapper/bible_databases@master/json/kr/${bookEn}.json`)
       .then(r=>r.json())
       .then(data=>{
-        const chapter=data.chapters?.[chap-1];
-        if(!chapter){setLoading(false);return;}
-        const verses=chapter.verses.filter(v=>v.verse>=vStart&&v.verse<=vEnd);
-        setText(verses);setLoading(false);
+        let result=[];
+        if(chap2){
+          // 두 장에 걸친 경우 (예: 1:17-2:10)
+          const ch1=data.chapters?.[chap-1];
+          const ch2=data.chapters?.[chap2-1];
+          if(ch1) result=[...result,...ch1.verses.filter(v=>parseInt(v.verse)>=vStart)];
+          if(ch2) result=[...result,...ch2.verses.filter(v=>parseInt(v.verse)<=vEnd2)];
+        } else {
+          const chapter=data.chapters?.[chap-1];
+          if(chapter){
+            result=chapter.verses.filter(v=>parseInt(v.verse)>=vStart&&parseInt(v.verse)<=vEnd);
+          }
+        }
+        setText(result);setLoading(false);
       })
       .catch(()=>{setLoading(false);});
   },[book,range]);
 
-  if(loading) return <div style={{fontSize:13,color:'var(--text-3)',padding:'8px 0'}}>본문 불러오는 중…</div>;
-  if(!text||!text.length) return <div style={{fontFamily:'Noto Serif KR,serif',fontSize:14,lineHeight:1.8,color:'var(--text)'}}>{SCHEDULE.find(s=>s.book===book&&s.range===range)?.verse||'본문을 직접 펼쳐 읽어보세요 📖'}</div>;
+  if(loading)return<div style={{fontSize:13,color:'var(--text-3)',padding:'8px 0',textAlign:'center'}}>📖 본문 불러오는 중…</div>;
+  if(!text||!text.length)return<div style={{fontFamily:'Noto Serif KR,serif',fontSize:14,lineHeight:1.8,color:'var(--text)'}}>{SCHEDULE.find(s=>s.book===book&&s.range===range)?.verse||'본문을 직접 펼쳐 읽어보세요 📖'}</div>;
   return(
     <div style={{fontFamily:'Noto Serif KR,serif',fontSize:14,lineHeight:1.9,color:'var(--text)'}}>
       {text.map(v=>(
-        <span key={v.verse}>
-          <span style={{fontSize:11,fontWeight:900,color:'var(--orange)',marginRight:4,verticalAlign:'super'}}>{v.verse}</span>
+        <span key={`${v.verse}`}>
+          <span style={{fontSize:10,fontWeight:900,color:'var(--orange)',marginRight:3,verticalAlign:'super'}}>{v.verse}</span>
           {v.text}{' '}
         </span>
       ))}
@@ -795,7 +832,6 @@ function BiblePassage({book, range}){
   );
 }
 
-// ── 묵상 작성 (꿀잼QT 스타일) ──
 // ── 묵상 작성 (꿀잼QT 스타일) ──
 function WriteScreen({onCancel,onSave}){
   const entry=getEntry();
