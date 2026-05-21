@@ -1,0 +1,2425 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>말씀ON — 순천침례교회</title>
+  <meta name="theme-color" content="#FF9F1C"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-title" content="말씀ON"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;padding:0;min-height:100vh;font-family:'Noto Sans KR',system-ui,sans-serif;-webkit-font-smoothing:antialiased;background:#FFF8F0}
+
+    :root{
+      --bg:#FFF8F0;
+      --surface:#fff;
+      --surface-2:#FFF3E0;
+      --orange:#FF9F1C;
+      --orange-dark:#E8870A;
+      --orange-soft:rgba(255,159,28,0.12);
+      --yellow:#FFD43B;
+      --yellow-soft:rgba(255,212,59,0.18);
+      --green:#22C55E;
+      --green-soft:rgba(34,197,94,0.12);
+      --red:#EF4444;
+      --text:#1C1408;
+      --text-2:#6B5E45;
+      --text-3:#B0A088;
+      --divider:rgba(255,159,28,0.12);
+      --card-shadow:0 2px 16px rgba(255,159,28,0.12);
+      --radius:18px;
+    }
+
+    /* ── 로딩 ── */
+    #loading{position:fixed;inset:0;background:var(--orange);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:9999;transition:opacity .4s}
+    #loading.hidden{opacity:0;pointer-events:none}
+    .ld-logo{font-size:56px;animation:bounce .7s ease infinite alternate}
+    @keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+    .ld-title{font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em}
+    .ld-sub{font-size:14px;color:rgba(255,255,255,.8);font-weight:600}
+    .ld-dots{display:flex;gap:8px;margin-top:4px}
+    .ld-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.6);animation:dot 1.2s ease infinite}
+    .ld-dot:nth-child(2){animation-delay:.2s}.ld-dot:nth-child(3){animation-delay:.4s}
+    @keyframes dot{0%,80%,100%{transform:scale(1);opacity:.5}40%{transform:scale(1.4);opacity:1}}
+
+    /* ── 로그인 ── */
+    #login-screen{min-height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;background:var(--bg)}
+    #login-screen.visible{display:flex}
+    .ln-hero{font-size:64px;margin-bottom:12px;animation:bounce .7s ease infinite alternate}
+    .ln-title{font-size:28px;font-weight:900;color:var(--text);letter-spacing:-.03em;margin-bottom:6px;text-align:center}
+    .ln-sub{font-size:15px;color:var(--text-2);text-align:center;line-height:1.6;margin-bottom:28px;font-weight:500}
+    .ln-card{width:100%;max-width:360px;background:var(--surface);border-radius:24px;padding:26px 22px;box-shadow:0 8px 32px rgba(255,159,28,.18)}
+    .ln-tabs{display:flex;gap:6px;margin-bottom:22px;background:var(--bg);border-radius:14px;padding:4px}
+    .ln-tab{flex:1;height:38px;border-radius:10px;font-size:13px;font-weight:700;color:var(--text-3);border:0;background:transparent;cursor:pointer;font-family:inherit;transition:all .2s}
+    .ln-tab.active{background:var(--surface);color:var(--orange);box-shadow:0 2px 8px rgba(255,159,28,.2)}
+    .ln-label{font-size:12px;color:var(--text-2);font-weight:700;margin-bottom:7px;letter-spacing:.02em}
+    .ln-input{width:100%;padding:13px 15px;border-radius:13px;background:var(--bg);border:2px solid transparent;color:var(--text);font-size:16px;font-family:inherit;outline:none;margin-bottom:11px;transition:border-color .2s;font-weight:500}
+    .ln-input:focus{border-color:var(--orange);background:#fff}
+    .ln-birth-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:11px}
+    .ln-birth-input{padding:13px 8px;border-radius:13px;background:var(--bg);border:2px solid transparent;color:var(--text);font-size:18px;font-weight:700;font-family:inherit;outline:none;text-align:center;transition:border-color .2s;width:100%}
+    .ln-birth-input:focus{border-color:var(--orange);background:#fff}
+    .ln-birth-label{font-size:11px;color:var(--text-3);text-align:center;margin-top:-7px;margin-bottom:11px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-weight:600}
+    .ln-btn{width:100%;height:54px;border-radius:15px;background:var(--orange);color:#fff;font-size:16px;font-weight:800;font-family:inherit;border:0;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(255,159,28,.4)}
+    .ln-btn:hover{background:var(--orange-dark);transform:translateY(-1px)}
+    .ln-btn:active{transform:translateY(0)}
+    .ln-btn.ghost{background:var(--orange-soft);color:var(--orange);box-shadow:none;margin-top:8px}
+    .ln-google{width:100%;height:50px;border-radius:13px;background:#fff;color:var(--text);font-size:14px;font-weight:700;font-family:inherit;border:2px solid var(--divider);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;margin-top:6px}
+    .ln-google:hover{border-color:var(--orange)}
+    .ln-err{font-size:12px;color:var(--red);text-align:center;min-height:18px;margin-bottom:8px;font-weight:600}
+    .ln-toggle{font-size:13px;color:var(--orange);text-align:center;margin-top:13px;cursor:pointer;font-weight:700}
+    .ln-divider{text-align:center;color:var(--text-3);font-size:12px;margin:12px 0;position:relative;font-weight:600}
+    .ln-divider::before,.ln-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--divider)}
+    .ln-divider::before{left:0}.ln-divider::after{right:0}
+
+    /* ── 앱 ── */
+    #app{display:none;max-width:428px;margin:0 auto;min-height:100vh}
+    #app.visible{display:block}
+
+    .qt-app{font-family:'Noto Sans KR',system-ui,sans-serif;color:var(--text);background:var(--bg);width:100%;min-height:100vh;display:flex;flex-direction:column;word-break:keep-all;overflow-wrap:break-word}
+    .qt-app *{box-sizing:border-box}
+    .qt-app button{font-family:inherit;cursor:pointer;border:0;padding:0;background:none}
+    .qt-scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:96px}
+    .qt-scroll::-webkit-scrollbar{display:none}
+
+    /* 탑바 */
+    .qt-topbar{padding:18px 20px 6px;display:flex;align-items:center;justify-content:space-between}
+    .qt-app-name{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:900;color:var(--orange)}
+    .qt-app-name-icon{font-size:18px}
+    .qt-topbar-right{display:flex;align-items:center;gap:10px}
+    .qt-point-pill{background:var(--yellow);color:var(--text);font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px}
+    .qt-date-greet{padding:2px 20px 14px;font-size:13px;color:var(--text-3);font-weight:500}
+    .qt-user-greet{font-size:21px;font-weight:900;color:var(--text);padding:0 20px 14px;letter-spacing:-.02em}
+
+    /* 스트릭 카드 */
+    .qt-streak-card{margin:0 16px 12px;border-radius:var(--radius);background:linear-gradient(135deg,var(--orange) 0%,#FFB444 100%);padding:18px 20px;box-shadow:0 6px 24px rgba(255,159,28,.35);position:relative;overflow:hidden}
+    .qt-streak-card::after{content:'🏆';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:40px;opacity:.25}
+    .qt-streak-label{font-size:12px;color:rgba(255,255,255,.8);font-weight:700;letter-spacing:.06em}
+    .qt-streak-num{font-size:36px;font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1;margin-top:3px}
+    .qt-streak-num span{font-size:16px;font-weight:700;margin-left:2px}
+    .qt-streak-dots{display:flex;gap:8px;margin-top:10px}
+    .qt-streak-dot{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+    .qt-streak-dot.done{background:rgba(255,255,255,.9);color:var(--orange)}
+    .qt-streak-dot.today{background:#fff;color:var(--orange);font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+
+    /* 본문 카드 */
+    .qt-passage-card{margin:0 16px 12px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--card-shadow);padding:20px 18px}
+    .qt-passage-tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--orange);font-weight:800;letter-spacing:.06em;background:var(--orange-soft);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+    .qt-passage-title{font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.02em;margin-bottom:3px}
+    .qt-passage-ref{font-size:14px;color:var(--orange);font-weight:700;margin-bottom:10px}
+    .qt-passage-verse{padding:12px 14px 12px 16px;background:var(--orange-soft);border-left:3px solid var(--orange);border-radius:4px 12px 12px 4px;font-family:'Noto Serif KR',serif;font-size:13.5px;line-height:1.7;color:var(--text);margin-bottom:14px;max-height:80px;overflow-y:auto}
+    .qt-passage-verse::-webkit-scrollbar{display:none}
+    .qt-cta{display:flex;align-items:center;justify-content:center;width:100%;height:56px;border-radius:14px;background:var(--orange);color:#fff !important;font-size:17px;font-weight:800;transition:all .15s;box-shadow:0 4px 14px rgba(255,159,28,.35);gap:6px;text-align:center}
+    .qt-cta:active{transform:scale(.98)}
+    .qt-cta.done{background:var(--green-soft);color:var(--green);box-shadow:none;border:2px solid var(--green)}
+    .qt-cta.ghost{background:var(--surface-2);color:var(--orange);box-shadow:none;height:44px;font-size:14px;margin-top:8px}
+
+    /* 찬양 카드 */
+    .qt-ccm-card{margin:0 16px 12px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--card-shadow);padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .15s}
+    .qt-ccm-card:active{transform:scale(.98)}
+    .qt-ccm-thumb{width:44px;height:44px;border-radius:12px;background:#FF0000;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .qt-ccm-label{font-size:11px;color:var(--text-3);font-weight:700;margin-bottom:3px}
+    .qt-ccm-title{font-size:15px;font-weight:800;color:var(--text)}
+    .qt-ccm-play{width:32px;height:32px;border-radius:50%;background:var(--orange-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:auto}
+
+    /* 암송 카드 */
+    .qt-memory-card{margin:0 16px 12px;border-radius:var(--radius);background:var(--yellow-soft);border:1.5px solid rgba(255,212,59,.4);box-shadow:var(--card-shadow);padding:18px 18px}
+    .qt-memory-label{font-size:11px;color:var(--orange-dark);font-weight:800;letter-spacing:.06em;margin-bottom:8px}
+    .qt-memory-verse{font-family:'Noto Serif KR',serif;font-size:16px;line-height:1.7;color:var(--text);font-weight:600;margin-bottom:10px}
+    .qt-memory-ref{font-size:13px;color:var(--orange);font-weight:700}
+
+    /* 퀵메뉴 */
+    .qt-quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px;margin-bottom:12px}
+    .qt-quick-item{display:flex;flex-direction:column;align-items:center;gap:7px;padding:14px 8px;background:var(--surface);border-radius:16px;box-shadow:var(--card-shadow);cursor:pointer;transition:transform .15s}
+    .qt-quick-item:active{transform:scale(.95)}
+    .qt-quick-icon{font-size:26px}
+    .qt-quick-label{font-size:12px;font-weight:700;color:var(--text);text-align:center}
+
+    /* 지난 묵상 */
+    .qt-past-card{margin:0 16px 12px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--card-shadow);padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:transform .15s}
+    .qt-past-card:active{transform:scale(.98)}
+    .qt-past-icon{font-size:28px;flex-shrink:0}
+    .qt-past-title{font-size:15px;font-weight:800;color:var(--text)}
+    .qt-past-sub{font-size:12px;color:var(--text-3);margin-top:2px;font-weight:600}
+
+    /* 탭바 */
+    .qt-tabs{display:flex;padding:6px 8px calc(6px + env(safe-area-inset-bottom));background:var(--surface);border-top:1.5px solid var(--divider);position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:428px;z-index:100;box-shadow:0 -4px 20px rgba(255,159,28,.08)}
+    .qt-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 5px;color:var(--text-3);font-size:11px;font-weight:700}
+    .qt-tab.active{color:var(--orange)}
+    .qt-tab-icon{font-size:22px;line-height:1}
+
+    /* 나눔 피드 */
+    .qt-feed-card{background:var(--surface);border-radius:var(--radius);padding:18px 18px 14px;margin:0 16px 10px;box-shadow:var(--card-shadow)}
+    .qt-feed-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .qt-avatar{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff;flex-shrink:0}
+    .qt-feed-name{font-size:15px;font-weight:800;color:var(--text)}
+    .qt-feed-meta{font-size:12px;color:var(--text-3);margin-top:1px;font-weight:500}
+    .qt-feed-verse-box{padding:10px 13px 10px 15px;background:var(--orange-soft);border-left:3px solid var(--orange);border-radius:4px 11px 11px 4px;margin-bottom:10px}
+    .qt-feed-verse-ref{font-size:11px;color:var(--orange);font-weight:800;margin-bottom:3px}
+    .qt-feed-verse-body{font-family:'Noto Serif KR',serif;font-size:14px;line-height:1.6;color:var(--text)}
+    .qt-feed-text{font-size:14px;line-height:1.65;color:var(--text)}
+    .qt-feed-actions{display:flex;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--divider)}
+    .qt-feed-btn{flex:1;height:38px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;gap:5px;font-size:13px;font-weight:700;color:var(--text-2)}
+    .qt-feed-btn.amened{background:rgba(255,107,157,.12);color:#FF6B9D}
+
+    /* 캘린더 */
+    .qt-cal-card{background:var(--surface);border-radius:var(--radius);padding:18px;margin:0 16px 12px;box-shadow:var(--card-shadow)}
+    .qt-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+    .qt-cal-dow{text-align:center;font-size:11px;color:var(--text-3);padding:6px 0;font-weight:700}
+    .qt-cal-day{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text-3);background:var(--bg)}
+    .qt-cal-day.empty{background:transparent}
+    .qt-cal-day.done{background:var(--green-soft);color:var(--green)}
+    .qt-cal-day.today{background:var(--orange);color:#fff;box-shadow:0 3px 10px rgba(255,159,28,.4)}
+    .qt-cal-day.miss{opacity:.5}
+    .qt-cal-day.future{opacity:.3}
+    .qt-stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:0 16px 12px}
+    .qt-stat-card{background:var(--surface);border-radius:16px;padding:15px 13px;box-shadow:var(--card-shadow);text-align:center}
+    .qt-stat-icon{font-size:20px;margin-bottom:5px}
+    .qt-stat-num{font-size:24px;font-weight:900;color:var(--text);letter-spacing:-.02em}
+    .qt-stat-label{font-size:11px;color:var(--text-3);font-weight:700;margin-top:2px}
+
+    /* 뱃지 */
+    .qt-badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px;margin-bottom:12px}
+    .qt-badge-item{display:flex;flex-direction:column;align-items:center;gap:5px}
+    .qt-badge-icon{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px}
+    .qt-badge-icon.earned{background:var(--yellow-soft);box-shadow:0 3px 12px rgba(255,212,59,.3)}
+    .qt-badge-icon.locked{background:var(--bg);filter:grayscale(1);opacity:.3}
+    .qt-badge-name{font-size:11px;font-weight:700;color:var(--text-2);text-align:center;line-height:1.3}
+
+    /* 더보기 */
+    .qt-profile-card{background:linear-gradient(135deg,var(--orange),#FFB444);border-radius:var(--radius);padding:20px 18px;margin:0 16px 12px;box-shadow:0 6px 24px rgba(255,159,28,.3);color:#fff}
+    .qt-profile-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .qt-profile-av{width:54px;height:54px;border-radius:16px;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900}
+    .qt-profile-name{font-size:20px;font-weight:900}
+    .qt-profile-sub{font-size:13px;color:rgba(255,255,255,.75);margin-top:1px;font-weight:600}
+    .qt-profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+    .qt-profile-stat{background:rgba(255,255,255,.2);border-radius:12px;padding:10px 8px;text-align:center}
+    .qt-profile-stat-num{font-size:20px;font-weight:900}
+    .qt-profile-stat-label{font-size:10px;color:rgba(255,255,255,.75);font-weight:700;margin-top:1px}
+    .qt-more-item{display:flex;align-items:center;gap:12px;width:100%;padding:15px 18px;background:var(--surface);margin-bottom:8px;border-radius:16px;box-shadow:var(--card-shadow)}
+    .qt-more-icon{font-size:22px;width:32px;text-align:center;flex-shrink:0}
+    .qt-more-label{font-size:15px;font-weight:700;color:var(--text)}
+    .qt-more-chev{margin-left:auto;color:var(--text-3);font-size:18px}
+
+    /* 묵상 작성 */
+    .qt-write-screen{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto}
+    .qt-toggle{width:50px;height:28px;border-radius:28px;background:var(--bg);position:relative;transition:background .2s;flex-shrink:0}
+    .qt-toggle::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--text-3);transition:transform .2s}
+    .qt-toggle.on{background:var(--orange)}.qt-toggle.on::after{transform:translateX(22px);background:#fff}
+    
+    /* 대시보드 */
+    .dash-wrap{position:fixed;inset:0;background:var(--bg);z-index:60;overflow-y:auto}
+    .dash-head{background:linear-gradient(135deg,var(--orange),#FFB444);padding:22px 20px 18px;color:#fff}
+    .dash-head-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .dash-head-title{font-size:20px;font-weight:900}
+    .dash-back{padding:8px 16px;border-radius:10px;background:rgba(255,255,255,.25);color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+    .dash-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px 0}
+    .dash-kpi{background:var(--surface);border-radius:16px;padding:15px 15px 13px;box-shadow:var(--card-shadow)}
+    .dash-kpi-label{font-size:12px;color:var(--text-2);font-weight:700}
+    .dash-kpi-val{font-size:30px;font-weight:900;color:var(--text);margin-top:3px;letter-spacing:-.02em}
+    .dash-kpi-val .u{font-size:13px;color:var(--text-3);font-weight:700;margin-left:2px}
+    .dash-kpi-sub{font-size:11px;color:var(--orange);font-weight:700;margin-top:3px}
+    .dash-panel{background:var(--surface);border-radius:var(--radius);padding:16px 16px 12px;margin:10px 16px 0;box-shadow:var(--card-shadow)}
+    .dash-panel-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px}
+    .dash-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--divider)}
+    .dash-row:last-child{border-bottom:0}
+    .dash-av{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0}
+    .dash-name{font-size:14px;font-weight:800;color:var(--text)}
+    .dash-bar-wrap{height:7px;border-radius:4px;background:var(--bg);overflow:hidden;flex:1}
+    .dash-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--orange),var(--yellow))}
+    .dash-pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:800}
+    .dash-pill.good{background:var(--green-soft);color:var(--green)}
+    .dash-pill.mid{background:var(--orange-soft);color:var(--orange)}
+    .dash-pill.low{background:rgba(239,68,68,.1);color:var(--red)}
+    .dash-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .dash-dot.done{background:var(--green)}
+    .dash-dot.miss{background:var(--bg);border:1.5px solid var(--text-3)}
+    .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 2s ease infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  </style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="ld-logo">🌟</div>
+  <div class="ld-title">말씀ON</div>
+  <div class="ld-sub">순천침례교회</div>
+  <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
+</div>
+
+<div id="login-screen">
+  <div class="ln-hero">🌟</div>
+  <div class="ln-title">말씀ON</div>
+  <div class="ln-sub">순천침례교회 주일학교·청소년<br>매일 말씀과 함께해요 📖</div>
+  <div class="ln-card">
+    <div class="ln-tabs">
+      <button class="ln-tab active" id="tab-simple" onclick="switchTab('simple')">✋ 간편 가입</button>
+      <button class="ln-tab" id="tab-email" onclick="switchTab('email')">✉️ 이메일</button>
+      <button class="ln-tab" id="tab-google" onclick="switchTab('google')">🔵 구글</button>
+    </div>
+    <div id="panel-simple">
+      <div id="simple-signup">
+        <div class="ln-label">이름</div>
+        <input class="ln-input" type="text" id="s-name" placeholder="예: 김말씀" autocomplete="name"/>
+        <div class="ln-label">생년월일</div>
+        <div class="ln-birth-row">
+          <input class="ln-birth-input" type="tel" id="s-yy" placeholder="2010" maxlength="4" inputmode="numeric" oninput="birthInput(this,'s-mm',4)"/>
+          <input class="ln-birth-input" type="tel" id="s-mm" placeholder="03" maxlength="2" inputmode="numeric" oninput="birthInput(this,'s-dd',2)"/>
+          <input class="ln-birth-input" type="tel" id="s-dd" placeholder="15" maxlength="2" inputmode="numeric" oninput="birthInput(this,null,2)"/>
+        </div>
+        <div class="ln-birth-label"><span>년</span><span>월</span><span>일</span></div>
+        <div class="ln-err" id="simple-err"></div>
+        <button class="ln-btn" onclick="handleSimpleSignup()">가입하고 시작하기 🙌</button>
+        <div class="ln-divider">이미 가입했나요?</div>
+        <button class="ln-btn ghost" onclick="showSimpleLogin()">이름으로 로그인</button>
+      </div>
+      <div id="simple-login" style="display:none">
+        <div class="ln-label">이름</div>
+        <input class="ln-input" type="text" id="sl-name" placeholder="예: 김말씀"/>
+        <div class="ln-label">생년월일</div>
+        <div class="ln-birth-row">
+          <input class="ln-birth-input" type="tel" id="sl-yy" placeholder="2010" maxlength="4" inputmode="numeric" oninput="birthInput(this,'sl-mm',4)"/>
+          <input class="ln-birth-input" type="tel" id="sl-mm" placeholder="03" maxlength="2" inputmode="numeric" oninput="birthInput(this,'sl-dd',2)"/>
+          <input class="ln-birth-input" type="tel" id="sl-dd" placeholder="15" maxlength="2" inputmode="numeric" oninput="birthInput(this,null,2)"/>
+        </div>
+        <div class="ln-birth-label"><span>년</span><span>월</span><span>일</span></div>
+        <div class="ln-err" id="simple-login-err"></div>
+        <button class="ln-btn" onclick="handleSimpleLogin()">로그인 🙌</button>
+        <div class="ln-toggle" onclick="showSimpleSignup()">← 처음 가입하기</div>
+      </div>
+    </div>
+    <div id="panel-email" style="display:none">
+      <div id="email-login-form">
+        <div class="ln-label">이메일</div>
+        <input class="ln-input" type="email" id="ln-email" placeholder="이메일 주소"/>
+        <div class="ln-label">비밀번호</div>
+        <input class="ln-input" type="password" id="ln-pw" placeholder="비밀번호 (6자 이상)"/>
+        <div class="ln-err" id="ln-err"></div>
+        <button class="ln-btn" onclick="handleEmailLogin()">로그인</button>
+        <div class="ln-toggle" onclick="toggleEmailMode()">처음이에요! <b>회원가입</b></div>
+      </div>
+      <div id="email-signup-form" style="display:none">
+        <div class="ln-label">이름</div>
+        <input class="ln-input" type="text" id="ln-name" placeholder="예: 김말씀"/>
+        <div class="ln-label">이메일</div>
+        <input class="ln-input" type="email" id="ln-su-email" placeholder="이메일 주소"/>
+        <div class="ln-label">비밀번호</div>
+        <input class="ln-input" type="password" id="ln-su-pw" placeholder="비밀번호 (6자 이상)"/>
+        <div class="ln-err" id="ln-su-err"></div>
+        <button class="ln-btn" onclick="handleSignup()">회원가입</button>
+        <div class="ln-toggle" onclick="toggleEmailMode()">이미 있어요 <b>로그인</b></div>
+      </div>
+    </div>
+    <div id="panel-google" style="display:none">
+      <p style="font-size:13px;color:var(--text-2);text-align:center;line-height:1.6;font-weight:600;margin-bottom:12px">⚠️ 카카오톡 안에서는 구글 로그인이 안 돼요.<br/>크롬 브라우저로 열어주세요!</p>
+      <button class="ln-google" onclick="handleGoogleLogin()">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Google 계정으로 로그인
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="app"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, where, orderBy, onSnapshot, updateDoc, increment, serverTimestamp, limit, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyAjRbt60qMNRLwKqmR6fbuJUHm8fa-Pjmo",
+  authDomain:"youthqt-b1f6e.firebaseapp.com",
+  projectId:"youthqt-b1f6e",
+  storageBucket:"youthqt-b1f6e.firebasestorage.app",
+  messagingSenderId:"328744786426",
+  appId:"1:328744786426:web:7c9d8280361ffa0203ec43"
+});
+const auth=getAuth(app), db=getFirestore(app), gp=new GoogleAuthProvider();
+window._fb={auth,db,gp,signInWithPopup,signInWithEmailAndPassword,createUserWithEmailAndPassword,updateProfile,signOut,onAuthStateChanged,doc,setDoc,getDoc,collection,addDoc,query,where,orderBy,onSnapshot,updateDoc,increment,serverTimestamp,limit,deleteDoc,getDocs};
+
+onAuthStateChanged(auth,async(user)=>{
+  document.getElementById('loading').classList.add('hidden');
+  if(user){
+    const uRef=doc(db,'users_youth',user.uid);
+    const snap=await getDoc(uRef);
+    const uData=snap.exists()?snap.data():{name:user.displayName||'친구',email:user.email||'',role:'학생',group:'미배정',isLeader:false,points:0};
+    if(!snap.exists())await setDoc(uRef,{...uData,createdAt:serverTimestamp()});
+    window._me={uid:user.uid,name:user.displayName||uData.name||'친구',email:user.email||'',role:uData.role||'학생',group:uData.group||'미배정',isLeader:uData.isLeader||false,points:uData.points||0};
+    document.getElementById('login-screen').classList.remove('visible');
+    document.getElementById('app').classList.add('visible');
+    // Babel(react/jsx) 트랜스파일이 끝났는지 확인 후 마운트. 아직이면 폴링 대기.
+    const tryMount=()=>{
+      if(window._reactMounted)return;
+      if(window._mountApp){window._reactMounted=true;window._mountApp();}
+      else setTimeout(tryMount,60);
+    };
+    tryMount();
+  }else{
+    window._me=null;
+    document.getElementById('login-screen').classList.add('visible');
+    document.getElementById('app').classList.remove('visible');
+  }
+});
+
+function makeEmail(n,b){return`${encodeURIComponent(n.trim()).replace(/%/g,'').toLowerCase().slice(0,20)}_${b}@qt-youth.local`;}
+window.switchTab=t=>{['simple','email','google'].forEach(x=>{document.getElementById('panel-'+x).style.display=x===t?'block':'none';document.getElementById('tab-'+x).classList.toggle('active',x===t);});};
+window.showSimpleLogin=()=>{document.getElementById('simple-signup').style.display='none';document.getElementById('simple-login').style.display='block';};
+window.showSimpleSignup=()=>{document.getElementById('simple-signup').style.display='block';document.getElementById('simple-login').style.display='none';};
+window.birthInput=(el,nId,ml)=>{if(el.value.length>=ml&&nId)document.getElementById(nId).focus();};
+window.handleSimpleSignup=async()=>{
+  const n=document.getElementById('s-name').value.trim(),yy=document.getElementById('s-yy').value.trim(),mm=document.getElementById('s-mm').value.trim().padStart(2,'0'),dd=document.getElementById('s-dd').value.trim().padStart(2,'0'),err=document.getElementById('simple-err');err.textContent='';
+  if(!n){err.textContent='이름을 입력해주세요';return;}if(yy.length!==4||!mm||!dd){err.textContent='생년월일을 모두 입력해주세요';return;}
+  const b=`${yy}${mm}${dd}`,email=makeEmail(n,b),pw=`qt_${b}_${n.slice(0,2)}`;
+  try{const c=await createUserWithEmailAndPassword(auth,email,pw);await updateProfile(c.user,{displayName:n});await setDoc(doc(db,'users_youth',c.user.uid),{name:n,email,role:'학생',group:'미배정',isLeader:false,points:0,createdAt:serverTimestamp()});}
+  catch(e){err.textContent=e.code==='auth/email-already-in-use'?'이미 가입된 이름+생년월일이에요. "이름으로 로그인"을 눌러주세요.':'가입에 실패했어요.';}
+};
+window.handleSimpleLogin=async()=>{
+  const n=document.getElementById('sl-name').value.trim(),yy=document.getElementById('sl-yy').value.trim(),mm=document.getElementById('sl-mm').value.trim().padStart(2,'0'),dd=document.getElementById('sl-dd').value.trim().padStart(2,'0'),err=document.getElementById('simple-login-err');err.textContent='';
+  if(!n||yy.length!==4){err.textContent='이름과 생년월일을 입력해주세요';return;}
+  try{await signInWithEmailAndPassword(auth,makeEmail(n,`${yy}${mm}${dd}`),`qt_${yy}${mm}${dd}_${n.slice(0,2)}`);}
+  catch(e){err.textContent='이름 또는 생년월일이 맞지 않아요.';}
+};
+window.handleEmailLogin=async()=>{const email=document.getElementById('ln-email').value.trim(),pw=document.getElementById('ln-pw').value,err=document.getElementById('ln-err');err.textContent='';try{await signInWithEmailAndPassword(auth,email,pw);}catch(e){err.textContent='이메일 또는 비밀번호를 확인해주세요';}};
+window.handleSignup=async()=>{const n=document.getElementById('ln-name').value.trim(),email=document.getElementById('ln-su-email').value.trim(),pw=document.getElementById('ln-su-pw').value,err=document.getElementById('ln-su-err');err.textContent='';if(!n){err.textContent='이름을 입력해주세요';return;}try{const c=await createUserWithEmailAndPassword(auth,email,pw);await updateProfile(c.user,{displayName:n});await setDoc(doc(db,'users_youth',c.user.uid),{name:n,email,role:'학생',group:'미배정',isLeader:false,points:0,createdAt:serverTimestamp()});}catch(e){err.textContent={'auth/email-already-in-use':'이미 사용 중인 이메일이에요','auth/weak-password':'비밀번호는 6자 이상이어야 해요'}[e.code]||'회원가입에 실패했어요';}};
+window.toggleEmailMode=()=>{const isLogin=document.getElementById('email-signup-form').style.display==='none';document.getElementById('email-login-form').style.display=isLogin?'none':'block';document.getElementById('email-signup-form').style.display=isLogin?'block':'none';};
+window.handleGoogleLogin=async()=>{try{await signInWithPopup(auth,gp);}catch(e){alert('크롬 브라우저로 열어주세요.');}};
+</script>
+
+<script type="text/babel" data-presets="react">
+const {useState,useEffect}=React;
+
+const SCHEDULE=[
+  // ── 5월 ──
+  {date:'2026-05-01',book:'룻기',range:'1:1-14',title:'나오미와 두 며느리',verse:'나오미가 두 며느리에게 이르되 너희는 각기 너희 어머니의 집으로 돌아가라 여호와께서 너희를 선대하시기를 원하며 (룻 1:8)',text:[
+    {v:1, t:'사사들이 다스리던 시절에 그 땅에 흉년이 들었습니다. 유다 베들레헴에 살던 한 남자가 아내와 두 아들을 데리고 모압 지방으로 이주했습니다.'},
+    {v:2, t:'그 남자 이름은 엘리멜렉이고 아내 이름은 나오미였으며 두 아들은 말론과 기룐이었는데 유다 베들레헴 출신 에브랏 사람이었습니다. 이들은 모압 지방에 이르렀습니다.'},
+    {v:3, t:'그런데 나오미의 남편 엘리멜렉이 죽어 나오미와 두 아들만 남게 됐습니다.'},
+    {v:4, t:'두 아들은 모압 여자들을 아내로 맞이했는데 한 사람은 오르바이고 다른 사람은 룻이었습니다. 이들은 그 곳에서 약 10년을 살았습니다.'},
+    {v:5, t:'말론과 기룐도 둘 다 죽어 나오미는 남편도 두 아들도 없이 혼자 남게 됐습니다.'},
+    {v:6, t:'나오미는 며느리들과 함께 모압 지방을 떠나 돌아가려고 준비했습니다. 그 곳에 있는 동안 여호와께서 자기 백성을 돌아보시고 양식을 주셨다는 소식을 들었기 때문입니다.'},
+    {v:7, t:'그래서 나오미는 두 며느리와 함께 자기가 살던 곳을 떠났습니다. 그들은 유다 땅으로 돌아가는 길을 가고 있었습니다.'},
+    {v:8, t:'나오미가 두 며느리에게 말했습니다. "각자 친정으로 돌아가거라. 너희가 죽은 남편들에게나 나에게 잘 해줬던 것처럼 여호와께서 너희에게 자비를 베풀어 주시기를 바란다.'},
+    {v:9, t:'여호와께서 너희 각자에게 새 남편을 만나 안락하게 살게 해 주시기를 바란다." 나오미가 그들에게 입을 맞추자 그들은 소리 높여 울었습니다.'},
+    {v:10, t:'그들이 말했습니다. "아닙니다! 저희는 어머니와 함께 어머니 백성에게 돌아가겠습니다."'},
+    {v:11, t:'나오미가 말했습니다. "내 딸들아, 돌아가거라. 어찌 나와 함께 가려느냐? 내가 더 아들을 낳아 너희 남편으로 삼을 수 있겠느냐?'},
+    {v:12, t:'내 딸들아, 돌아가거라. 나는 이미 너무 늙어 재혼할 수 없다. 내가 오늘 밤 남자와 함께 있어 아들을 낳는다 해도'},
+    {v:13, t:'그 아이들이 자랄 때까지 기다리겠느냐? 재혼도 않고 기다리겠느냐? 그렇게는 하지 마라, 내 딸들아. 여호와의 손이 나를 치셨으니 내 형편이 너희보다 훨씬 나쁘구나."'},
+    {v:14, t:'그들은 또 소리 높여 울었습니다. 오르바는 시어머니에게 작별 인사를 하고 돌아갔지만 룻은 시어머니 곁에 꼭 붙어 있었습니다.'}
+  ]}
+  {date:'2026-05-02',book:'룻기',range:'1:15-22',title:'룻의 결심',verse:'어머니께서 가시는 곳에 나도 가겠습니다. 어머니의 백성이 내 백성이 되고 어머니의 하나님이 내 하나님이 되실 것입니다. (룻 1:16)',text:[
+    {v:15, t:'나오미가 말했습니다. "봐라, 네 동서는 자기 백성과 자기 신들에게 돌아갔다. 너도 네 동서를 따라 돌아가거라."'},
+    {v:16, t:'룻이 말했습니다. "어머니를 떠나거나 어머니 뒤를 돌아가라고 강요하지 마세요. 어머니께서 가시는 곳에 저도 가겠습니다. 어머니께서 사시는 곳에 저도 살겠습니다. 어머니의 백성이 내 백성이 되고 어머니의 하나님이 내 하나님이 되실 것입니다.'},
+    {v:17, t:'어머니께서 돌아가시는 곳에서 저도 죽겠습니다. 그 곳에 저도 묻히겠습니다. 만일 죽음 외에 다른 무엇이 어머니와 저를 갈라놓는다면 여호와께서 저를 심히 벌하시기를 바랍니다."'},
+    {v:18, t:'나오미는 룻이 자기와 함께 가겠다고 굳게 결심한 것을 보고 더 이상 말하지 않았습니다.'},
+    {v:19, t:'그래서 두 사람은 베들레헴에 이를 때까지 함께 길을 갔습니다. 그들이 베들레헴에 들어가자 온 성이 들썩거렸고 여자들은 "나오미가 아닌가요?" 하고 물었습니다.'},
+    {v:20, t:'나오미가 그들에게 말했습니다. "저를 나오미라고 부르지 마시고 마라라고 부르세요. 전능하신 분이 저를 몹시 괴롭게 하셨습니다.'},
+    {v:21, t:'제가 떠날 때는 가득 차 있었는데 여호와께서 저를 빈손으로 돌아오게 하셨습니다. 여호와께서 저를 괴롭히시고 전능하신 분이 저에게 재앙을 내리셨는데 어찌 저를 나오미라고 부르십니까?"'},
+    {v:22, t:'나오미는 모압 지방에서 돌아왔는데 모압 며느리 룻이 함께 왔습니다. 그들이 베들레헴에 도착한 것은 보리 추수가 시작되는 때였습니다.'}
+  ]}
+  {date:'2026-05-03',book:'룻기',range:'2:1-7',title:'보아스의 밭에서',verse:'보아스가 룻에게 말했습니다. "내 딸아, 들어라. 다른 밭에 이삭을 주우러 가지 말고 여기를 떠나지 마라. (룻 2:8)',text:[
+    {v:1, t:'나오미의 남편 엘리멜렉의 친척으로 능력 있는 훌륭한 사람이 있었는데 그 이름은 보아스였습니다.'},
+    {v:2, t:'모압 사람 룻이 나오미에게 말했습니다. "제가 밭에 나가서 친절하게 이삭을 줍도록 허락해 주는 사람 뒤를 따라다니며 이삭을 줍겠습니다." 나오미가 "그래, 내 딸아, 가거라" 하고 말했습니다.'},
+    {v:3, t:'룻은 나가서 추수하는 사람들 뒤를 따라 이삭을 주웠는데 그 밭은 우연히도 엘리멜렉의 친척 보아스의 것이었습니다.'},
+    {v:4, t:'마침 보아스가 베들레헴에서 왔습니다. 그는 추수하는 사람들에게 "여호와께서 너희와 함께하시기 바란다" 하고 말했고 그들은 "여호와께서 당신을 축복하시기 바랍니다" 하고 대답했습니다.'},
+    {v:5, t:'보아스가 추수하는 사람들을 감독하는 하인에게 물었습니다. "저 젊은 여자는 누구의 사람이냐?"'},
+    {v:6, t:'감독하는 하인이 대답했습니다. "그녀는 나오미와 함께 모압 지방에서 돌아온 모압 젊은 여자입니다.'},
+    {v:7, t:'그녀가 추수하는 사람들 뒤에서 단 사이에서 이삭을 줍게 해 달라고 했습니다. 그녀는 아침부터 와서 잠깐 쉰 것 외에는 지금까지 계속 일하고 있습니다."'},
+    {v:8, t:'보아스가 룻에게 말했습니다. "내 딸아, 들어라. 다른 밭에 이삭을 주우러 가지 말고 여기를 떠나지 마라. 내 여자 하인들 곁에 꼭 붙어 있어라.'}
+  ]}
+  {date:'2026-05-04',book:'룻기',range:'2:8-16',title:'보아스의 친절',verse:'네 남편이 죽은 후로 네가 시어머니에게 행한 모든 것과 네 부모와 고국을 떠나온 일이 나에게 알려졌다. (룻 2:11)',text:[
+    {v:8, t:'보아스가 룻에게 말했습니다. "내 딸아, 들어라. 다른 밭에 이삭을 주우러 가지 말고 여기를 떠나지 마라. 내 여자 하인들 곁에 꼭 붙어 있어라.'},
+    {v:9, t:'그들이 추수하는 밭에 눈을 고정시키고 그들 뒤를 따라가거라. 내가 내 하인들에게 너를 건드리지 말라고 명했다. 목이 마르거든 항아리로 가서 내 하인들이 길어다 놓은 물을 마셔라."'},
+    {v:10, t:'룻이 엎드려 얼굴을 땅에 대고 절하며 말했습니다. "어찌하여 제가 어르신의 눈에 들어 저를 이렇게 잘 돌봐주시나요? 저는 이방인인걸요."'},
+    {v:11, t:'보아스가 대답했습니다. "네 남편이 죽은 후로 네가 시어머니에게 한 모든 것과 네 부모와 고국을 떠나 전에 알지 못했던 백성에게로 온 것이 내게 다 알려졌다.'},
+    {v:12, t:'여호와께서 네가 한 일에 보상해 주시기를 바라며 이스라엘의 하나님 여호와께서 그 날개 아래 피하러 온 네게 충분한 상을 베풀어 주시기를 바란다."'},
+    {v:13, t:'룻이 말했습니다. "어르신이여, 제가 어르신의 눈에 들게 되기를 바랍니다. 어르신이 저를 위로해 주셨고 여자 종 중 하나도 아닌 제게 친절하게 말씀해 주셨으니까요."'},
+    {v:16, t:'또 그녀를 위해 단에서 이삭을 일부러 빼서 남겨 두어 그녀가 이삭을 줍도록 해라. 그녀를 꾸짖지 마라."'}
+  ]}
+  {date:'2026-05-05',book:'룻기',range:'2:17-23',title:'나오미의 기쁨',verse:'그는 산 자와 죽은 자에게 자신의 친절함을 저버리지 않는 분이시다. (룻 2:20)',text:[
+    {v:17, t:'룻은 저녁까지 밭에서 이삭을 주웠습니다. 주운 것을 떠니 보리가 약 한 에바쯤 됐습니다.'},
+    {v:18, t:'룻은 그것을 들고 성으로 들어가 시어머니에게 주운 것을 보여줬습니다. 또한 먹고 남긴 것도 꺼내 시어머니에게 드렸습니다.'},
+    {v:19, t:'시어머니가 룻에게 물었습니다. "오늘 어디서 이삭을 주웠느냐? 어디서 일했느냐? 너를 잘 돌봐준 사람에게 복이 있기를 바란다." 룻은 시어머니에게 오늘 누구의 밭에서 일했는지 말해줬습니다. "오늘 제가 일한 사람의 이름은 보아스입니다."'},
+    {v:20, t:'나오미가 며느리에게 말했습니다. "여호와께서 그에게 복 주시기를 바란다! 그는 산 자와 죽은 자에게 자신의 친절함을 저버리지 않으시는 분이시다." 나오미가 계속 말했습니다. "그는 우리와 아주 가까운 친척이다. 우리 기업 무를 자 중 한 사람이다."'},
+    {v:21, t:'모압 여자 룻이 말했습니다. "더구나 그는 제가 그의 추수가 끝날 때까지 그의 하인들 곁에 있어도 된다고 했습니다."'},
+    {v:22, t:'나오미가 며느리 룻에게 말했습니다. "내 딸아, 그의 여자 하인들과 함께 나가는 것이 좋겠다. 다른 밭에서는 해를 당할 수도 있으니."'},
+    {v:23, t:'그래서 룻은 보아스의 여자 하인들 곁에서 보리 추수와 밀 추수가 끝날 때까지 이삭을 주웠습니다. 그리고 시어머니와 함께 살았습니다.'}
+  ]}
+  {date:'2026-05-06',book:'룻기',range:'3:1-18',title:'기업 무를 자',verse:'네가 처음에 보여 준 것보다 나중의 친절함이 더 크다. (룻 3:10)',text:[
+    {v:1, t:'룻의 시어머니 나오미가 룻에게 말했습니다. "내 딸아, 내가 너를 위해 안식처를 구해야겠다. 그래야 네 형편이 좋아질 것이다.'},
+    {v:2, t:'우리 친척인 보아스가 있지 않으냐? 그는 네가 그의 여자 하인들과 함께 있었던 사람이다. 보아라, 그는 오늘 밤 타작마당에서 보리를 까불 것이다.'},
+    {v:3, t:'그러니 너는 목욕하고 향수를 바르고 좋은 옷을 입고 타작마당으로 내려가거라. 그가 먹고 마시기를 다 마칠 때까지 나서지 마라.'},
+    {v:4, t:'그가 누우면 어디에 눕는지 알아두고 가서 그의 발치를 걷고 누워라. 그러면 그가 너에게 해야 할 일을 알려줄 것이다."'},
+    {v:10, t:'보아스가 말했습니다. "여호와의 복이 네게 있기를 바란다, 내 딸아. 네가 처음에 보여 준 것보다 나중의 친절함이 더 크다. 가난하든 부유하든 젊은 남자들을 따라가지 않았으니 말이다.'},
+    {v:11, t:'내 딸아, 이제 두려워하지 마라. 내가 네 말대로 다 해 줄 것이다. 성문에 있는 내 백성들은 모두 네가 덕스러운 여자라는 것을 안다.'}
+  ]}
+  {date:'2026-05-07',book:'룻기',range:'4:1-6',title:'성문에서의 협상',verse:'네가 룻을 사면서 그 죽은 자의 기업을 그의 이름으로 세워 줘야 하네. (룻 4:5)',text:[
+    {v:1, t:'보아스는 성문으로 올라가 앉았습니다. 마침 보아스가 말하던 기업 무를 자가 지나갔습니다. 보아스가 말했습니다. "이봐요, 이쪽으로 와서 앉읍시다." 그 사람이 와서 앉았습니다.'},
+    {v:2, t:'보아스는 성읍의 장로 열 명을 불러 앉혔습니다.'},
+    {v:3, t:'보아스가 기업 무를 자에게 말했습니다. "모압 지방에서 돌아온 나오미가 우리 형제 엘리멜렉의 밭을 팔려고 합니다.'},
+    {v:4, t:'저는 당신에게 알려서 이 사람들 앞 그리고 내 백성의 장로들 앞에서 그것을 사도록 하는 게 좋다고 생각했습니다. 기업을 무르려면 무르십시오. 무르지 않으려면 저에게 말씀해 주십시오." 그 사람이 말했습니다. "내가 무르겠습니다."'},
+    {v:5, t:'보아스가 말했습니다. "나오미에게서 그 밭을 살 때 당신은 죽은 말론의 아내였던 모압 여자 룻도 같이 받아서 죽은 자의 유산을 그의 이름으로 세워 줘야 합니다."'},
+    {v:6, t:'기업 무를 자가 말했습니다. "그렇다면 제 스스로 기업을 무를 수 없습니다. 제 유산을 망칠 수 있으니까요. 당신이 내 권리를 대신해서 기업을 무르십시오. 나는 기업을 무를 수 없습니다."'}
+  ]}
+  {date:'2026-05-08',book:'룻기',range:'4:7-12',title:'결혼 선포',verse:'여호와께서 네 집으로 들어오는 여자를 라헬과 레아처럼 되게 하시기를 바라네. (룻 4:11)',text:[
+    {v:7, t:'옛날 이스라엘에서는 기업을 무르거나 물건을 교환할 때 확인하는 방법이 있었습니다. 한 사람이 자기 신을 벗어 다른 사람에게 주었는데 이것이 이스라엘의 확인 방법이었습니다.'},
+    {v:8, t:'기업 무를 자가 보아스에게 말했습니다. "당신이 그것을 사십시오." 그리고 신을 벗었습니다.'},
+    {v:9, t:'보아스가 장로들과 모든 백성에게 선포했습니다. "오늘 여러분이 증인입니다. 내가 나오미에게서 엘리멜렉과 기룐과 말론에게 속했던 모든 것을 삽니다.'},
+    {v:10, t:'또한 죽은 자의 이름이 그의 기업 위에 세워지도록 나는 말론의 아내 모압 여자 룻을 아내로 맞이합니다. 죽은 자의 이름이 그의 형제들 사이에서 또는 그의 성문에서 사라지지 않게 하기 위함입니다. 여러분이 오늘 이것의 증인입니다."'},
+    {v:11, t:'문에 있는 모든 백성과 장로들이 말했습니다. "우리가 증인입니다. 여호와께서 네 집으로 들어오는 여자를 이스라엘 가문을 세운 라헬과 레아처럼 되게 하시기를 바라네. 에브랏에서 능력을 발휘하고 베들레헴에서 유명하게 되기를 바라네.'}
+  ]}
+  {date:'2026-05-09',book:'룻기',range:'4:13-22',title:'오벳의 탄생',verse:'나오미가 아기를 받아 품에 안고 그의 양육자가 됐습니다. (룻 4:16)',text:[
+    {v:13, t:'그래서 보아스는 룻을 아내로 맞이했습니다. 그가 그녀와 함께하자 여호와께서 그녀로 임신하게 하셨고 그녀는 아들을 낳았습니다.'},
+    {v:14, t:'여자들이 나오미에게 말했습니다. "여호와를 찬양합시다. 여호와께서 오늘 당신에게 기업 무를 자를 주셨습니다. 이스라엘에서 그 아이의 이름이 유명하게 되기를 바랍니다.'},
+    {v:15, t:'그가 당신의 생명을 회복시켜 주고 당신의 노년을 부양해 줄 것입니다. 당신을 사랑하며 아들 일곱보다 더 나은 며느리가 그를 낳았으니까요."'},
+    {v:16, t:'나오미가 아기를 받아 품에 안고 그의 양육자가 됐습니다.'},
+    {v:17, t:'이웃 여자들이 그 아이에게 이름을 지어 주면서 "나오미에게 아들이 태어났다" 하고 말했습니다. 그들은 그의 이름을 오벳이라고 불렀습니다. 그는 다윗의 아버지 이새의 아버지가 됐습니다.'}
+  ]}
+  {date:'2026-05-10',book:'고린도전서',range:'1:1-17',title:'복음을 전하게 하심',verse:'그리스도께서 나를 보내신 것은 침례를 베풀게 하려는 것이 아니라 복음을 전파하게 하려는 것입니다. (고전 1:17)',text:[
+    {v:10, t:'형제 여러분, 우리 주 예수 그리스도의 이름으로 여러분 모두가 서로 같은 말을 하고 여러분 가운데 분열이 없으며 같은 마음과 같은 생각으로 완전히 하나가 되기를 권면합니다.'},
+    {v:11, t:'내 형제 여러분, 글로에의 집 사람들에게서 여러분 가운데 다툼이 있다는 말을 들었습니다.'},
+    {v:12, t:'내가 말하는 것은 이것입니다. 여러분 각자가 "나는 바울파", "나는 아볼로파", "나는 게바파", "나는 그리스도파"라고 하는 것입니다.'},
+    {v:13, t:'그리스도께서 나뉘어지셨습니까? 바울이 여러분을 위해 십자가에 못 박혔습니까? 여러분이 바울의 이름으로 침례를 받았습니까?'},
+    {v:17, t:'그리스도께서 나를 보내신 것은 침례를 베풀게 하려는 것이 아니라 복음을 전파하게 하려는 것입니다. 말의 지혜로 하지 않는 것은 그리스도의 십자가가 헛되지 않도록 하기 위함입니다.'}
+  ]}
+  {date:'2026-05-11',book:'고린도전서',range:'1:18-25',title:'십자가의 능력',verse:'십자가의 도가 구원을 얻는 우리에게는 하나님의 능력입니다. (고전 1:18)',text:[
+    {v:18, t:'십자가에 관한 말이 멸망하는 자들에게는 어리석게 들리지만 구원을 받는 우리에게는 하나님의 능력입니다.'},
+    {v:19, t:'"내가 지혜로운 자의 지혜를 멸하고 총명한 자의 총명을 폐하겠다"고 기록돼 있습니다.'},
+    {v:20, t:'지혜로운 자가 어디 있습니까? 학자가 어디 있습니까? 이 세상의 변론가가 어디 있습니까? 하나님께서 이 세상의 지혜를 어리석게 만들지 않으셨습니까?'},
+    {v:21, t:'하나님의 지혜로는 세상이 지혜로 하나님을 알 수 없었기에 하나님께서는 전파되는 말의 어리석음을 통해 믿는 자들을 구원하기를 기뻐하셨습니다.'},
+    {v:22, t:'유대 사람들은 표적을 요구하고 그리스 사람들은 지혜를 찾습니다.'},
+    {v:23, t:'그러나 우리는 십자가에 못 박힌 그리스도를 전합니다. 이것이 유대 사람들에게는 걸림돌이 되고 이방 사람들에게는 어리석어 보이지만'},
+    {v:24, t:'부르심을 받은 자들에게는 유대 사람이든 그리스 사람이든 그리스도는 하나님의 능력이자 하나님의 지혜입니다.'},
+    {v:25, t:'하나님의 어리석음이 사람의 지혜보다 지혜롭고 하나님의 약함이 사람의 힘보다 강합니다.'}
+  ]}
+  {date:'2026-05-12',book:'고린도전서',range:'1:26-31',title:'낮은 자를 택하심',verse:'하나님께서 세상의 어리석은 것들을 택하사 지혜로운 자들을 부끄럽게 하려 하시고 (고전 1:27)',text:[
+    {v:26, t:'형제 여러분, 여러분이 부르심을 받던 때를 생각해 보십시오. 인간의 기준으로 볼 때 여러분 가운데 지혜로운 자도 많지 않고 능력 있는 자도 많지 않고 신분이 높은 자도 많지 않습니다.'},
+    {v:27, t:'그러나 하나님께서는 지혜로운 자를 부끄럽게 하시려고 세상의 어리석은 것들을 택하셨습니다. 하나님께서는 강한 것들을 부끄럽게 하시려고 세상의 약한 것들을 택하셨습니다.'},
+    {v:28, t:'하나님께서는 있는 것들을 폐하시려고 세상에서 낮은 것들, 멸시받는 것들, 없는 것들을 택하셨습니다.'},
+    {v:29, t:'이것은 아무도 하나님 앞에서 자랑하지 못하게 하려는 것입니다.'},
+    {v:30, t:'여러분이 그리스도 예수 안에 있는 것은 하나님으로 말미암은 것입니다. 그리스도 예수께서는 우리에게 하나님으로부터 오는 지혜가 되셨습니다. 곧 우리의 의로움과 거룩함과 구원이 되셨습니다.'},
+    {v:31, t:'"자랑하는 자는 주 안에서 자랑하라"고 기록된 것처럼 되기 위함입니다.'}
+  ]}
+  {date:'2026-05-13',book:'고린도전서',range:'2:1-9',title:'십자가 외에는',verse:'예수 그리스도와 그분이 십자가에 못 박히신 것 외에는 아무것도 알지 않기로 결심했습니다. (고전 2:2)',text:[
+    {v:1, t:'형제 여러분, 나도 여러분에게 갔을 때 말이나 지혜의 탁월함으로 하나님의 비밀을 전하지 않았습니다.'},
+    {v:2, t:'나는 여러분 가운데 있는 동안 예수 그리스도와 그분이 십자가에 못 박히신 것 외에는 아무것도 알지 않기로 결심했습니다.'},
+    {v:3, t:'나는 여러분에게 약함과 두려움과 심한 떨림으로 있었습니다.'},
+    {v:4, t:'내 말과 내 전파는 지혜로운 말솜씨로 한 것이 아니라 성령과 능력의 나타남으로 한 것입니다.'},
+    {v:5, t:'이것은 여러분의 믿음이 사람의 지혜에 있지 않고 하나님의 능력에 있게 하려는 것입니다.'},
+    {v:6, t:'그러나 우리는 성숙한 자들 가운데서 지혜를 말합니다. 이 지혜는 이 세상의 지혜나 폐하여질 이 세상의 통치자들의 지혜가 아닙니다.'},
+    {v:7, t:'우리는 하나님의 지혜를 비밀로 말합니다. 이 지혜는 숨겨진 것으로서 하나님께서 우리의 영광을 위해 세상이 시작되기 전에 미리 정하신 것입니다.'},
+    {v:9, t:'"눈으로 보지 못하고 귀로 듣지 못하며 사람의 마음으로 생각하지도 못한 것들을 하나님께서 자신을 사랑하는 자들을 위해 준비하셨다"고 기록돼 있습니다.'}
+  ]}
+  {date:'2026-05-14',book:'고린도전서',range:'2:10-16',title:'성령으로 아는 것',verse:'하나님께서 성령으로 이것을 우리에게 나타내셨습니다. 성령은 모든 것, 곧 하나님의 깊은 것까지도 통찰하십니다. (고전 2:10)',text:[
+    {v:10, t:'하나님께서 성령으로 이것을 우리에게 나타내셨습니다. 성령은 모든 것, 곧 하나님의 깊은 것까지도 통찰하십니다.'},
+    {v:11, t:'사람의 생각은 그 사람 안에 있는 사람의 영 외에 누가 알겠습니까? 마찬가지로 하나님의 생각은 하나님의 영 외에 아무도 알지 못합니다.'},
+    {v:12, t:'우리는 세상의 영을 받은 것이 아니라 하나님으로부터 오는 영을 받았습니다. 이것은 하나님께서 우리에게 은혜로 주신 것들을 우리가 알게 하기 위함입니다.'},
+    {v:13, t:'우리는 이것들을 인간의 지혜가 가르치는 말이 아니라 성령이 가르치시는 말로 전합니다. 신령한 일은 신령한 것으로 설명합니다.'},
+    {v:14, t:'육적인 사람은 하나님의 성령에 속한 것들을 받아들이지 않습니다. 그것들이 그에게는 어리석어 보이며 그는 그것들을 알 수 없습니다. 그것들은 영적으로만 분별되기 때문입니다.'},
+    {v:15, t:'영적인 사람은 모든 것을 분별하지만 그 자신은 아무에게도 판단받지 않습니다.'},
+    {v:16, t:'"누가 주의 마음을 알아서 그에게 지시할 수 있겠습니까?" 그러나 우리는 그리스도의 마음을 가지고 있습니다.'}
+  ]}
+  {date:'2026-05-15',book:'고린도전서',range:'3:1-15',title:'하나님의 동역자',verse:'우리는 하나님의 동역자입니다. 여러분은 하나님의 밭이요 하나님의 건물입니다. (고전 3:9)',text:[
+    {v:1, t:'형제 여러분, 나는 여러분에게 영적인 사람들에게 하듯이 말할 수 없었고 그리스도 안에서 어린아이인 사람들에게 하듯이 말할 수밖에 없었습니다.'},
+    {v:5, t:'그렇다면 아볼로는 무엇이며 바울은 무엇입니까? 우리는 여러분이 믿도록 섬긴 일꾼들입니다. 주께서 각 사람에게 주신 대로 한 것입니다.'},
+    {v:6, t:'나는 심었고 아볼로는 물을 주었습니다. 그러나 자라게 하신 분은 하나님이십니다.'},
+    {v:7, t:'그러므로 심는 자도 아무것도 아니고 물을 주는 자도 아무것도 아닙니다. 자라게 하시는 하나님만이 중요합니다.'},
+    {v:8, t:'심는 자와 물을 주는 자는 하나이지만 각자 자기 수고에 따라 자기 보수를 받을 것입니다.'},
+    {v:9, t:'우리는 하나님의 동역자입니다. 여러분은 하나님의 밭이요 하나님의 건물입니다.'},
+    {v:10, t:'하나님께서 내게 주신 은혜에 따라 나는 지혜로운 건축자처럼 기초를 놓았습니다. 다른 사람이 그 위에 세우고 있는데 각자 어떻게 세우는지 주의해야 합니다.'},
+    {v:11, t:'왜냐하면 이미 놓인 기초 외에 아무도 다른 기초를 놓을 수 없으며 그 기초는 예수 그리스도이기 때문입니다.'}
+  ]}
+  {date:'2026-05-16',book:'고린도전서',range:'3:16-23',title:'하나님의 성전',verse:'여러분이 하나님의 성전이며 하나님의 성령이 여러분 안에 살고 계신다는 것을 알지 못합니까? (고전 3:16)',text:[
+    {v:16, t:'여러분이 하나님의 성전이며 하나님의 성령이 여러분 안에 살고 계신다는 것을 알지 못합니까?'},
+    {v:17, t:'누구든지 하나님의 성전을 파괴하면 하나님께서 그 사람을 파괴하실 것입니다. 하나님의 성전은 거룩하며 그 성전이 바로 여러분입니다.'},
+    {v:18, t:'아무도 자신을 속이지 마십시오. 여러분 가운데 이 세상에서 지혜롭다고 생각하는 자가 있으면 지혜롭게 되기 위해 어리석은 자가 되십시오.'},
+    {v:19, t:'이 세상의 지혜는 하나님 앞에서 어리석음입니다. "그는 지혜로운 자들을 그들의 교활함으로 잡으신다"고 기록돼 있습니다.'},
+    {v:20, t:'또한 "주께서는 지혜로운 자들의 생각들이 허무한 것임을 아신다"고 했습니다.'},
+    {v:21, t:'그러므로 아무도 사람을 자랑하지 마십시오. 모든 것이 여러분의 것이기 때문입니다.'},
+    {v:23, t:'여러분은 그리스도의 것이고 그리스도는 하나님의 것입니다.'}
+  ]}
+  {date:'2026-05-17',book:'고린도전서',range:'4:1-8',title:'일꾼의 자세',verse:'사람들은 마땅히 우리를 그리스도의 일꾼이요 하나님의 비밀들을 맡은 자들로 여겨야 합니다. (고전 4:1)',text:[
+    {v:1, t:'사람들은 마땅히 우리를 그리스도의 일꾼이요 하나님의 비밀들을 맡은 자들로 여겨야 합니다.'},
+    {v:2, t:'맡은 자들에게 요구되는 것은 신실함입니다.'},
+    {v:3, t:'나는 여러분이나 사람의 법정에서 나를 판단하는 것을 중요하게 여기지 않습니다. 나 자신도 판단하지 않습니다.'},
+    {v:4, t:'나는 내 자신에 대해 아무것도 의식하지 않습니다. 그러나 이로써 의롭게 된 것은 아닙니다. 나를 판단하시는 분은 주님이십니다.'},
+    {v:5, t:'그러므로 때가 되기 전에는 아무것도 판단하지 마십시오. 주님이 오실 때까지 기다리십시오. 그분이 어둠 속에 숨겨진 것들을 드러내시고 마음의 동기들을 밝히실 것입니다. 그 때에 하나님으로부터 각 사람이 칭찬을 받을 것입니다.'},
+    {v:6, t:'형제 여러분, 나는 이 모든 것을 나 자신과 아볼로에게 적용해 비유적으로 말한 것입니다. 기록된 것을 넘어서지 말라는 교훈을 여러분이 배워서 아무도 한 사람을 위해 다른 사람을 무시하는 교만을 갖지 않게 하려는 것입니다.'},
+    {v:7, t:'누가 당신을 남다르게 만들었습니까? 당신이 가지고 있는 것 중에 받지 않은 것이 무엇입니까? 받은 것인데 어찌 받지 않은 것처럼 자랑합니까?'},
+    {v:8, t:'여러분은 이미 배부르고 이미 부요해졌으며 우리 없이도 왕이 됐습니다. 차라리 여러분이 정말 왕이 됐으면 좋겠습니다. 그렇다면 우리도 여러분과 함께 왕이 됐을 것입니다!'}
+  ]}
+  {date:'2026-05-18',book:'고린도전서',range:'4:9-21',title:'하나님 나라의 능력',verse:'하나님의 나라는 말에 있지 않고 능력에 있습니다. (고전 4:20)',text:[
+    {v:9, t:'내 생각에는 하나님께서 우리 사도들을 마치 사형선고를 받은 사람들처럼 맨 마지막에 내보내신 것 같습니다. 우리는 세상, 천사들, 사람들 앞에서 구경거리가 됐습니다.'},
+    {v:10, t:'우리는 그리스도 때문에 어리석은 자들이지만 여러분은 그리스도 안에서 지혜롭습니다! 우리는 약하지만 여러분은 강합니다! 여러분은 존귀하지만 우리는 멸시를 받습니다!'},
+    {v:11, t:'바로 지금 이 시간까지도 우리는 굶주리고 목마르며 헐벗고 매 맞으며 일정한 거처가 없습니다.'},
+    {v:12, t:'우리는 우리 손으로 일하면서 수고합니다. 욕을 먹으면 축복하고 핍박을 받으면 견딥니다.'},
+    {v:13, t:'비방을 받으면 친절하게 대합니다. 우리는 지금까지 이 세상의 쓰레기 같이, 모든 것의 찌꺼기같이 됐습니다.'},
+    {v:14, t:'내가 이것을 쓰는 것은 여러분을 부끄럽게 하려는 게 아니라 내 사랑하는 자녀들처럼 경고하려는 것입니다.'},
+    {v:15, t:'그리스도 안에서 여러분에게 수만 명의 스승이 있을지라도 아버지는 많지 않습니다. 나는 복음을 통해 그리스도 예수 안에서 여러분의 아버지가 됐습니다.'},
+    {v:16, t:'그러므로 나는 여러분이 나를 본받는 자가 되기를 권면합니다.'},
+    {v:19, t:'주께서 허락하시면 내가 여러분에게 속히 가서 교만한 자들의 말이 아니라 능력을 살펴보겠습니다.'},
+    {v:20, t:'하나님의 나라는 말에 있지 않고 능력에 있기 때문입니다.'},
+    {v:21, t:'여러분은 어느 것을 원합니까? 내가 매를 가지고 갈까요, 아니면 사랑과 온유한 마음으로 갈까요?'}
+  ]}
+  {date:'2026-05-19',book:'고린도전서',range:'5:1-13',title:'누룩을 내보내라',verse:'적은 누룩이 온 반죽에 퍼진다는 것을 알지 못합니까? (고전 5:6)',text:[
+    {v:1, t:'심지어 여러분 가운데 음행이 있다는 말을 듣고 있습니다. 그것도 이방인들 사이에서도 없는 음행, 곧 아버지의 아내를 취하는 음행입니다.'},
+    {v:2, t:'그런데도 여러분은 교만해져 있습니까? 오히려 슬퍼하며 이런 일을 행한 자를 여러분 가운데서 내보내야 하지 않겠습니까?'},
+    {v:3, t:'나는 몸으로는 떠나 있지만 영으로는 여러분과 함께 있습니다. 마치 여러분과 함께 있는 것처럼 이런 일을 행한 자에 대해 이미 판결을 내렸습니다.'},
+    {v:6, t:'여러분의 자랑이 좋지 않습니다. 적은 누룩이 온 반죽에 퍼진다는 것을 알지 못합니까?'},
+    {v:7, t:'새 반죽이 되기 위해 묵은 누룩을 제거하십시오. 여러분은 이미 누룩 없는 자들입니다. 왜냐하면 우리의 유월절 양이신 그리스도께서 희생되셨기 때문입니다.'},
+    {v:8, t:'그러므로 묵은 누룩, 곧 악의와 악함의 누룩으로 절기를 지키지 말고 순수함과 진실함이라는 누룩 없는 빵으로 절기를 지킵시다.'},
+    {v:11, t:'내가 이제 여러분에게 쓰는 것은 형제라고 불리는 사람이지만 음행하는 자, 탐욕을 부리는 자, 우상 숭배자, 욕설하는 자, 술 취하는 자, 사기꾼과 사귀지 말라는 것입니다. 그런 자와는 함께 먹지도 마십시오.'},
+    {v:13, t:'밖에 있는 자들은 하나님께서 판단하십니다. 여러분 가운데서 그 악한 자를 제거하십시오.'}
+  ]}
+  {date:'2026-05-20',book:'고린도전서',range:'6:1-11',title:'성도의 판단',verse:'불의한 자들이 하나님의 나라를 유업으로 받지 못할 것임을 알지 못합니까? (고전 6:9)',text:[
+    {v:1, t:'여러분 가운데 누군가 다른 사람과 다툼이 있을 때 어찌 감히 성도들 앞에서 하지 않고 불의한 자들 앞에서 소송을 하려고 합니까?'},
+    {v:2, t:'성도들이 세상을 심판할 것임을 알지 못합니까? 세상이 여러분에게 심판을 받을 것이라면 사소한 일들도 심판하기에 부족합니까?'},
+    {v:3, t:'우리가 천사들도 심판할 것임을 알지 못합니까? 그렇다면 이 세상 일들이야 얼마나 더 하겠습니까?'},
+    {v:7, t:'사실 여러분들 사이에서 소송을 하는 것 자체가 이미 여러분의 패배입니다. 차라리 불의를 당하는 것이 낫지 않겠습니까? 차라리 속임을 당하는 것이 낫지 않겠습니까?'},
+    {v:8, t:'오히려 여러분은 불의를 행하고 속이는데 그것도 형제들에게 합니다.'},
+    {v:9, t:'불의한 자들이 하나님의 나라를 유업으로 받지 못할 것임을 알지 못합니까? 속지 마십시오. 음행하는 자들, 우상 숭배자들, 간음하는 자들, 성적으로 타락한 자들, 동성과 동침하는 자들,'},
+    {v:10, t:'도둑질하는 자들, 탐욕스러운 자들, 술 취하는 자들, 욕설하는 자들, 약탈하는 자들은 하나님의 나라를 유업으로 받지 못할 것입니다.'},
+    {v:11, t:'여러분 가운데 이런 자들이 있었습니다. 그러나 여러분은 주 예수 그리스도의 이름과 우리 하나님의 성령 안에서 씻음 받았으며 거룩해졌으며 의롭게 됐습니다.'}
+  ]}
+  {date:'2026-05-21',book:'고린도전서',range:'6:12-20',title:'성령의 전',verse:'여러분의 몸이 여러분 안에 계신 성령의 전임을 알지 못합니까? 여러분은 여러분 자신의 것이 아닙니다. (고전 6:19)',text:[
+    {v:12, t:'"모든 것이 나에게 허용돼 있습니다." 그렇습니다. 그러나 모든 것이 유익하지는 않습니다. "모든 것이 나에게 허용돼 있습니다." 그러나 나는 어느 것에도 지배받지 않겠습니다.'},
+    {v:13, t:'"음식은 위장을 위한 것이고 위장은 음식을 위한 것입니다." 그러나 하나님께서는 이것도 저것도 폐하실 것입니다. 몸은 음행을 위한 것이 아니라 주를 위한 것이며 주는 몸을 위하십니다.'},
+    {v:14, t:'하나님께서 주님을 살리셨고 자신의 능력으로 우리도 살리실 것입니다.'},
+    {v:15, t:'여러분의 몸이 그리스도의 지체임을 알지 못합니까? 그러면 내가 그리스도의 지체를 가져다 창녀의 지체로 만들겠습니까? 결코 그럴 수 없습니다!'},
+    {v:16, t:'창녀와 합하는 자는 그녀와 한 몸이 된다는 것을 알지 못합니까? 성경에도 "둘이 한 몸이 될 것이다"라고 했습니다.'},
+    {v:17, t:'주님과 합하는 자는 주님과 한 영입니다.'},
+    {v:18, t:'음행을 피하십시오. 사람이 범하는 다른 모든 죄는 몸 밖에서 이루어지지만 음행하는 자는 자기 몸에 죄를 짓는 것입니다.'},
+    {v:19, t:'여러분의 몸이 여러분 안에 계신 성령의 전임을 알지 못합니까? 여러분은 하나님으로부터 성령을 받았습니다. 여러분은 여러분 자신의 것이 아닙니다.'},
+    {v:20, t:'여러분은 값을 치르고 사신 바 됐습니다. 그러므로 여러분의 몸으로 하나님께 영광을 돌리십시오.'}
+  ]}
+  {date:'2026-05-22',book:'고린도전서',range:'7:1-16',title:'부르심 그대로',verse:'각 사람은 부르심을 받은 그 상태 그대로 지내십시오. (고전 7:20)',text:[
+    {v:1, t:'이제 여러분이 편지로 물어온 것들에 대해 말씀드리겠습니다. "남자는 여자를 가까이하지 않는 것이 좋다"는 말이 있습니다.'},
+    {v:2, t:'그러나 음행을 피하기 위해 남자는 자기 아내를, 여자는 자기 남편을 두십시오.'},
+    {v:3, t:'남편은 아내에게 할 의무를 다하고 아내도 남편에게 마찬가지로 하십시오.'},
+    {v:4, t:'아내는 자기 몸에 대한 권한이 없고 남편에게 있습니다. 마찬가지로 남편도 자기 몸에 대한 권한이 없고 아내에게 있습니다.'},
+    {v:5, t:'서로 상대를 거부하지 마십시오. 기도에 전념하기 위해 합의로 잠시 떨어져 있다가 다시 합하십시오. 여러분의 절제력 부족으로 인해 사탄이 여러분을 유혹하지 못하게 하려는 것입니다.'},
+    {v:7, t:'나는 모든 사람이 나처럼 되기를 바랍니다. 그러나 각자 하나님으로부터 받은 은사가 있어서 어떤 사람은 이런 방식으로, 어떤 사람은 저런 방식으로 삽니다.'},
+    {v:10, t:'결혼한 자들에게는 내가 명령합니다. 주께서 명하신 것입니다. 아내는 남편을 떠나지 마십시오.'},
+    {v:15, t:'그러나 믿지 않는 배우자가 떠나겠다고 하면 떠나게 하십시오. 그런 경우 믿는 형제나 자매가 얽매이지 않아도 됩니다. 하나님께서는 여러분을 평화 가운데서 살도록 부르셨습니다.'},
+    {v:20, t:'각 사람은 부르심을 받은 그 상태 그대로 지내십시오.'}
+  ]}
+  {date:'2026-05-23',book:'고린도전서',range:'7:17-24',title:'하나님과 함께',verse:'형제 여러분, 각 사람은 부르심을 받은 상태로 하나님과 함께 있으십시오. (고전 7:24)',text:[
+    {v:17, t:'다만 주께서 각 사람에게 나눠 주신 대로, 하나님께서 각 사람을 부르신 그 상태에서 살아가십시오. 이것이 내가 모든 교회에서 가르치는 것입니다.'},
+    {v:18, t:'할례를 받은 상태로 부르심을 받았습니까? 할례 받지 않은 상태가 되려고 하지 마십시오. 할례 받지 않은 상태로 부르심을 받았습니까? 할례를 받으려고 하지 마십시오.'},
+    {v:19, t:'할례도 아무것도 아니고 무할례도 아무것도 아닙니다. 하나님의 명령들을 지키는 것이 중요합니다.'},
+    {v:20, t:'각 사람은 부르심을 받은 그 상태 그대로 지내십시오.'},
+    {v:21, t:'노예 상태에서 부르심을 받았습니까? 그것에 연연해하지 마십시오. 그러나 자유롭게 될 수 있다면 그 기회를 사용하십시오.'},
+    {v:22, t:'주 안에서 부르심을 받은 노예는 주님의 자유인입니다. 마찬가지로 자유인으로 부르심을 받은 자는 그리스도의 노예입니다.'},
+    {v:23, t:'여러분은 값을 치르고 사신 바 됐습니다. 사람의 노예가 되지 마십시오.'},
+    {v:24, t:'형제 여러분, 각 사람은 부르심을 받은 상태로 하나님과 함께 있으십시오.'}
+  ]}
+  {date:'2026-05-24',book:'고린도전서',range:'7:25-40',title:'주를 기쁘시게',verse:'때가 짧아졌습니다. 이제부터는 아내가 있는 자들이 없는 것처럼 지내십시오. (고전 7:29)',text:[
+    {v:29, t:'형제 여러분, 내가 말하려는 것은 이것입니다. 때가 짧아졌습니다. 이제부터는 아내가 있는 자들이 없는 것처럼 지내십시오.'},
+    {v:30, t:'우는 자들은 울지 않는 것처럼, 기뻐하는 자들은 기뻐하지 않는 것처럼, 사는 자들은 소유하지 않는 것처럼 지내십시오.'},
+    {v:31, t:'이 세상을 이용하는 자들은 그것을 지나치게 사용하지 않는 것처럼 지내십시오. 이 세상의 형태는 지나가고 있기 때문입니다.'},
+    {v:32, t:'나는 여러분이 염려 없이 지내기를 바랍니다. 결혼하지 않은 남자는 주님의 일들을 어떻게 주님을 기쁘시게 할까 생각하면서 돌봅니다.'},
+    {v:33, t:'그러나 결혼한 남자는 세상 일들을 어떻게 아내를 기쁘게 할까 생각하면서 돌봅니다.'},
+    {v:34, t:'결혼하지 않은 여자와 처녀는 주님의 일들을 돌봐서 몸과 영 모두 거룩해지려 합니다. 그러나 결혼한 여자는 세상 일들을 어떻게 남편을 기쁘게 할까 생각하면서 돌봅니다.'},
+    {v:35, t:'내가 이것을 말하는 것은 여러분 자신의 유익을 위한 것이지 여러분을 옭아매려는 것이 아닙니다. 주님께 올바르고 방해받지 않게 헌신할 수 있게 하려는 것입니다.'}
+  ]}
+  {date:'2026-05-25',book:'고린도전서',range:'8:1-13',title:'사랑이 덕을 세움',verse:'지식은 교만하게 하지만 사랑은 세워줍니다. (고전 8:1)',text:[
+    {v:1, t:'우상에게 바쳐진 음식에 관해서는 이렇습니다. 우리가 모두 지식이 있다는 것을 압니다. 지식은 교만하게 하지만 사랑은 세워줍니다.'},
+    {v:2, t:'자신이 무언가를 안다고 생각하는 사람은 아직 알아야 할 것을 모르는 것입니다.'},
+    {v:3, t:'그러나 하나님을 사랑하는 자는 하나님에게 알려진 자입니다.'},
+    {v:4, t:'우상에게 바쳐진 음식을 먹는 것에 관해서는 우상이 세상에서 아무것도 아니며 하나님은 한 분밖에 없다는 것을 압니다.'},
+    {v:6, t:'우리에게는 한 분 하나님 아버지가 계십니다. 만물이 그분에게서 났고 우리도 그분을 위해 삽니다. 한 분 주 예수 그리스도께서 계십니다. 만물이 그분으로 말미암아 있고 우리도 그분으로 말미암아 있습니다.'},
+    {v:9, t:'그러나 여러분의 이 자유가 믿음이 약한 자들에게 걸림돌이 되지 않도록 주의하십시오.'},
+    {v:11, t:'그래서 그리스도께서 그를 위해 돌아가신 믿음 약한 형제가 여러분의 지식 때문에 망하게 됩니다.'},
+    {v:13, t:'그러므로 음식이 내 형제를 실족하게 한다면 나는 그를 실족시키지 않으려고 영원히 고기를 먹지 않겠습니다.'}
+  ]}
+  {date:'2026-05-26',book:'고린도전서',range:'9:1-10',title:'복음의 사명',verse:'내가 복음을 전하지 않는다면 나에게 화가 있을 것입니다! (고전 9:16)',text:[
+    {v:1, t:'나는 자유인이 아닙니까? 나는 사도가 아닙니까? 나는 우리 주 예수님을 보지 못했습니까? 주 안에서 여러분은 내 사역의 결실이 아닙니까?'},
+    {v:2, t:'다른 사람들에게는 내가 사도가 아닐지라도 여러분에게는 분명 사도입니다. 여러분은 주 안에서 내 사도직을 확인해 주는 인장입니다.'},
+    {v:4, t:'우리에게 먹고 마실 권리가 없습니까?'},
+    {v:7, t:'자기 비용으로 군 복무를 하는 자가 누구입니까? 포도원을 가꾸고서 그 열매를 먹지 않는 자가 누구입니까? 양 떼를 먹이고서 그 젖을 먹지 않는 자가 누구입니까?'},
+    {v:14, t:'이와 같이 주께서도 복음을 전하는 자들이 복음으로 먹고 살도록 명하셨습니다.'},
+    {v:16, t:'그러나 내가 복음을 전해도 그것이 나에게 자랑거리가 되지 않습니다. 나는 그렇게 해야만 하기 때문입니다. 내가 복음을 전하지 않는다면 나에게 화가 있을 것입니다!'},
+    {v:17, t:'내가 자원해서 하면 보상을 받을 것이지만 자원하지 않아도 그것은 맡겨진 청지기직입니다.'},
+    {v:18, t:'그렇다면 내 보상이 무엇입니까? 복음을 전할 때 거저 전해 복음에서 오는 내 권리를 남용하지 않는 것입니다.'}
+  ]}
+  {date:'2026-05-27',book:'고린도전서',range:'9:11-18',title:'모든 사람의 종',verse:'나는 모든 사람에게서 자유롭지만 더 많은 사람을 얻으려고 스스로 모든 사람의 종이 됐습니다. (고전 9:19)',text:[
+    {v:19, t:'나는 모든 사람에게서 자유롭지만 더 많은 사람을 얻으려고 스스로 모든 사람의 종이 됐습니다.'},
+    {v:20, t:'유대 사람들에게는 유대 사람들을 얻으려고 유대 사람처럼 됐습니다. 율법 아래 있는 자들에게는 내 자신이 율법 아래 있지 않지만 율법 아래 있는 자들을 얻으려고 율법 아래 있는 자처럼 됐습니다.'},
+    {v:21, t:'율법 밖에 있는 자들에게는 율법 밖에 있는 자들을 얻으려고 율법 밖에 있는 자처럼 됐습니다. 나는 하나님의 율법 밖에 있지 않고 그리스도의 율법 안에 있습니다.'},
+    {v:22, t:'약한 자들에게는 약한 자들을 얻으려고 약한 자가 됐습니다. 나는 어떤 방법으로든 일부를 구원하기 위해 모든 사람에게 모든 것이 됐습니다.'},
+    {v:23, t:'나는 복음을 위해 이 모든 것을 합니다. 복음에 함께 참여하는 자가 되려는 것입니다.'},
+    {v:24, t:'경기장에서 달리는 자들이 모두 달리지만 한 사람만이 상을 받는다는 것을 알지 못합니까? 그렇게 달리십시오. 상을 받기 위해서요.'},
+    {v:25, t:'경기를 하는 모든 사람은 모든 면에서 절제합니다. 그들은 썩어 없어질 면류관을 얻으려 하지만 우리는 썩지 않을 것을 얻으려 합니다.'}
+  ]}
+  {date:'2026-05-28',book:'고린도전서',range:'9:19-27',title:'몸을 쳐 복종',verse:'내가 내 몸을 쳐서 복종시키는 것은 내가 다른 사람들에게 전파하고서 내 자신이 탈락자가 될까 두려워서입니다. (고전 9:27)',text:[
+    {v:24, t:'경기장에서 달리는 자들이 모두 달리지만 한 사람만이 상을 받습니다. 그렇게 달리십시오. 상을 받기 위해서요.'},
+    {v:25, t:'경기를 하는 모든 사람은 모든 면에서 절제합니다. 그들은 썩어 없어질 면류관을 얻으려 하지만 우리는 썩지 않을 것을 얻으려 합니다.'},
+    {v:26, t:'그러므로 나는 목표 없이 달리는 것처럼 달리지 않고 허공을 치는 것처럼 권투를 하지 않습니다.'},
+    {v:27, t:'오히려 나는 내 몸을 쳐서 복종시킵니다. 내가 다른 사람들에게 전파하고서 내 자신이 탈락자가 될까 두려워서입니다.'}
+  ]}
+  {date:'2026-05-29',book:'고린도전서',range:'10:1-13',title:'감당할 시험',verse:'하나님은 신실하십니다. 그분은 여러분이 감당할 수 없는 시험은 허락하지 않으십니다. (고전 10:13)',text:[
+    {v:1, t:'형제 여러분, 우리 조상들이 모두 구름 아래 있었고 모두 바다를 건넜으며'},
+    {v:2, t:'모두 구름과 바다 안에서 모세와 연합해 침례를 받았으며'},
+    {v:3, t:'모두 같은 신령한 음식을 먹었고'},
+    {v:4, t:'모두 같은 신령한 음료를 마셨다는 것을 알기 바랍니다. 그들을 따라온 신령한 반석에서 마셨는데 그 반석은 그리스도이셨습니다.'},
+    {v:6, t:'이런 일들은 우리를 위한 본보기로 일어난 것으로서 그들이 악한 것들을 탐낸 것처럼 우리도 그렇게 하지 않도록 하기 위함입니다.'},
+    {v:11, t:'이런 일들은 그들에게 본보기로 일어났으며 말세를 만난 우리에게 교훈으로 기록됐습니다.'},
+    {v:12, t:'그러므로 선 줄로 생각하는 자는 넘어지지 않도록 조심하십시오.'},
+    {v:13, t:'여러분이 당한 시험은 사람이 보통 당하는 것뿐입니다. 하나님은 신실하십니다. 그분은 여러분이 감당할 수 없는 시험은 허락하지 않으시고 시험과 함께 빠져나올 수 있는 길도 만들어 주실 것입니다.'}
+  ]}
+  {date:'2026-05-30',book:'고린도전서',range:'10:14-22',title:'주의 잔과 떡',verse:'우리가 축복하는 축복의 잔은 그리스도의 피에 참여하는 것이 아닙니까? (고전 10:16)',text:[
+    {v:14, t:'그러므로 사랑하는 여러분, 우상 숭배를 피하십시오.'},
+    {v:15, t:'나는 지각 있는 사람들에게 말하듯 합니다. 내가 말하는 것을 여러분 스스로 판단하십시오.'},
+    {v:16, t:'우리가 축복하는 축복의 잔은 그리스도의 피에 참여하는 것이 아닙니까? 우리가 떼는 빵은 그리스도의 몸에 참여하는 것이 아닙니까?'},
+    {v:17, t:'빵이 하나이므로 우리 많은 사람이 한 몸입니다. 우리 모두가 하나의 빵에 참여하기 때문입니다.'},
+    {v:20, t:'이방인들이 제사 드리는 것은 귀신들에게 하는 것이지 하나님께 하는 것이 아닙니다. 나는 여러분이 귀신들과 교제하는 자들이 되기를 원하지 않습니다.'},
+    {v:21, t:'여러분은 주님의 잔과 귀신들의 잔을 동시에 마실 수 없습니다. 주님의 상과 귀신들의 상에 동시에 참여할 수 없습니다.'},
+    {v:22, t:'우리가 주님을 시기하게 만들려는 것입니까? 우리가 주님보다 더 강합니까?'}
+  ]}
+  {date:'2026-05-31',book:'고린도전서',range:'10:23-33',title:'하나님의 영광',verse:'그러므로 먹든지 마시든지 무엇을 하든지 모든 것을 하나님의 영광을 위해 하십시오. (고전 10:31)',text:[
+    {v:23, t:'"모든 것이 허용돼 있습니다." 그렇습니다. 그러나 모든 것이 유익하지는 않습니다. "모든 것이 허용돼 있습니다." 그러나 모든 것이 세워 주지는 않습니다.'},
+    {v:24, t:'자기 유익을 구하지 말고 다른 사람의 유익을 구하십시오.'},
+    {v:27, t:'믿지 않는 자가 여러분을 초대하면 가고 싶으면 가십시오. 양심에 대한 문제로 따지지 말고 여러분 앞에 놓이는 것은 무엇이든지 드십시오.'},
+    {v:31, t:'그러므로 먹든지 마시든지 무엇을 하든지 모든 것을 하나님의 영광을 위해 하십시오.'},
+    {v:32, t:'유대 사람들에게도, 그리스 사람들에게도, 하나님의 교회에도 걸림돌이 되지 마십시오.'},
+    {v:33, t:'나도 모든 면에서 모든 사람을 기쁘게 하려고 노력합니다. 나 자신의 유익이 아니라 많은 사람의 유익을 구함으로써 그들이 구원을 받게 하려는 것입니다.'}
+  ]}
+  {date:'2026-06-01',book:'고린도전서',range:'11:1-16',title:'머리 됨의 질서',verse:'모든 남자의 머리는 그리스도이고 여자의 머리는 남자이며 그리스도의 머리는 하나님이십니다. (고전 11:3)',text:[
+    {v:1, t:'내가 그리스도를 본받는 것처럼 여러분도 나를 본받으십시오.'},
+    {v:2, t:'내가 여러분에게 전해 준 가르침들을 여러분이 지키고 모든 면에서 나를 기억하는 것에 대해 칭찬합니다.'},
+    {v:3, t:'그러나 나는 여러분이 이것을 알기 바랍니다. 모든 남자의 머리는 그리스도이고 여자의 머리는 남자이며 그리스도의 머리는 하나님이십니다.'},
+    {v:4, t:'무릇 남자로서 머리에 무언가를 쓰고 기도하거나 예언하는 자는 자기 머리를 욕되게 하는 것입니다.'},
+    {v:5, t:'무릇 여자로서 머리를 가리지 않고 기도하거나 예언하는 자는 자기 머리를 욕되게 하는 것입니다. 머리를 민 것과 다를 바가 없습니다.'},
+    {v:11, t:'그러나 주 안에서는 남자 없이 여자가 있지 않고 여자 없이 남자가 있지 않습니다.'},
+    {v:12, t:'여자가 남자로부터 난 것처럼 남자도 여자를 통해 납니다. 그리고 모든 것은 하나님으로부터 납니다.'},
+    {v:16, t:'분쟁을 일으키려는 생각을 가진 자가 있더라도 우리에게나 하나님의 교회들에는 그런 관습이 없습니다.'}
+  ]}
+  {date:'2026-06-02',book:'고린도전서',range:'11:17-26',title:'주의 만찬',verse:'여러분이 이 빵을 먹고 이 잔을 마실 때마다 그분이 오실 때까지 주님의 죽으심을 전파합니다. (고전 11:26)',text:[
+    {v:17, t:'다음에 명령하는 이것에 대해서는 칭찬하지 않겠습니다. 여러분의 모임이 유익이 되지 않고 해가 되기 때문입니다.'},
+    {v:20, t:'그러므로 여러분이 함께 모이면 주님의 만찬을 먹는 것이 아닙니다.'},
+    {v:21, t:'먹을 때 각자 자기 만찬을 먼저 먹어서 어떤 자는 굶주리고 어떤 자는 취합니다.'},
+    {v:22, t:'먹고 마실 집이 없습니까? 아니면 하나님의 교회를 무시하고 가난한 자들을 부끄럽게 하려는 것입니까? 내가 여러분에게 무슨 말을 해야 합니까? 이것에 대해 칭찬해야 합니까? 칭찬하지 않겠습니다.'},
+    {v:23, t:'내가 주님으로부터 전해 받은 것을 여러분에게 전했습니다. 주 예수님께서 잡히시던 밤에 빵을 들어'},
+    {v:24, t:'감사드리신 후 그것을 떼어 말씀하셨습니다. "이것은 너희를 위한 내 몸이다. 나를 기억하기 위해 이것을 행하라."'},
+    {v:25, t:'식사 후에 또 잔을 들고 말씀하셨습니다. "이 잔은 내 피로 세운 새 언약이다. 마실 때마다 나를 기억하기 위해 이것을 행하라."'},
+    {v:26, t:'여러분이 이 빵을 먹고 이 잔을 마실 때마다 그분이 오실 때까지 주님의 죽으심을 전파합니다.'}
+  ]}
+  {date:'2026-06-03',book:'고린도전서',range:'11:27-34',title:'합당하게 먹고 마시라',verse:'사람은 자신을 살피고 그런 다음에 이 빵을 먹고 이 잔을 마셔야 합니다. (고전 11:28)',text:[
+    {v:27, t:'그러므로 합당하지 않게 주님의 빵을 먹거나 잔을 마시는 자는 주님의 몸과 피에 대해 죄를 짓는 것입니다.'},
+    {v:28, t:'사람은 자신을 살피고 그런 다음에 이 빵을 먹고 이 잔을 마셔야 합니다.'},
+    {v:29, t:'주님의 몸을 분별하지 않고 먹고 마시는 자는 자기 자신에 대한 심판을 먹고 마시는 것입니다.'},
+    {v:30, t:'그러므로 여러분 가운데 약하고 병든 자가 많고 잠든 자도 적지 않습니다.'},
+    {v:31, t:'우리가 우리 자신을 살폈다면 심판받지 않을 것입니다.'},
+    {v:32, t:'그러나 우리가 심판받을 때 주님께 훈련받는 것이니 세상과 함께 정죄받지 않게 하려는 것입니다.'},
+    {v:33, t:'그러므로 내 형제 여러분, 먹으러 모일 때 서로 기다리십시오.'},
+    {v:34, t:'배가 고프면 집에서 먹으십시오. 그러면 여러분의 모임이 심판거리가 되지 않을 것입니다.'}
+  ]}
+  {date:'2026-06-04',book:'고린도전서',range:'12:1-11',title:'한 성령, 여러 은사',verse:'은사들은 여러 가지이지만 성령은 같은 분이십니다. (고전 12:4)',text:[
+    {v:1, t:'형제 여러분, 나는 여러분이 신령한 것들에 대해 모르기를 원하지 않습니다.'},
+    {v:4, t:'은사들은 여러 가지이지만 성령은 같은 분이십니다.'},
+    {v:5, t:'봉사하는 일들은 여러 가지이지만 주님은 같은 분이십니다.'},
+    {v:6, t:'사역들은 여러 가지이지만 모든 사람 안에서 모든 것을 이루시는 하나님은 같은 분이십니다.'},
+    {v:7, t:'각 사람에게 성령의 나타남을 주시는 것은 모두를 유익하게 하려는 것입니다.'},
+    {v:8, t:'어떤 사람에게는 성령으로 말미암아 지혜의 말씀을, 어떤 사람에게는 같은 성령을 따라 지식의 말씀을,'},
+    {v:9, t:'다른 사람에게는 같은 성령으로 믿음을, 어떤 사람에게는 한 성령으로 치유의 은사들을,'},
+    {v:10, t:'어떤 사람에게는 기적을 행하는 능력을, 어떤 사람에게는 예언하는 것을, 어떤 사람에게는 영들을 분별하는 것을, 다른 사람에게는 다양한 방언을, 또 다른 사람에게는 방언 통역을 주십니다.'},
+    {v:11, t:'이 모든 것은 하나이자 같은 성령이 행하시는 것으로 그분이 원하시는 대로 각 사람에게 나눠 주십니다.'}
+  ]}
+  {date:'2026-06-05',book:'고린도전서',range:'12:12-20',title:'한 몸의 많은 지체',verse:'몸은 하나이지만 많은 지체가 있습니다. 몸의 지체가 많아도 하나의 몸인 것처럼 그리스도도 그러하십니다. (고전 12:12)',text:[
+    {v:12, t:'몸은 하나이지만 많은 지체가 있습니다. 몸의 지체가 많아도 하나의 몸인 것처럼 그리스도도 그러하십니다.'},
+    {v:13, t:'우리가 유대 사람이든 그리스 사람이든 종이든 자유인이든 우리 모두가 한 성령으로 한 몸이 되도록 침례를 받았고 모두가 한 성령을 마셨습니다.'},
+    {v:14, t:'몸이 하나의 지체만이 아니라 많은 지체로 이루어진 것처럼'},
+    {v:15, t:'발이 "나는 손이 아니므로 몸에 속하지 않는다"고 하더라도 그것이 몸에 속하지 않는 것은 아닙니다.'},
+    {v:17, t:'온 몸이 눈이라면 어디서 듣겠습니까? 온 몸이 귀라면 어디서 냄새를 맡겠습니까?'},
+    {v:18, t:'그러나 하나님께서 자신이 원하시는 대로 지체들을 하나하나 몸에 두셨습니다.'},
+    {v:20, t:'지체들은 많지만 몸은 하나입니다.'}
+  ]}
+  {date:'2026-06-06',book:'고린도전서',range:'12:21-31',title:'서로 돌보는 한 몸',verse:'한 지체가 고통을 받으면 모든 지체가 함께 고통을 받습니다. (고전 12:26)',text:[
+    {v:21, t:'눈이 손에게 "나는 네가 필요 없다"고 하거나 머리가 발에게 "나는 네가 필요 없다"고 할 수 없습니다.'},
+    {v:22, t:'오히려 더 약하게 보이는 몸의 지체들이 없어서는 안 됩니다.'},
+    {v:24, t:'우리의 멀쩡한 지체들은 그런 것이 필요 없습니다. 하나님께서 몸을 고루 구성하시고 부족한 지체에게 더 많은 귀함을 주셨습니다.'},
+    {v:25, t:'이것은 몸 안에서 분열이 없게 하고 지체들이 서로를 동등하게 돌보게 하려는 것입니다.'},
+    {v:26, t:'한 지체가 고통을 받으면 모든 지체가 함께 고통을 받습니다. 한 지체가 존귀하게 여김을 받으면 모든 지체가 함께 기뻐합니다.'},
+    {v:27, t:'여러분은 그리스도의 몸이고 각 사람은 그 몸의 지체입니다.'},
+    {v:31, t:'그런데 여러분은 더 큰 은사들을 간절히 사모하십시오. 그리고 나는 이제 여러분에게 가장 훌륭한 길을 보여 드리겠습니다.'}
+  ]}
+  {date:'2026-06-07',book:'고린도전서',range:'13:1-7',title:'사랑이 없으면',verse:'내가 사람의 방언과 천사의 말을 한다 해도 사랑이 없으면 울리는 징이나 요란한 심벌즈에 불과합니다. (고전 13:1)',text:[
+    {v:1, t:'내가 사람의 방언과 천사의 말을 한다 해도 사랑이 없으면 울리는 징이나 요란한 심벌즈에 불과합니다.'},
+    {v:2, t:'내가 예언하는 능력이 있고 모든 비밀과 모든 지식을 알며 산을 옮길 만한 모든 믿음이 있다 해도 사랑이 없으면 나는 아무것도 아닙니다.'},
+    {v:3, t:'내가 내 모든 소유를 가난한 사람들에게 줘 버리고 내 몸을 불사르게 내어 줄지라도 사랑이 없으면 나에게 아무 유익이 없습니다.'},
+    {v:4, t:'사랑은 오래 참습니다. 사랑은 친절합니다. 사랑은 시기하지 않습니다. 사랑은 자랑하지 않습니다. 사랑은 교만하지 않습니다.'},
+    {v:5, t:'사랑은 무례하지 않습니다. 사랑은 자기 것을 구하지 않습니다. 사랑은 쉽게 성내지 않습니다. 사랑은 원한을 품지 않습니다.'},
+    {v:6, t:'사랑은 불의를 기뻐하지 않고 진리와 함께 기뻐합니다.'},
+    {v:7, t:'사랑은 모든 것을 덮어 주고 모든 것을 믿으며 모든 것을 바라고 모든 것을 견딥니다.'}
+  ]}
+  {date:'2026-06-08',book:'고린도전서',range:'13:8-13',title:'그 중의 제일은 사랑',verse:'그러므로 믿음, 소망, 사랑 이 세 가지는 영원히 남습니다. 그 가운데서 가장 큰 것은 사랑입니다. (고전 13:13)',text:[
+    {v:8, t:'사랑은 절대로 끝나지 않습니다. 예언도 사라질 것이고 방언도 그칠 것이고 지식도 사라질 것입니다.'},
+    {v:9, t:'우리는 부분적으로 알고 부분적으로 예언합니다.'},
+    {v:10, t:'완전한 것이 올 때 부분적인 것은 사라질 것입니다.'},
+    {v:11, t:'내가 어린아이였을 때 어린아이처럼 말하고 어린아이처럼 생각하고 어린아이처럼 판단했습니다. 어른이 돼서는 어린아이의 것들을 버렸습니다.'},
+    {v:12, t:'지금 우리는 거울로 보는 것처럼 희미하게 보지만 그때는 얼굴과 얼굴을 맞대어 볼 것입니다. 지금 나는 부분적으로 알지만 그때는 내가 알려진 것처럼 완전히 알게 될 것입니다.'},
+    {v:13, t:'그러므로 믿음, 소망, 사랑 이 세 가지는 영원히 남습니다. 그 가운데서 가장 큰 것은 사랑입니다.'}
+  ]}
+  {date:'2026-06-09',book:'고린도전서',range:'14:1-12',title:'덕을 세우는 은사',verse:'사랑을 추구하고 신령한 것들을 간절히 사모하되 특별히 예언하기를 원하십시오. (고전 14:1)',text:[
+    {v:1, t:'사랑을 추구하고 신령한 것들을 간절히 사모하되 특별히 예언하기를 원하십시오.'},
+    {v:2, t:'방언으로 말하는 자는 사람들에게 하지 않고 하나님께 합니다. 아무도 그 말을 이해하지 못하며 그는 성령으로 비밀을 말합니다.'},
+    {v:3, t:'그러나 예언하는 자는 사람들에게 말하는 것으로 세움과 권면과 위로를 줍니다.'},
+    {v:4, t:'방언으로 말하는 자는 자기 자신을 세우지만 예언하는 자는 교회를 세웁니다.'},
+    {v:5, t:'나는 여러분이 모두 방언으로 말하기를 원하지만 특별히 예언하기를 원합니다. 방언으로 말하는 자는 교회를 세우도록 통역하지 않는다면 예언하는 자만 못합니다.'},
+    {v:12, t:'그러므로 여러분도 신령한 것들을 간절히 사모하는 자들이니 교회를 세우기 위해 신령한 것들이 풍성해지기를 구하십시오.'}
+  ]}
+  {date:'2026-06-10',book:'고린도전서',range:'14:13-25',title:'마음으로 기도하라',verse:'그렇다면 어떻게 해야 합니까? 나는 영으로 기도하고 또 마음으로도 기도하겠습니다. (고전 14:15)',text:[
+    {v:13, t:'그러므로 방언으로 말하는 자는 통역할 수 있기를 기도하십시오.'},
+    {v:14, t:'내가 방언으로 기도하면 내 영은 기도하지만 내 마음은 열매를 맺지 못합니다.'},
+    {v:15, t:'그렇다면 어떻게 해야 합니까? 나는 영으로 기도하고 또 마음으로도 기도하겠습니다. 나는 영으로 찬양하고 또 마음으로도 찬양하겠습니다.'},
+    {v:16, t:'그렇지 않으면 영으로 감사할 때 알지 못하는 처지에 있는 자가 무슨 말을 하는지 알지 못해서 어떻게 아멘을 하겠습니까?'},
+    {v:19, t:'그러나 교회에서 다른 사람들을 가르치기 위해 깨달음으로 다섯 마디 말을 하는 것이 방언으로 일만 마디 하는 것보다 낫습니다.'},
+    {v:22, t:'그러므로 방언은 믿는 자들이 아니라 믿지 않는 자들을 위한 표적이고 예언은 믿지 않는 자들이 아니라 믿는 자들을 위한 것입니다.'},
+    {v:25, t:'그 마음의 비밀들이 드러나서 그는 엎드려 하나님께 경배하고 하나님이 참으로 여러분 가운데 계신다고 선포할 것입니다.'}
+  ]}
+  {date:'2026-06-11',book:'고린도전서',range:'14:26-40',title:'질서 있는 예배',verse:'모든 것을 품위 있게 하고 질서 있게 하십시오. (고전 14:40)',text:[
+    {v:26, t:'그렇다면 어떻게 해야 합니까? 형제 여러분, 여러분이 모일 때 각자 찬송시도 있고 가르침도 있고 계시도 있고 방언도 있고 통역도 있습니다. 모든 것은 세워 주기 위한 것이어야 합니다.'},
+    {v:27, t:'누가 방언으로 말한다면 두 사람이나 많아야 세 사람이 차례를 따라 하고 한 사람이 통역하십시오.'},
+    {v:28, t:'통역하는 자가 없으면 교회에서는 잠잠하고 자신과 하나님께만 말하십시오.'},
+    {v:29, t:'예언하는 자들도 두세 사람이 말하고 다른 사람들은 분별하십시오.'},
+    {v:32, t:'예언자의 영들은 예언자들에게 통제를 받습니다.'},
+    {v:33, t:'하나님은 무질서의 하나님이 아니라 평화의 하나님이십니다.'},
+    {v:39, t:'그러므로 내 형제 여러분, 예언하기를 간절히 사모하고 방언 말하는 것을 금하지 마십시오.'},
+    {v:40, t:'모든 것을 품위 있게 하고 질서 있게 하십시오.'}
+  ]}
+  {date:'2026-06-12',book:'고린도전서',range:'15:1-11',title:'복음의 핵심',verse:'성경에 따르면 그리스도께서 우리 죄들을 위해 돌아가셨습니다. (고전 15:3)',text:[
+    {v:1, t:'형제 여러분, 내가 여러분에게 전파한 복음을 여러분에게 알게 합니다. 여러분은 그것을 받았고 그 안에 서 있습니다.'},
+    {v:2, t:'내가 여러분에게 전파한 말씀을 굳게 지키면 그로 말미암아 구원을 받습니다. 그렇지 않으면 여러분은 헛되이 믿은 것입니다.'},
+    {v:3, t:'내가 받아서 가장 먼저 여러분에게 전한 것은 이것입니다. 성경에 따르면 그리스도께서 우리 죄들을 위해 돌아가셨습니다.'},
+    {v:4, t:'그분이 장사됐다가 성경에 따르면 사흘째 날에 살아나셨습니다.'},
+    {v:5, t:'게바에게, 그다음에 열두 제자에게 나타나셨습니다.'},
+    {v:6, t:'그 후에 한꺼번에 오백 명 이상의 형제들에게 나타나셨는데 그 가운데 대부분은 지금도 살아 있고 어떤 이들은 잠들었습니다.'},
+    {v:10, t:'그러나 내가 있는 것은 하나님의 은혜로 된 것입니다. 내게 주신 그분의 은혜가 헛되지 않았습니다. 내가 그들 모두보다 더 수고했는데 이는 내가 아니라 나와 함께한 하나님의 은혜입니다.'},
+    {v:11, t:'그러므로 그들이나 나나 이렇게 전파했고 여러분은 이렇게 믿었습니다.'}
+  ]}
+  {date:'2026-06-13',book:'고린도전서',range:'15:12-19',title:'부활이 없다면',verse:'그리스도 안에서 우리가 바라는 것이 이 삶에 관한 것뿐이라면 우리는 모든 사람들 가운데서 가장 불쌍한 자들입니다. (고전 15:19)',text:[
+    {v:12, t:'그리스도께서 죽은 자들 가운데서 살아나셨다고 전파됐는데 여러분 가운데 어떤 사람들은 어찌하여 죽은 자의 부활이 없다고 합니까?'},
+    {v:13, t:'죽은 자의 부활이 없다면 그리스도께서도 살아나지 못하셨을 것입니다.'},
+    {v:14, t:'그리스도께서 살아나지 못하셨다면 우리의 전파도 헛것이고 여러분의 믿음도 헛것입니다.'},
+    {v:17, t:'그리스도께서 살아나지 못하셨다면 여러분의 믿음은 헛것이고 여러분은 아직도 자신의 죄들 가운데 있습니다.'},
+    {v:18, t:'그렇다면 그리스도 안에서 잠든 자들도 멸망했습니다.'},
+    {v:19, t:'그리스도 안에서 우리가 바라는 것이 이 삶에 관한 것뿐이라면 우리는 모든 사람들 가운데서 가장 불쌍한 자들입니다.'}
+  ]}
+  {date:'2026-06-14',book:'고린도전서',range:'15:20-28',title:'첫 열매 그리스도',verse:'이제 그리스도께서 죽은 자들 가운데서 살아나셨습니다. 그분은 잠든 자들의 첫 열매이십니다. (고전 15:20)',text:[
+    {v:20, t:'이제 그리스도께서 죽은 자들 가운데서 살아나셨습니다. 그분은 잠든 자들의 첫 열매이십니다.'},
+    {v:21, t:'한 사람으로 말미암아 죽음이 왔으므로 한 사람으로 말미암아 죽은 자들의 부활도 옵니다.'},
+    {v:22, t:'아담 안에서 모든 사람이 죽는 것처럼 그리스도 안에서 모든 사람이 살아날 것입니다.'},
+    {v:23, t:'그러나 각각 순서대로 됩니다. 첫 열매이신 그리스도가 먼저이고 그다음에 그리스도의 재림 때 그리스도께 속한 자들이 살아납니다.'},
+    {v:24, t:'그런 다음 마지막이 옵니다. 그때 그리스도께서 모든 통치와 모든 권세와 능력을 멸하시고 나라를 아버지 하나님께 넘겨드릴 것입니다.'},
+    {v:26, t:'마지막으로 멸망받을 원수는 죽음입니다.'},
+    {v:28, t:'만물이 그분에게 복종하게 될 때 그때 아들 자신도 만물을 자신에게 복종하게 하신 분에게 복종할 것입니다. 그리하여 하나님이 모든 것 안에서 모든 것이 되실 것입니다.'}
+  ]}
+  {date:'2026-06-15',book:'고린도전서',range:'15:29-34',title:'깨어 의를 행하라',verse:'정신을 차리고 올바로 행동하며 죄를 짓지 마십시오. (고전 15:34)',text:[
+    {v:29, t:'그렇지 않으면 죽은 자들을 위해 침례를 받는 자들은 무엇을 하겠습니까? 죽은 자들이 전혀 살아나지 않는다면 어찌하여 그들을 위해 침례를 받습니까?'},
+    {v:30, t:'또 어찌하여 우리는 항상 위험을 무릅씁니까?'},
+    {v:31, t:'형제 여러분, 나는 날마다 죽습니다. 내가 우리 주 그리스도 예수 안에서 여러분에게 갖는 자랑을 두고 맹세합니다.'},
+    {v:32, t:'내가 에베소에서 맹수들과 싸운 것이 단지 인간적인 동기에서였다면 나에게 무슨 유익이 있습니까? 죽은 자들이 살아나지 않는다면 "내일 죽을 테니 먹고 마시자"라는 말이 맞습니다.'},
+    {v:33, t:'속지 마십시오. 나쁜 사귐이 좋은 습관을 망칩니다.'},
+    {v:34, t:'정신을 차리고 올바로 행동하며 죄를 짓지 마십시오. 어떤 이들이 하나님을 알지 못하기 때문입니다. 내가 여러분을 부끄럽게 하기 위해 이것을 말합니다.'}
+  ]}
+  {date:'2026-06-16',book:'고린도전서',range:'15:35-49',title:'신령한 몸의 부활',verse:'육의 몸으로 심겨지고 신령한 몸으로 살아납니다. (고전 15:44)',text:[
+    {v:35, t:'누군가 "죽은 자들이 어떻게 살아납니까? 어떤 몸으로 옵니까?" 하고 물을 것입니다.'},
+    {v:36, t:'어리석은 자여! 당신이 심는 씨앗은 죽지 않으면 살아나지 않습니다.'},
+    {v:37, t:'당신이 심는 것은 앞으로 될 형체를 심는 것이 아니라 밀알이나 다른 씨앗을 심는 것입니다.'},
+    {v:38, t:'그러나 하나님이 원하시는 대로 형체를 줍니다. 각각의 씨앗에 그 자체의 형체를 줍니다.'},
+    {v:42, t:'죽은 자들의 부활도 이와 같습니다. 썩을 것으로 심겨지고 썩지 않을 것으로 살아납니다.'},
+    {v:43, t:'수치스러운 것으로 심겨지고 영광스러운 것으로 살아납니다. 약한 것으로 심겨지고 강한 것으로 살아납니다.'},
+    {v:44, t:'육의 몸으로 심겨지고 신령한 몸으로 살아납니다. 육의 몸이 있은즉 신령한 몸도 있습니다.'},
+    {v:49, t:'우리가 흙으로 된 자의 형상을 입었던 것처럼 하늘에 속한 자의 형상을 입을 것입니다.'}
+  ]}
+  {date:'2026-06-17',book:'고린도전서',range:'15:50-58',title:'마지막 나팔에',verse:'"죽음이 승리에 삼켜졌다"는 기록된 말씀이 이루어질 것입니다. (고전 15:54)',text:[
+    {v:51, t:'보십시오! 내가 여러분에게 비밀을 말합니다. 우리 모두가 잠드는 것이 아니라 마지막 나팔 소리에 눈 깜짝할 사이에 홀연히 다 변화될 것입니다.'},
+    {v:52, t:'나팔이 울리면 죽은 자들이 썩지 않는 것으로 살아나고 우리도 변화될 것입니다.'},
+    {v:53, t:'이 썩는 것이 반드시 썩지 않는 것을 입어야 하고 이 죽는 것이 반드시 죽지 않는 것을 입어야 합니다.'},
+    {v:54, t:'이 썩는 것이 썩지 않는 것을 입고 이 죽는 것이 죽지 않는 것을 입을 때 "죽음이 승리에 삼켜졌다"는 기록된 말씀이 이루어질 것입니다.'},
+    {v:55, t:'"죽음아, 네 승리가 어디 있느냐? 죽음아, 네 독침이 어디 있느냐?"'},
+    {v:57, t:'그러나 우리 주 예수 그리스도를 통해 우리에게 승리를 주시는 하나님께 감사를 드립니다.'},
+    {v:58, t:'그러므로 내 사랑하는 형제 여러분, 굳건히 서서 흔들리지 마십시오. 항상 주님의 일에 더욱 힘쓰십시오. 여러분의 수고가 주 안에서 헛되지 않다는 것을 알기 때문입니다.'}
+  ]}
+  {date:'2026-06-18',book:'고린도전서',range:'16:1-12',title:'성도를 위한 연보',verse:'매주 첫날에 여러분 각자가 수입에 비례해 일정액을 따로 모아 두십시오. (고전 16:2)',text:[
+    {v:1, t:'성도들을 위한 헌금에 관해서는 갈라디아 교회들에게 명한 것처럼 여러분도 그렇게 하십시오.'},
+    {v:2, t:'매주 첫날에 여러분 각자가 수입에 비례해 일정액을 따로 모아 두십시오. 내가 갔을 때 헌금을 하지 않아도 되도록요.'},
+    {v:3, t:'내가 도착하면 여러분이 인정한 사람들에게 편지를 주어 여러분의 선물을 예루살렘에 전달하도록 보내겠습니다.'},
+    {v:8, t:'나는 오순절까지 에베소에 머무르겠습니다.'},
+    {v:9, t:'왜냐하면 내게 크고 효과적인 문이 열렸기 때문입니다. 대적하는 자들도 많습니다.'},
+    {v:13, t:'깨어 있으십시오. 믿음 안에 굳게 서 있으십시오. 용감하게 강건하십시오.'},
+    {v:14, t:'여러분이 하는 모든 일을 사랑으로 하십시오.'}
+  ]}
+  {date:'2026-06-19',book:'고린도전서',range:'16:13-24',title:'깨어 굳건히 서라',verse:'깨어 있으십시오. 믿음 안에 굳게 서 있으십시오. 용감하게 강건하십시오. (고전 16:13)',text:[
+    {v:13, t:'깨어 있으십시오. 믿음 안에 굳게 서 있으십시오. 용감하게 강건하십시오.'},
+    {v:14, t:'여러분이 하는 모든 일을 사랑으로 하십시오.'},
+    {v:15, t:'형제 여러분, 여러분은 스데바나의 집이 아가야의 첫 열매이며 성도들을 섬기는 일에 헌신했다는 것을 압니다. 나는 여러분에게 간청합니다.'},
+    {v:16, t:'이런 자들과 또 함께 일하며 수고하는 모든 자에게 순종하십시오.'},
+    {v:19, t:'아시아의 교회들이 여러분에게 문안합니다. 아굴라와 브리스가와 그들의 집에 있는 교회가 주 안에서 여러분에게 따뜻한 문안을 드립니다.'},
+    {v:23, t:'주 예수님의 은혜가 여러분과 함께하기를 바랍니다.'},
+    {v:24, t:'그리스도 예수 안에서 나의 사랑이 여러분 모두와 함께하기를 바랍니다.'}
+  ]}
+  {date:'2026-06-20',book:'요나',range:'1:1-10',title:'요나의 도망',verse:'요나는 일어나 여호와의 낯을 피해 다시스로 도망가려 했습니다. (욘 1:3)',text:[
+    {v:1, t:'여호와의 말씀이 아밋대의 아들 요나에게 임했습니다.'},
+    {v:2, t:'"일어나 저 큰 성읍 니느웨로 가서 그것을 향해 외쳐라. 그들의 악이 내 앞에 드러났다."'},
+    {v:3, t:'그러나 요나는 일어나 여호와의 낯을 피해 다시스로 도망가려 했습니다. 욥바로 내려가 보니 마침 다시스로 가는 배가 있었습니다. 요나는 뱃삯을 내고 배에 올라 여호와를 피해 다시스로 가려고 승선했습니다.'},
+    {v:4, t:'여호와께서 바다에 큰 바람을 보내시매 바다에 큰 폭풍이 일어 배가 곧 부서질 것 같았습니다.'},
+    {v:5, t:'사공들이 두려워하여 각자 자기 신에게 부르짖었습니다. 배를 가볍게 하려고 배에 실린 화물을 바다에 던졌습니다. 그런데 요나는 아래쪽 선창으로 내려가 누워 깊이 잠들었습니다.'},
+    {v:6, t:'선장이 그에게 와서 말했습니다. "자는 게 무슨 짓이오! 일어나 당신의 하나님께 기도하시오! 혹시 하나님이 우리를 생각하셔서 우리가 망하지 않게 해 주실지도 모르잖소."'},
+    {v:9, t:'그가 대답했습니다. "나는 히브리 사람입니다. 바다와 육지를 만드신 하늘의 하나님 여호와를 경외하는 자입니다."'},
+    {v:10, t:'그러자 사람들이 크게 두려워하며 말했습니다. "어찌하여 이런 일을 했소?" 요나가 여호와를 피해 도망가고 있다는 것을 그들이 알았습니다.'}
+  ]}
+  {date:'2026-06-21',book:'요나',range:'1:11-16',title:'바다에 던져진 요나',verse:'그들이 요나를 들어 바다에 던지자 바다의 성난 파도가 그쳤습니다. (욘 1:15)',text:[
+    {v:11, t:'그들이 요나에게 물었습니다. "우리가 당신을 어떻게 해야 바다가 잠잠해지겠소?" 바다가 점점 더 거칠어지고 있었습니다.'},
+    {v:12, t:'그가 말했습니다. "나를 들어 바다에 던지시오. 그러면 바다가 잠잠해질 것입니다. 이 큰 폭풍이 당신들에게 닥친 것이 나 때문인 것을 알기 때문입니다."'},
+    {v:13, t:'그러나 그 사람들은 뭍으로 돌아가려고 힘써 노를 저었지만 바다가 더욱 그들을 향해 거칠어졌기 때문에 그렇게 할 수 없었습니다.'},
+    {v:14, t:'그들이 여호와께 부르짖어 말했습니다. "여호와여, 이 사람의 목숨 때문에 우리를 망하게 하지 마소서. 무죄한 피를 우리에게 돌리지 마소서. 여호와여, 주님이 원하시는 대로 행하셨습니다."'},
+    {v:15, t:'그들이 요나를 들어 바다에 던지자 바다의 성난 파도가 그쳤습니다.'},
+    {v:16, t:'그러자 그 사람들이 여호와를 크게 두려워하여 여호와께 제사를 드리고 서원을 했습니다.'}
+  ]}
+  {date:'2026-06-22',book:'요나',range:'1:17-2:10',title:'큰 물고기 뱃속에서',verse:'내가 고통 가운데 여호와께 부르짖었더니 그분이 내게 응답하셨습니다. (욘 2:2)',text:[
+    {v:17, t:'여호와께서 큰 물고기를 예비하셔서 요나를 삼키게 하셨습니다. 요나는 사흘 밤낮을 물고기 뱃속에 있었습니다.'},
+    {v:1, t:'요나가 물고기 뱃속에서 그의 하나님 여호와께 기도했습니다.'},
+    {v:2, t:'"내가 고통 가운데 여호와께 부르짖었더니 그분이 내게 응답하셨습니다. 스올의 뱃속에서 내가 부르짖었더니 주님이 내 목소리를 들으셨습니다.'},
+    {v:3, t:'주님이 나를 깊은 곳, 바다 한가운데 던지셨습니다. 물결이 나를 감쌌고 주님의 파도와 물결이 모두 내 위로 지나갔습니다.'},
+    {v:7, t:'내 영혼이 내 안에서 기절할 때 나는 여호와를 기억했습니다. 내 기도가 주님께, 주님의 성전으로 이르렀습니다."'},
+    {v:9, t:'"나는 감사의 노래로 주님께 제사를 드리겠습니다. 내가 서원한 것을 지키겠습니다. 구원은 여호와께로부터 옵니다."'},
+    {v:10, t:'여호와께서 물고기에게 명하시자 물고기가 요나를 육지로 토해 냈습니다.'}
+  ]}
+  {date:'2026-06-23',book:'요나',range:'3:1-10',title:'니느웨의 회개',verse:'하나님이 그들이 자신들의 악한 길에서 돌이키는 것을 보시고 그들에게 내리려던 재앙을 내리지 않으셨습니다. (욘 3:10)',text:[
+    {v:1, t:'여호와의 말씀이 두 번째로 요나에게 임했습니다.'},
+    {v:2, t:'"일어나 저 큰 성읍 니느웨로 가서 내가 네게 명하는 것을 선포하여라."'},
+    {v:3, t:'요나가 여호와의 말씀에 따라 일어나 니느웨로 갔습니다. 니느웨는 돌아다니는 데 사흘이 걸리는 대단히 큰 성읍이었습니다.'},
+    {v:4, t:'요나가 성읍으로 들어가 하루 동안 걸으며 외쳤습니다. "40일이 지나면 니느웨가 무너질 것이다!"'},
+    {v:5, t:'그러자 니느웨 사람들이 하나님을 믿고 금식을 선포하며 낮은 자로부터 높은 자까지 모두 굵은 베옷을 입었습니다.'},
+    {v:6, t:'그 소식이 니느웨 왕에게 닿자 그는 자기 왕좌에서 일어나 왕복을 벗고 굵은 베옷을 입으며 재 위에 앉았습니다.'},
+    {v:9, t:'"우리가 악한 길에서 돌이키면 하나님이 돌이키시고 진노를 거두실지 누가 압니까? 그러면 우리가 멸망하지 않을 것입니다."'},
+    {v:10, t:'하나님이 그들이 자신들의 악한 길에서 돌이키는 것을 보시고 그들에게 내리려던 재앙을 내리지 않으셨습니다.'}
+  ]}
+  {date:'2026-06-24',book:'요나',range:'4:1-11',title:'박넝쿨과 하나님의 긍휼',verse:'하물며 이 큰 성읍 니느웨를 내가 아끼지 않겠느냐? (욘 4:11)',text:[
+    {v:1, t:'그러나 요나는 이것이 몹시 불만스러워 화가 났습니다.'},
+    {v:2, t:'그가 여호와께 기도했습니다. "여호와여, 이것이 바로 내가 고국에 있을 때 말씀드렸던 것이 아닙니까? 주님이 은혜롭고 자비로우시며 노하기를 더디 하시고 사랑이 크시며 재앙을 내리지 않으시는 하나님이심을 알았기에 내가 서둘러 다시스로 도망쳤습니다.'},
+    {v:3, t:'여호와여, 이제 내 목숨을 거두소서. 사는 것보다 죽는 것이 낫습니다."'},
+    {v:6, t:'하나님 여호와께서 박 넝쿨을 예비하셔서 요나 위에서 자라게 하셨습니다. 그래서 그에게 그늘이 지게 하여 그의 불쾌함을 덜어 주셨습니다. 요나가 그 박 넝쿨을 보고 매우 기뻐했습니다.'},
+    {v:8, t:'해가 뜰 때 하나님이 뜨거운 동풍을 예비하셨고 해가 요나의 머리에 내리쬐자 그가 기절할 것 같았습니다. 그래서 죽기를 원하여 "사는 것보다 죽는 것이 낫습니다"라고 말했습니다.'},
+    {v:10, t:'여호와께서 말씀하셨습니다. "네가 수고하지도 않고 키우지도 않은 이 박 넝쿨을 아꼈는데'},
+    {v:11, t:'하물며 이 큰 성읍 니느웨에는 오른손과 왼손을 분간하지 못하는 자가 12만 명 이상이나 되고 또 많은 짐승도 있지 않느냐? 내가 어찌 그 성읍을 아끼지 않겠느냐?"'}
+  ]}
+  {date:'2026-06-25',book:'나훔',range:'1:1-8',title:'질투하시는 하나님',verse:'여호와는 노하기를 더디 하시고 능력이 크시며 벌을 주어야 할 자를 결코 무죄로 여기지 않으십니다. (나 1:3)',text:[
+    {v:1, t:'니느웨에 관한 경고 곧 엘고스 사람 나훔이 본 환상의 책입니다.'},
+    {v:2, t:'여호와는 질투하시고 복수하시는 하나님이십니다. 여호와는 복수하시고 진노하시며 자신을 대적하는 자들을 복수하시고 원수들에게 진노를 품으십니다.'},
+    {v:3, t:'여호와는 노하기를 더디 하시고 능력이 크시며 벌을 주어야 할 자를 결코 무죄로 여기지 않으십니다. 여호와의 길은 회오리바람과 폭풍 가운데 있고 구름은 그의 발 아래 먼지입니다.'},
+    {v:6, t:'누가 그의 진노 앞에 설 수 있겠습니까? 누가 그의 맹렬한 분노를 견딜 수 있겠습니까? 그의 진노가 불처럼 쏟아지고 그로 인해 바위들이 부숩니다.'},
+    {v:7, t:'여호와는 선하십니다. 그는 환난 날에 피난처이시며 자신에게 피하는 자들을 아십니다.'},
+    {v:8, t:'그러나 그는 밀물처럼 불어난 홍수로 니느웨를 진멸하시고 자기 원수들을 어둠으로 몰아내실 것입니다.'}
+  ]}
+  {date:'2026-06-26',book:'나훔',range:'1:9-15',title:'위로의 소식',verse:'보라, 아름다운 소식을 전하고 평화를 선포하는 자의 발이 산에 있구나! (나 1:15)',text:[
+    {v:9, t:'여호와를 대항하여 너희가 무엇을 계획하고 있느냐? 그는 완전히 멸망시키실 것이다. 고통이 다시 일어나지 않을 것이다.'},
+    {v:11, t:'여호와를 대항하여 악을 꾸미고 사악한 계략을 세운 자가 너희에게서 나왔다.'},
+    {v:12, t:'여호와께서 말씀하십니다. "그들이 강하고 수가 많을지라도 그들은 잘려 사라질 것이다. 내가 너를 괴롭혔지만 너를 다시는 괴롭히지 않을 것이다.'},
+    {v:13, t:'이제 내가 그의 멍에를 네 목에서 꺾고 그의 족쇄를 끊을 것이다."'},
+    {v:15, t:'보라, 아름다운 소식을 전하고 평화를 선포하는 자의 발이 산에 있구나! 유다야, 네 절기를 지키고 서원을 이행하라. 악한 자가 다시는 너를 침략하지 못할 것이다. 그는 완전히 사라졌다.'}
+  ]}
+  {date:'2026-06-27',book:'나훔',range:'2:1-7',title:'니느웨 멸망의 환상',verse:'파괴자가 너를 치러 올라왔다. 산성을 지키고 길을 파수하라. (나 2:1)',text:[
+    {v:1, t:'파괴자가 너를 치러 올라왔다. 산성을 지키고 길을 파수하라. 허리를 굳세게 하고 힘을 크게 강건하게 하라.'},
+    {v:2, t:'여호와께서 야곱의 위엄을 회복하실 것입니다. 이스라엘의 위엄처럼요. 빼앗는 자들이 그것들을 빼앗고 그들의 포도나무 가지를 망쳤기 때문입니다.'},
+    {v:3, t:'그 용사들의 방패는 붉고 전사들은 진홍 옷을 입었습니다. 그가 준비하는 날에 병거의 강철이 번쩍이고 사이프러스 창이 흔들립니다.'},
+    {v:6, t:'강의 수문이 열리고 궁전이 녹아내립니다.'},
+    {v:7, t:'칙령이 선포됩니다. 니느웨가 포로로 끌려가고 그녀의 여종들이 비둘기처럼 가슴을 치며 울부짖습니다.'}
+  ]}
+  {date:'2026-06-28',book:'나훔',range:'2:8-13',title:'사자굴이 무너지다',verse:'보라, 내가 너의 대적이 되리라고 만군의 여호와가 선포하신다. (나 2:13)',text:[
+    {v:8, t:'니느웨는 옛날부터 물이 고여 있는 연못 같았는데 이제 그 사람들이 도망칩니다. "멈춰라! 멈춰라!" 하지만 아무도 돌아보지 않습니다.'},
+    {v:9, t:'은을 노략하라! 금을 노략하라! 그 보물이 끝이 없고 온갖 귀한 가구들이 가득합니다.'},
+    {v:10, t:'니느웨가 텅 비고 황폐해졌습니다. 심장이 녹고 무릎이 덜덜 떨립니다. 모두 몸이 굳고 얼굴들이 창백해졌습니다.'},
+    {v:11, t:'사자들의 동굴이 어디 있느냐? 어린 사자들을 먹이던 곳이 어디 있느냐? 사자가 사자 새끼들을 위해 먹이를 물어 오고 암사자를 위해 사냥하던 곳이 어디 있느냐?'},
+    {v:13, t:'"보라, 내가 너의 대적이 되리라"고 만군의 여호와가 선포하신다. "내가 연기 속에서 네 병거들을 불사를 것이다. 칼이 네 어린 사자들을 삼킬 것이다. 내가 땅에서 네 먹이를 끊어 버릴 것이다. 네 사신들의 목소리가 더 이상 들리지 않을 것이다."'}
+  ]}
+  {date:'2026-06-29',book:'나훔',range:'3:1-11',title:'피의 성에 화 있을진저',verse:'화 있을진저, 피의 성읍이여! (나 3:1)',text:[
+    {v:1, t:'화 있을진저, 피의 성읍이여! 온통 거짓이요 약탈이 가득하며 먹이가 떠나지 않는구나.'},
+    {v:2, t:'채찍 소리, 수레바퀴 소리, 말이 달리는 소리, 전차가 달려가는 소리,'},
+    {v:3, t:'기병이 돌격하고 칼이 번쩍이며 창이 빛나며 많은 죽음과 무수한 시체들, 시체들이 끝도 없습니다. 그들은 시체들에 걸려 넘어집니다.'},
+    {v:4, t:'이 모든 것은 음행이 많은 아리따운 창녀의 매력 때문입니다. 그녀가 음행으로 민족들을 팔고 주술로 종족들을 팔았습니다.'},
+    {v:5, t:'"보라, 내가 너의 대적이 되리라"고 만군의 여호와가 선포하신다. "내가 네 치마를 네 얼굴까지 들추어 민족들에게 네 벌거벗음을 보이고 나라들에게 네 부끄러운 것을 보이겠다."'},
+    {v:7, t:'너를 보는 자들은 모두 너를 피해 달아나며 말할 것입니다. "니느웨가 황폐해졌다. 누가 그녀를 위해 울어 주겠느냐? 내가 어디서 너를 위로할 자를 구하겠느냐?"'}
+  ]}
+  {date:'2026-06-30',book:'나훔',range:'3:12-19',title:'위로받지 못할 상처',verse:'네 소식을 듣는 자들이 모두 너를 보고 손뼉을 치는구나. (나 3:19)',text:[
+    {v:12, t:'네 모든 요새는 처음 익은 열매가 달린 무화과나무 같아서 흔들리기만 해도 먹는 자의 입으로 떨어진다.'},
+    {v:13, t:'보라, 네 안에 있는 군사들이 여자들 같구나. 네 나라의 성문들이 네 원수들에게 활짝 열렸고 성문 빗장들이 불에 탔다.'},
+    {v:15, t:'불이 너를 삼킬 것이다. 칼이 너를 자를 것이다. 메뚜기떼처럼 너를 먹어 치울 것이다.'},
+    {v:16, t:'네가 하늘의 별보다 더 많은 상인들을 두었으나 그들은 메뚜기처럼 날개 펴고 날아가 버렸다.'},
+    {v:18, t:'앗수르 왕이여, 네 목자들이 졸고 있구나. 네 귀족들이 드러누워 있다. 네 백성이 산위에 흩어졌는데 그들을 모을 자가 없다.'},
+    {v:19, t:'네 상처를 고칠 치료책이 없다. 네 부상이 치명적이다. 네 소식을 듣는 자들이 모두 너를 보고 손뼉을 친다. 네 끊임없는 잔인함이 그들 모두에게 미쳤기 때문이다.'}
+  ]}
+];
+
+// ── 오늘의 암송 구절: 오늘 본문에서 핵심 구절을 자동 추출 ──
+const getTodayMemory=()=>{
+  const entry=getEntry();
+  if(!entry||!entry.verse) return {verse:'',ref:''};
+  // entry.verse 형식: "본문 텍스트 (성경 약자 장:절)"
+  const m=entry.verse.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+  if(m) return {verse:m[1].trim(), ref:m[2].trim()};
+  return {verse:entry.verse, ref:`${entry.book} ${entry.range}`};
+};
+
+// ── 풍성한 묵상 콘텐츠 DB (어린이/청소년 레벨별) ──
+// 키: 날짜  값: { youth: {...}, kids: {...} }
+const DEVOTION_DB={
+  '2026-05-18':{
+    youth:{
+      summary:'바울은 고린도 교회 안에 있던 교만한 자들에게 강하게 도전합니다. 그들은 자기들이 이미 영적으로 부유하고 왕 노릇 한다고 자랑했지만, 정작 사도들은 매를 맞고 굶주리며 세상의 쓰레기처럼 취급되고 있었어요. 바울은 부끄럽게 하려는 것이 아니라 "사랑하는 자녀 같이" 권한다고 말하며, 진짜 하나님 나라는 말의 화려함이 아니라 능력 — 즉, 삶을 변화시키는 실제 능력 — 에 있다고 선포합니다.',
+      keyPoint:'하나님 나라는 말로만 떠드는 게 아니라, 삶에서 실제로 보이는 능력이에요. 십자가의 자기 부인이 곧 능력입니다.',
+      context:'고린도 교회는 똑똑하고 부유한 사람이 많았어요. 그런데 그들은 "은사"를 자랑하면서 분파를 만들었고, 사도 바울을 무시했습니다. 바울은 자기와 동료 사도들이 어떻게 사는지 — 매 맞고, 굶주리고, 욕먹고 — 보여주며, 진짜 신앙이 무엇인지 가르쳐줘요.',
+      vocab:[
+        {term:'사도', desc:'예수님이 직접 보내신 제자. 복음을 전하기 위해 모든 것을 버린 사람.'},
+        {term:'구경거리', desc:'원형경기장에서 사람들이 죽음을 구경하는 모습. 사도들이 그 정도로 멸시받았다는 의미.'},
+        {term:'권한다', desc:'명령하거나 혼내는 게 아니라, 부모가 자녀를 사랑으로 타이르듯 말한다는 뜻.'},
+      ],
+      questions:[
+        {q:'바울은 "사도인 우리를 죽이기로 작정된 자 같이 끝에 두셨다"고 했어요. 내가 만약 그렇게 욕먹고 무시당했다면 어떤 마음이었을까요?', hint:'화났을지, 도망쳤을지, 변명했을지 솔직하게 떠올려봐요.'},
+        {q:'고린도 사람들은 "말"을 자랑했고, 바울은 "능력"을 말했어요. 내 신앙은 말에 가까운가요, 능력에 가까운가요?', hint:'학교/가정/친구 관계 중 한 곳을 떠올려봐요.'},
+        {q:'바울은 자기를 미워하는 사람들을 "사랑하는 자녀"라고 불렀어요. 나를 힘들게 하는 사람을 그렇게 부를 수 있을까요? 왜 어려울까요?', hint:'한 사람을 구체적으로 떠올려봐요.'},
+      ],
+      help:'고린도 사람들은 똑똑한 말과 자랑하는 은사로 자기들끼리 우월감을 키웠어요. 우리도 신앙을 "지식"으로만 가질 때가 있어요. 성경 구절은 많이 알지만 삶에서는 변화가 없는 거죠. 바울은 그게 가짜라고 말해요. 진짜 하나님 나라는 — 십자가에서 자기를 비우신 예수님처럼 — 욕먹어도 축복하고, 박해받아도 참는 그 능력 안에 있어요.',
+      apply:'오늘 학교나 집에서 누군가 나를 무시하거나 비난할 때, 변명하거나 화내지 말고 한 번만 침묵으로 참아봐요. 그리고 그 사람을 위해 한 줄짜리 기도를 마음속으로 드려봐요. 그게 바로 바울이 말한 "능력"이에요.',
+      prayerGuide:'주님, 저도 모르게 말로만 신앙을 자랑했던 것을 회개해요. 욕먹어도 축복할 수 있는 능력, 무시당해도 사랑할 수 있는 마음을 주세요. 오늘 하루 작은 자리에서 십자가의 능력을 보여주는 제가 되게 해주세요.',
+    },
+    kids:{
+      summary:'바울 아저씨는 예수님을 너무 사랑해서 멀리멀리 다니며 복음을 전했어요. 그런데 어떤 친구들은 바울 아저씨를 무시하고 자기가 더 잘났다고 자랑했어요. 바울은 화내지 않고 "너희는 나의 사랑하는 자녀란다" 하며 따뜻하게 가르쳐줬어요. 그리고 말했어요. "하나님 나라는 멋진 말이 아니라, 진짜로 변하는 능력에 있어요!"',
+      keyPoint:'멋진 말보다 행동! 하나님은 말만 잘하는 사람보다 사랑으로 행동하는 친구를 기뻐하세요.',
+      context:'바울 아저씨는 그 당시 교회 사람들에게 편지를 자주 썼어요. 고린도라는 동네 교회는 자랑하기 좋아하는 사람이 많았대요. 바울은 "그러면 안 돼!" 라고 사랑으로 알려주셨어요.',
+      vocab:[
+        {term:'바울', desc:'예수님을 너무 사랑해서 온 세상에 예수님을 알리신 분.'},
+        {term:'사도', desc:'예수님이 "복음을 전하렴" 하고 보내신 특별한 친구.'},
+        {term:'능력', desc:'말로만 하는 게 아니라 진짜로 보여지는 힘.'},
+      ],
+      questions:[
+        {q:'내가 친구에게 자랑한 적이 있나요? 어떤 거였어요?', hint:'장난감, 점수, 옷, 부모님 자랑 모두 OK!'},
+        {q:'친구가 나를 놀렸을 때 어떻게 했어요?', hint:'화냈는지, 울었는지, 참았는지 솔직하게 적어봐요.'},
+        {q:'오늘 사랑으로 도와줄 수 있는 친구가 있을까요?', hint:'누군가의 이름을 떠올려봐요.'},
+      ],
+      help:'친구들 앞에서 자랑하고 싶을 때가 많죠? 바울 아저씨는 자랑하는 거 대신, 사랑하는 마음으로 친구를 도와주라고 말해요. 예수님은 말로만 사랑한다고 하신 게 아니라, 십자가에서 우리를 위해 진짜로 사랑을 보여주셨거든요.',
+      apply:'오늘 친구한테 "너 멋지다" "잘했어" 하고 칭찬 한 번 해봐요. 자랑 대신 칭찬을 하면 마음이 따뜻해진대요!',
+      prayerGuide:'예수님 사랑해요! 자랑하는 마음보다 친구를 사랑하는 마음 주세요. 오늘 한 명 도와줄 수 있게 해주세요.',
+    },
+  },
+};
+function getDevotion(dateStr, level){
+  return DEVOTION_DB[dateStr]?.[level]||null;
+}
+
+// 5월 20일 콘텐츠 추가
+Object.assign(DEVOTION_DB,{
+  '2026-05-20':{
+    youth:{
+      summary:'바울은 고린도 교회 안에 성도끼리 서로 고소하는 문제를 다룹니다. 교회 안 광쟁을 세상 법정으로 가져가는 것을 지적하며, 성도가 세상을 판단할 자가 될 그들이 형제 간의 작은 일조차 분별하지 못하는 것을 안타까워 합니다. 더 나아가 "차라리 불의를 당하는 것이 낫지 않느냐" 라고 말하며, 그리스도인의 본질은 내 권리를 찾는 것이 아니라 손해를 감수할 있는 사랑임을 가르칩니다. 끝으로 그들 자신도 올바르지 않은 삶에서 예수 그리스도의 이름으로 씨어 의롭다 하심을 받은 은혜를 기억하라 권면합니다.',
+      keyPoint:'내 권리를 주장하는 것보다 손해를 감수할 수 있는 사랑이 그리스도인의 표지입니다. 나는 이미 씨어젼고 의롭다 인정받은 사람이기 때문이에요.',
+      context:'고린도는 로마 법정 문화가 발달한 도시였어요. 적은 일도 법정으로 가져가는 게 흔했죠. 성도들도 그 문화에 물들어 교회 안의 갈등을 세상 재판관 앞으로 가져갔고, 그 모습이 믿지 않는 이웃에게 교회의 이름을 먹치고 있었어요. 바울은 그게 가장 아파단 지점이라고 지적합니다.',
+      vocab:[
+        {term:'송사', desc:'법정에서 재판을 거는 일. 세속 법정 문제를 해결하는 방식.'},
+        {term:'유업', desc:'대대로 물려주는 것. 여기서는 "하나님의 나라를 소유하는 곳"을 뜻해요.'},
+        {term:'거룩함', desc:'거룩하게 여김을 받은다는 뜻. 예수님이 우리를 깨끗하게 하셔서 하나님께 다가갈 수 있게 해주셨어요.'},
+        {term:'의롭다 하심', desc:'하나님이 "너는 이제 죄가 없다" 하고 인정해주신 것. 내가 잘해서가 아니라 예수님 때문이에요.'},
+      ],
+      questions:[
+        {q:'친구와 싸웠을 때, 내 권리를 주장하는 게 먼저였나요, 아니면 관계를 지키는 게 먼저였나요?', hint:'최근 한 장면을 떠올려봐요.'},
+        {q:'바울은 "차라리 손해를 보는 게 낫다"고 말해요. 내가 손해를 볼 수있다고 감당한 이우는 어떤 건가요?', hint:'완벽한 답은 없어요. 솔직하게 적어봐요.'},
+        {q:'9-10절의 목록이 너무 무겁게 다가와요. 그런데 11절은 "너희가 이미 씨어젼으며 의롭다 하심을 받았다" 라고 선포해요. 이 은혜가 내 삼에서 어떻게 느껴지나요?', hint:'다시 일어날 수 있게 해주는 게 뭐일까요?'},
+      ],
+      help:'세상은 "내 권리를 꼭 받아내라"고 말해요. 그런데 예수님은 십자가에서 자기의 권리를 입으셨어요. 그게 강함이에요. 교회 안에서 갈등이 생겼을 때 누가 이기느냐가 중요한 게 아니라, 은혜를 입은 우리가 서로 자기를 먼저 내려놓을 수 있는지가 중요해요. 11절을 잊지 마세요. 나는 이미 씨어주신 사람입니다.',
+      apply:'오늘 세 번 이상 익숨이 됨만한 일이 있을 거예요. 이는 을 꽉 물고 "아, 이게 새롭게 날 수 있는 기회다" 하고 한 번만 지나가보세요. 그리고 오늘 다투었거나 너무 미워하는 친구 한 명을 떠올리며, 먼저 명령 세 글자라도 보내보세요.',
+      prayerGuide:'주님, 세상은 이기라고 말하는데 주님은 속으라 하시네요. 너무 어려워요. 그래도 제가 이미 씨어젼고 의롭다 인정받은 사람임을 기억하게 해주세요. 오늘 누군가와 부딪힔 때 내 권리보다 관계를 선택할 수 있게 해주세요.',
+    },
+    kids:{
+      summary:'고린도 교회 친구들은 서로 싸울 때 파장 앞에 가서 일러바쳐어요. 예수님을 믿지 않는 사람 앞에서요! 바울 아저씨는 "그럴 바에는 차라리 손해를 보는 게 다 낫다!" 하고 말해주셨어요. 우리는 이미 예수님이 깨끗하게 씨어주신 특별한 자녀니까요!',
+      keyPoint:'이기는 게 중요한 게 아니에요! 예수님이 나를 깨끗하게 씨어주셨으니 참을 수 있어요.',
+      context:'그때 고린도 사람들은 뭐든지 파장에 가서 해결하는 게 특기였대요. 근데 교회 친구끼리도 그래서 창피했어요!',
+      vocab:[
+        {term:'송사', desc:'파장 앞에 가서 재판받는 것. 어른들이 싸웁 때 해요.'},
+        {term:'은혜', desc:'내가 잘해서가 아니라 예수님이 그냥 주신 선물.'},
+        {term:'의롭다 하심', desc:'예수님이 "너는 이제 착한 친구야" 하고 말씀해주신 것.'},
+      ],
+      questions:[
+        {q:'친구와 싸웠을 때 내가 이기고 싶었던 적 있어요?', hint:'장난감, 게임, 자리 따투기 모두 OK!'},
+        {q:'내가 참고 양보했던 때 어떠셨어요? 마음이 어떤지?', hint:'속상했어요? 따뜻했어요?'},
+        {q:'예수님이 나를 깨끗하게 해주셨다는 것을 알면, 다음에 친구와 싸울 때 어떻게 할수 있을까요?', hint:'먼저 "미안해" 말하기, 꼭 껴안아 주기 등.'},
+      ],
+      help:'참고 양보는 게 지는 게 아니에요! 예수님도 십자가에서 우리를 위해 손해를 보셨어요. 그러니 우리도 친구를 위해 조금 손해 볼 수 있다면 예수님다운 멋진 친구가 되는 거예요!',
+      apply:'오늘 친구와 다투면 먼저 "미안해" 하고 말해보세요. 설령 내 잘못이 아니어도 괜찮아요. 먼저 화해하는 친구가 진짜 멋진 친구예요.',
+      prayerGuide:'예수님, 저는 싸우는 게 싫어요. 그래도 먼저 사용하는 용기를 주세요. 이미 절 깨끗하게 씨어주신 것 감사해요.',
+    },
+  },
+});
+
+// ── 추가 날짜 묵상 콘텐츠 ──
+Object.assign(DEVOTION_DB,{
+  '2026-05-21':{
+    youth:{
+      summary:'바울은 고린도 교회에 퍼진 성적 방종을 강하게 질책합니다. "모든 것이 허용된다"는 자유주의 구호가 있었지만, 바울은 말해요. "그렇다. 그러나 모든 것이 유익하지 않고, 나는 어느 것에도 지배받지 않겠다." 우리 몸은 쾌락의 도구가 아니라 성령이 거하시는 성전이에요. 하나님은 우리를 값을 치르고 사셨습니다. 따라서 우리 몸은 하나님의 영광을 위해 사용되어야 해요.',
+      keyPoint:'내 몸은 성령의 전이에요. 내가 무엇을 입에 넣고, 어떤 영상을 보고, 어디에 가는지 — 모두 성령의 집을 어떻게 대우하는가의 문제예요.',
+      context:'고린도는 쾌락의 도시였어요. 아프로디테 신전에는 수천 명의 신전 매춘부가 있었고, "몸을 위해 몸을 쓴다"는 사상이 만연했어요. 성도들도 그 문화에 영향을 받아 신앙과 몸은 별개라고 생각했죠. 바울은 그 분리를 근본적으로 무너뜨립니다.',
+      vocab:[
+        {term:'성전', desc:'하나님이 거하시는 거룩한 집. 구약에서는 예루살렘 성전이었지만 이제는 우리 몸!'},
+        {term:'지배를 받지 않겠다', desc:'어느 것도 나를 중독시키거나 노예로 만들지 않겠다는 의지 선언.'},
+        {term:'값을 치르고 사신', desc:'예수님의 십자가 피로 우리를 죄에서 해방시키신 것. 우리는 공짜가 아니에요.'},
+      ],
+      questions:[
+        {q:'내 몸이 성령의 전이라면, 오늘 내 행동 중 성전을 더럽히는 것이 있었나요?', hint:'스마트폰, 음식, 언어, 관계 등 솔직하게 생각해봐요.'},
+        {q:'바울은 "모든 것이 허용되지만 유익하지 않다"고 해요. 내가 허용된다고 생각하지만 사실 나를 지배하고 있는 게 있나요?', hint:'게임, SNS, 음식, 관계 등.'},
+        {q:'"나는 어느 것에도 지배받지 않겠다" — 이 선언을 내 삶에 적용한다면 오늘 무엇을 끊거나 줄여야 할까요?', hint:'딱 한 가지만 골라봐요.'},
+      ],
+      help:'성령의 전이라는 말은 단순한 종교 표현이 아니에요. 내 몸이 살아계신 하나님의 집이라는 뜻이에요. 이 사실을 정말 믿는다면 — 내가 무엇을 보고, 무엇을 먹고, 어떤 관계를 맺는지가 달라져야 해요. 자유는 방종이 아니에요. 진짜 자유는 죄에 지배받지 않는 거예요.',
+      apply:'오늘 내 몸을 성전처럼 다루는 작은 실천 하나를 정해봐요. 예를 들어: 잠자리에 들기 전 스마트폰 30분 금지, 불필요한 영상 하나 안 보기, 거친 언어 하루 안 쓰기 — 아주 작은 것부터요.',
+      prayerGuide:'주님, 제 몸이 성령의 전인 것을 잊고 살았어요. 쾌락에 끌리고, 습관에 지배받고, 내가 원하는 대로만 몸을 사용했어요. 오늘부터 내 몸을 주님의 영광을 위해 사용하게 도와주세요. 내가 어느 것에도 지배받지 않는 자유인이 되게 해주세요.',
+    },
+    kids:{
+      summary:'우리 몸은 성령님이 사시는 집이에요! 바울 아저씨는 고린도 교회 친구들에게 "너희 몸은 성령의 전이야!" 라고 알려줬어요. 예수님이 우리를 위해 십자가에서 돌아가셨기 때문에 우리 몸은 이제 하나님의 것이에요. 그래서 우리 몸으로 하나님을 기쁘게 해드려야 해요!',
+      keyPoint:'내 몸은 성령님의 집이에요! 그러니까 내 몸을 소중하게 잘 다뤄야 해요.',
+      context:'고린도 도시에는 나쁜 것들이 많았어요. 바울 아저씨는 "그런 것들에 끌려가면 안 돼!" 라고 말했어요. 우리는 예수님께 속한 특별한 사람이니까요.',
+      vocab:[
+        {term:'성령의 전', desc:'성령님이 사시는 집. 바로 우리 몸이에요!'},
+        {term:'값을 치르고', desc:'예수님이 십자가에서 우리 대신 죗값을 내신 것. 엄청 비싼 값이에요!'},
+        {term:'영광', desc:'하나님을 기쁘게 하고 높여드리는 것.'},
+      ],
+      questions:[
+        {q:'내 몸이 성령님의 집이라면 어떻게 잘 가꿔야 할까요?', hint:'밥 잘 먹기, 잠 잘 자기, 나쁜 말 안 하기 등.'},
+        {q:'오늘 내 몸으로 하나님을 기쁘게 한 일이 있나요?', hint:'친구 도와주기, 부모님 말씀 따르기 등.'},
+        {q:'성령님이 내 안에 계신다는 걸 알면 어떤 마음이 드나요?', hint:'든든한지, 무서운지, 기쁜지 솔직하게 적어봐요.'},
+      ],
+      help:'성령님이 내 안에 계세요! 그분은 나를 도와주시고, 나쁜 유혹에서 지켜주시고, 옳은 일을 할 용기를 주세요. 내 몸을 소중하게 여기면 성령님도 기뻐하세요!',
+      apply:'오늘 "제 몸은 성령님의 집이에요!" 하고 아침에 일어나서 한 번 말해보세요. 그리고 몸으로 하나님을 기쁘게 하는 일 하나를 해봐요!',
+      prayerGuide:'예수님, 제 안에 성령님이 계신 것 감사해요. 오늘도 제 몸으로 하나님을 기쁘게 하는 친구가 되게 해주세요. 나쁜 것들을 멀리할 용기 주세요!',
+    },
+  },
+  '2026-05-22':{
+    youth:{
+      summary:'바울은 결혼과 독신에 대한 실제적인 가르침을 줘요. 핵심은 "각 사람은 부르심을 받은 그 부르심 그대로 지내라"예요. 결혼을 했든 안 했든, 현재 상태에서 하나님을 섬기는 것이 중요해요. 다만 음행을 피하기 위해 결혼이 주어진 것이고, 결혼한 사람은 배우자에게 의무를 다해야 해요. 바울은 이 모든 것을 명령이 아니라 "허락"으로 제시해요.',
+      keyPoint:'지금 내 상황이 하나님께 사용될 수 있어요. 더 좋은 상황이 되면 잘 믿겠다는 생각은 착각이에요.',
+      context:'고린도 교회에서는 "더 영적이 되려면 결혼을 하지 말아야 한다"는 극단론과, 반대로 "어차피 몸은 중요하지 않으니 성적으로 자유롭게 살아도 된다"는 방종론이 공존했어요. 바울은 두 극단 모두를 거부해요.',
+      vocab:[
+        {term:'부르심', desc:'하나님이 나를 어떤 상황에 두신 것. 결혼, 독신, 직업 등 내 현재 자리.'},
+        {term:'허락', desc:'명령이 아니라 괜찮다는 승인. 바울은 자기 의견을 강요하지 않아요.'},
+        {term:'절제', desc:'욕구를 자기 스스로 다스리는 것.'},
+      ],
+      questions:[
+        {q:'지금 내 상황(학교, 가정, 관계)이 하나님께 사용될 수 있다고 생각하나요? 어렵게 느껴진다면 왜일까요?', hint:'솔직하게 적어봐요.'},
+        {q:'"더 좋은 상황이 되면 더 잘 믿겠다"고 생각한 적 있나요? 그게 왜 착각일까요?', hint:'바울의 "그대로 지내라"는 말과 연결해 생각해봐요.'},
+        {q:'오늘 지금 이 자리에서 하나님을 섬길 수 있는 한 가지는 무엇일까요?', hint:'아주 작은 것도 괜찮아요.'},
+      ],
+      help:'믿음은 더 좋은 상황이 오기를 기다리는 것이 아니에요. 지금 이 자리에서 하나님과 함께 사는 것이 믿음이에요. 학교 친구들 사이에서, 가정에서, 지금 내가 있는 자리가 하나님의 부르심이에요.',
+      apply:'오늘 내가 있는 자리(학교, 가정, 교회)에서 하나님을 의식하고 한 가지를 달라지게 해봐요. 짜증을 참거나, 먼저 인사하거나, 감사 인사를 하거나 — 아주 작은 것부터요.',
+      prayerGuide:'주님, 지금 내 상황이 마음에 들지 않을 때도 있어요. 더 좋은 상황이 오면 더 잘 믿겠다고 생각한 것을 회개해요. 지금 이 자리에서, 지금 이 상황에서 주님을 섬길 수 있는 사람이 되게 해주세요.',
+    },
+    kids:{
+      summary:'바울 아저씨는 결혼에 대해 가르쳐줘요. 제일 중요한 말은 "지금 있는 자리에서 하나님을 잘 섬기면 돼요!" 예요. 나중에 더 커지면 잘하겠다고 미루지 말고, 지금 이 자리에서 최선을 다하는 게 중요해요.',
+      keyPoint:'지금 내 자리에서 하나님을 섬겨요! 나중으로 미루지 말아요.',
+      context:'바울 아저씨는 결혼한 사람, 결혼 안 한 사람 모두에게 "각자 자기 상황에서 최선을 다해요"라고 가르쳐 줬어요.',
+      vocab:[
+        {term:'부르심', desc:'하나님이 나를 지금 이 자리에 두신 것. 학생, 자녀, 교회 친구 — 다 부르심이에요!'},
+        {term:'절제', desc:'먹고 싶은 것, 하고 싶은 것을 스스로 다스리는 힘.'},
+      ],
+      questions:[
+        {q:'지금 내가 있는 자리(학교, 가정, 교회)에서 하나님을 기쁘게 할 수 있는 게 뭘까요?', hint:'작은 것도 괜찮아요!'},
+        {q:'나중에 더 커지면 하겠다고 미룬 것이 있나요?', hint:'기도, 성경 읽기, 친구 도와주기 등.'},
+      ],
+      help:'지금 이 순간이 하나님께 드릴 수 있는 소중한 시간이에요! 나중으로 미루지 말고, 오늘 지금 이 자리에서 예수님을 따라가는 친구가 되어봐요.',
+      apply:'오늘 학교나 집에서 "나는 하나님께 부름받은 사람이야!" 하고 생각하면서 한 가지 좋은 일을 해봐요!',
+      prayerGuide:'예수님, 제가 있는 이 자리가 하나님의 부르심인 것을 알게 해주세요. 지금 이 순간을 소중하게 여기며 최선을 다할게요. 도와주세요!',
+    },
+  },
+});
+
+// ── 오늘의 찬양 (유튜브 재생목록 자동 순환) ──
+// 매일 day-of-year 인덱스로 재생목록의 다른 곡을 자동 선곡
+const CCM_PLAYLIST={
+  id:'PL93eeZd2a3v2Ht2hvB0UNnkKvs34XMaVk',
+  size:30, // ← 재생목록 곡 수 (정확한 곡 수로 업데이트하면 더 자연스럽게 순환)
+  title:'청년부 찬양 재생목록',
+};
+// 특정 날짜에 강제 지정하고 싶으면 여기에 추가 (예: 부활절, 수련회)
+const CCM_OVERRIDES={
+  // '2026-05-18':{title:'곡 제목 - 아티스트',videoId:'XXXXXXXXXXX'},
+};
+const getTodayCCM=()=>{
+  if(CCM_OVERRIDES[TODAY])return{...CCM_OVERRIDES[TODAY],kind:'override'};
+  const dayN=Math.floor((new Date(TODAY)-new Date(new Date(TODAY).getFullYear(),0,1))/86400000)+1;
+  const idx=((dayN-1)%CCM_PLAYLIST.size)+1;
+  return{
+    kind:'playlist',
+    playlistId:CCM_PLAYLIST.id,
+    index:idx,
+    title:`${CCM_PLAYLIST.title} · ${idx}번째 곡`,
+    embedUrl:`https://www.youtube.com/embed/videoseries?list=${CCM_PLAYLIST.id}&index=${idx}&autoplay=1&rel=0`,
+    listUrl:`https://www.youtube.com/playlist?list=${CCM_PLAYLIST.id}`,
+  };
+};
+
+const BADGES=[
+  {id:'first',icon:'🌱',name:'첫 묵상',req:1,type:'qt'},
+  {id:'week',icon:'🔥',name:'일주일',req:7,type:'streak'},
+  {id:'half',icon:'⭐',name:'보름',req:15,type:'month'},
+  {id:'full',icon:'🏆',name:'만근왕',req:28,type:'month'},
+  {id:'share3',icon:'💬',name:'나눔왕',req:3,type:'share'},
+  {id:'attend5',icon:'🙌',name:'출석왕',req:5,type:'attend'},
+  {id:'p50',icon:'💎',name:'50포인트',req:50,type:'points'},
+  {id:'p100',icon:'👑',name:'100포인트',req:100,type:'points'},
+];
+
+const AV_COLORS=['#FF9F1C','#FF6B9D','#22C55E','#6C63FF','#06B6D4'];
+const getToday=()=>new Date().toISOString().slice(0,10);
+const TODAY=getToday();
+const getEntry=()=>SCHEDULE.find(x=>x.date===TODAY)||SCHEDULE[SCHEDULE.length-1];
+const ini=n=>n?(n.length>=2?n.slice(-2,-1):n[0]):'?';
+const avColor=n=>AV_COLORS[(n||'').charCodeAt(0)%AV_COLORS.length];
+const fmtTime=ts=>{if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts),h=d.getHours(),m=String(d.getMinutes()).padStart(2,'0');return`${h<12?'오전':'오후'} ${h%12||12}:${m}`;};
+
+async function saveCheck(uid,date){const{db,doc,setDoc,updateDoc,increment,serverTimestamp}=window._fb;await setDoc(doc(db,'checks_youth',`${uid}_${date}`),{uid,date,completedAt:serverTimestamp()});try{await updateDoc(doc(db,'users_youth',uid),{points:increment(10)});}catch(e){}}
+async function saveShare(uid,name,data){const{db,collection,addDoc,serverTimestamp}=window._fb;await addDoc(collection(db,'shares_youth'),{uid,name:name||window._me?.name||'친구',...data,createdAt:serverTimestamp(),amen:0,comments:0});}
+async function doAmenToggle(id,a){const{db,doc,updateDoc,increment}=window._fb;await updateDoc(doc(db,'shares_youth',id),{amen:increment(a?-1:1)});}
+
+// ── 시간대 인사 및 교회절기 레이블 ──
+const getGreeting=()=>{
+  const h=new Date().getHours();
+  if(h<5)return{msg:'평안한 새벽이에요!',emoji:'🌙'};
+  if(h<11)return{msg:'좋은 아침이에요!',emoji:'🌅'};
+  if(h<14)return{msg:'따뜻한 점심이에요!',emoji:'☀️'};
+  if(h<18)return{msg:'평안한 오후에요!',emoji:'🌿'};
+  if(h<22)return{msg:'평안한 저녁이에요!',emoji:'🌿'};
+  return{msg:'고요한 밤이에요!',emoji:'✨'};
+};
+// 2026년 부활절: 4월 5일
+ const getLiturgicalLabel=()=>{
+  const easter=new Date('2026-04-05');
+  const today=new Date(TODAY);
+  const diffDays=Math.floor((today-easter)/86400000);
+  const weeks=Math.floor(diffDays/7);
+  if(diffDays<-46)return'주년제를 기다리며';
+  if(diffDays<-7)return'사순절 기간';
+  if(diffDays<0)return'고난주간';
+  if(diffDays===0)return'부활절';
+  const ord=['첫째','둘째','셋째','넷째','다섯째','여섯째','일곱째'];
+  if(weeks<7)return`부활절 후 ${ord[weeks]} 주`;
+  if(weeks<25)return'성령강림절 기간';
+  if(weeks<48)return'연중주간';
+  return'대림절기';
+};
+
+// ── 획 ──
+function HomeScreen({done,onWrite,onMarkDone,completedSet,streak,points,onViewNote,onViewPrayer,onViewMemory,onViewShare}){
+  const me=window._me,entry=getEntry(),td=new Date(TODAY),dow=td.getDay(),mo=dow===0?-6:1-dow;
+  const week=Array.from({length:7},(_,i)=>{const d=new Date(td);d.setDate(td.getDate()+mo+i);return{date:d.toISOString().slice(0,10),dow:['일','월','화','수','목','금','토'][d.getDay()]};});
+  const greet=getGreeting();
+  const litLabel=getLiturgicalLabel();
+  const richContent=DEVOTION_DB[TODAY]?.[localStorage.getItem('qt_level')||'youth'];
+  const passageExcerpt=richContent?.summary||entry.verse||'';
+
+  return(<>
+    <div className="qt-topbar">
+      <div className="qt-app-name"><span className="qt-app-name-icon">🌟</span>말씀ON</div>
+      <div className="qt-topbar-right"><div className="qt-point-pill">⭐ {points}P</div></div>
+    </div>
+    <div className="qt-date-greet">{new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'})}</div>
+    <div className="qt-user-greet">{greet.msg} {greet.emoji}</div>
+
+    {/* 스트릭 */}
+    <div className="qt-streak-card">
+      <div className="qt-streak-label">연속 묵상</div>
+      <div className="qt-streak-num">{streak}일째<span>🔥</span></div>
+      <div className="qt-streak-dots">
+        {week.map(d=>{const isT=d.date===TODAY,isDone=completedSet.has(d.date);const koLabel=d.dow==='일'?'주일':d.dow;return(
+          <div key={d.date} className={'qt-streak-dot'+(isDone?' done':'')+(isT?' today':'')} style={{minWidth:32}}>
+            {isDone?'✓':koLabel}
+          </div>
+        );})}
+      </div>
+    </div>
+
+    {/* 본문 카드 */}
+    <div className="qt-passage-card">
+      <div className="qt-passage-tag">📖 {TODAY.slice(5,7)}월 {parseInt(TODAY.slice(8,10))}일 · 생명의 삶</div>
+      <div className="qt-passage-title">{entry.title}</div>
+      <div className="qt-passage-ref">{entry.book} {entry.range}</div>
+      {/* 홈화면: 대표 구절만 표시 / 전체 본문은 묵상하기에서 확인 */}
+      {entry.verse ? (
+        <div className="qt-passage-verse">{entry.verse}</div>
+      ) : null}
+      {(entry.text && entry.text.length) ? (
+        <div style={{fontSize:12,color:'var(--orange)',fontWeight:700,marginBottom:10,display:'flex',alignItems:'center',gap:4}}>
+          📖 {entry.text.length}절 전체 · 아래 "묵상하기"에서 읽어요
+        </div>
+      ) : null}
+      {done?(
+        <>
+          <button className="qt-cta done">✅ 오늘 묵상 완료!</button>
+          <button className="qt-cta ghost" onClick={onViewNote} style={{marginTop:8,fontSize:15,fontWeight:800}}>
+            📖 내가 쓴 묵상글 보기
+          </button>
+          <button className="qt-cta ghost" onClick={onWrite} style={{marginTop:8,fontSize:15,fontWeight:800}}>
+            📋 오늘의 묵상 화면 다시 보기
+          </button>
+        </>
+      ):(
+        <>
+          <button className="qt-cta" onClick={onWrite} style={{fontSize:17,fontWeight:900,letterSpacing:'-.01em', background:'var(--orange)'}}>
+            ✏️ 묵상 기록하기
+          </button>
+          <button className="qt-cta ghost" onClick={onMarkDone} style={{fontSize:15,fontWeight:800}}>
+            📖 본문만 읽었어요
+          </button>
+        </>
+      )}
+    </div>
+
+    {/* 암송 구절 — 오늘 본문에서 자동 추출 */}
+    {(()=>{const m=getTodayMemory();if(!m.verse)return null;return(
+      <div className="qt-memory-card">
+        <div className="qt-memory-label">오늘의 암송 구절</div>
+        <div className="qt-memory-verse">{m.verse}</div>
+        <div className="qt-memory-ref">({m.ref})</div>
+      </div>
+    );})()}
+
+    {/* 퀵메뉴 */}
+    <div className="qt-quick-grid">
+      {[
+        {icon:'🔥',label:'묵상 기록',action:onViewNote},
+        {icon:'📝',label:'기도 노트',action:onViewPrayer},
+        {icon:'📖',label:'말씀 암송',action:onViewMemory},
+        {icon:'👥',label:'나눔',action:onViewShare},
+      ].map(i=>(
+        <button key={i.label} className="qt-quick-item" role="button" tabIndex={0} onClick={i.action} style={{border:'none', width:'100%'}}>
+          <div className="qt-quick-icon">{i.icon}</div>
+          <div className="qt-quick-label">{i.label}</div>
+        </button>
+      ))}
+    </div>
+
+    {/* 지난 묵상 */}
+    <div style={{padding:'0 16px'}}>
+      <button className="qt-past-card" role="button" tabIndex={0} onClick={onViewNote} style={{width:'100%', textAlign:'left', border:'none', display:'flex'}}>
+        <div className="qt-past-icon">📚</div>
+        <div>
+          <div className="qt-past-title">지난 묵상 다시보기</div>
+          <div className="qt-past-sub">내가 쓴 묵상글을 다시 읽어봐요</div>
+        </div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{marginLeft:'auto',flexShrink:0}}><path d="M9 6l6 6-6 6" stroke="var(--text-3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </button>
+    </div>
+    <div style={{height:24}}/>
+  </>);
+}
+
+// ── 통독 진도표 (구약/신약 중 하나 + 시편/잠언) ──
+const BIBLE_READING_PLAN = {
+  '2026-05-11':[{type:'신약',title:'사도행전 4',ref:'사도행전 4'},{type:'시편/잠언',title:'시편 101',ref:'시편 101'}],
+  '2026-05-12':[{type:'구약',title:'역대상 7-9',ref:'역대상 7'},{type:'시편/잠언',title:'시편 102',ref:'시편 102'}],
+  '2026-05-13':[{type:'신약',title:'사도행전 5',ref:'사도행전 5'},{type:'시편/잠언',title:'시편 103',ref:'시편 103'}],
+  '2026-05-14':[{type:'구약',title:'역대상 10-12',ref:'역대상 10'},{type:'시편/잠언',title:'시편 104',ref:'시편 104'}],
+  '2026-05-15':[{type:'신약',title:'사도행전 6',ref:'사도행전 6'},{type:'시편/잠언',title:'시편 105',ref:'시편 105'}],
+  '2026-05-16':[{type:'구약',title:'역대상 13-15',ref:'역대상 13'},{type:'시편/잠언',title:'시편 106',ref:'시편 106'}],
+  '2026-05-17':[{type:'신약',title:'사도행전 7-8',ref:'사도행전 7'},{type:'시편/잠언',title:'시편 107',ref:'시편 107'}],
+  '2026-05-18':[{type:'구약',title:'역대상 18-20',ref:'역대상 18'},{type:'시편/잠언',title:'시편 108',ref:'시편 108'}],
+  '2026-05-19':[{type:'신약',title:'사도행전 9',ref:'사도행전 9'},{type:'시편/잠언',title:'시편 109',ref:'시편 109'}],
+  '2026-05-20':[{type:'구약',title:'역대상 21-22',ref:'역대상 21'},{type:'시편/잠언',title:'시편 110',ref:'시편 110'}],
+  '2026-05-21':[{type:'신약',title:'사도행전 10',ref:'사도행전 10'},{type:'시편/잠언',title:'시편 111',ref:'시편 111'}],
+  '2026-05-22':[{type:'구약',title:'역대상 23-25',ref:'역대상 23'},{type:'시편/잠언',title:'시편 112',ref:'시편 112'}],
+  '2026-05-23':[{type:'신약',title:'사도행전 11',ref:'사도행전 11'},{type:'시편/잠언',title:'시편 113',ref:'시편 113'}],
+  '2026-05-24':[{type:'구약',title:'역대상 26-27',ref:'역대상 26'},{type:'시편/잠언',title:'시편 114',ref:'시편 114'}],
+  '2026-05-25':[{type:'신약',title:'사도행전 12',ref:'사도행전 12'},{type:'시편/잠언',title:'시편 115',ref:'시편 115'}],
+};
+function getReadingForDate(dateStr){
+  if(BIBLE_READING_PLAN[dateStr]) return BIBLE_READING_PLAN[dateStr];
+  // 알고리즘 폴백: 날짜 인덱스 기준 OT/NT 교차, 시편 chapter mod 150
+  const d=new Date(dateStr),y=d.getFullYear(),idx=Math.floor((d-new Date(y,0,1))/86400000);
+  const isOT=idx%2===0;
+  const psalmCh=(idx%150)+1;
+  return[
+    isOT?{type:'구약',title:'오늘의 구약 본문',ref:'구약'}:{type:'신약',title:'오늘의 신약 본문',ref:'신약'},
+    {type:'시편/잠언',title:`시편 ${psalmCh}`,ref:`시편 ${psalmCh}`}
+  ];
+}
+function dayOfYear(dateStr){
+  const d=new Date(dateStr);
+  return Math.floor((d-new Date(d.getFullYear(),0,1))/86400000)+1;
+}
+
+// ── 성경읽기 (체크 가능 + Firestore 연동) ──
+function BibleReadingScreen({uid}){
+  const[doneSet,setDoneSet]=useState(new Set()); // "date|type" keys
+  const[completedDays,setCompletedDays]=useState(new Set()); // dates where both items done
+  const[saving,setSaving]=useState(null);
+
+  useEffect(()=>{
+    if(!uid)return;
+    const{db,collection,query,where,onSnapshot}=window._fb;
+    const q=query(collection(db,'bible_reads_youth'),where('uid','==',uid));
+    return onSnapshot(q,snap=>{
+      const ds=new Set(),byDate={};
+      snap.docs.forEach(d=>{
+        const x=d.data(),k=`${x.date}|${x.type}`;
+        ds.add(k);
+        byDate[x.date]=(byDate[x.date]||0)+1;
+      });
+      setDoneSet(ds);
+      setCompletedDays(new Set(Object.keys(byDate).filter(d=>byDate[d]>=2)));
+    });
+  },[uid]);
+
+  const items=getReadingForDate(TODAY);
+  const dayN=dayOfYear(TODAY);
+  const yearTotal=365,yearDone=completedDays.size,yearRate=Math.round(yearDone/yearTotal*100);
+  const monthDone=[...completedDays].filter(d=>d.startsWith(TODAY.slice(0,7))).length;
+  const monthTotal=new Date(parseInt(TODAY.slice(0,4)),parseInt(TODAY.slice(5,7)),0).getDate();
+  const monthRate=Math.round(monthDone/monthTotal*100);
+
+  // 연속 일수
+  let streak=0,cur=new Date(TODAY);
+  while(streak<=365){
+    const ds=cur.toISOString().slice(0,10);
+    if(completedDays.has(ds)){streak++;cur.setDate(cur.getDate()-1);}else break;
+  }
+
+  const toggle=async(item)=>{
+    if(!uid||saving)return;
+    const k=`${TODAY}|${item.type}`,id=`${uid}_${TODAY}_${item.type}`;
+    setSaving(k);
+    const{db,doc,setDoc,deleteDoc,serverTimestamp}=window._fb;
+    try{
+      if(doneSet.has(k)){
+        await deleteDoc(doc(db,'bible_reads_youth',id));
+      }else{
+        await setDoc(doc(db,'bible_reads_youth',id),{uid,date:TODAY,type:item.type,title:item.title,completedAt:serverTimestamp()});
+      }
+    }catch(e){console.error(e);}
+    setSaving(null);
+  };
+
+  const allDone=items.every(it=>doneSet.has(`${TODAY}|${it.type}`));
+  const milestones=[
+    {n:7,title:'1주일 연속',desc:'좋은 습관의 시작',icon:'🌱'},
+    {n:30,title:'1개월 연속',desc:'말씀이 뿌리내려요',icon:'🌿'},
+    {n:100,title:'100일 달성',desc:'성경읽기의 별',icon:'⭐'},
+    {n:200,title:'200일 달성',desc:'성경 전사',icon:'🏆'},
+    {n:365,title:'1년 통독 완료!',desc:'놀라운 축복!',icon:'👑'},
+  ];
+
+  return(
+    <>
+      <div className="qt-topbar">
+        <div className="qt-app-name"><span className="qt-app-name-icon">📖</span>성경읽기</div>
+      </div>
+
+      {/* 상단 공동체 배너 */}
+      <div style={{margin:'0 16px 16px', background:'linear-gradient(135deg, #2bbba4, #3da0ac)', borderRadius:18, padding:'20px 18px', color:'#fff', position:'relative', boxShadow:'0 4px 15px rgba(60,211,173,0.25)', overflow:'hidden'}}>
+        <div style={{fontSize:12, opacity:0.9, fontWeight:700}}>공동체 성경읽기</div>
+        <div style={{fontSize:24, fontWeight:900, marginTop:4, letterSpacing:'-0.02em'}}>
+          {allDone?'오늘 완료! 🎉':yearDone===0?'오늘 시작해요!':'함께 읽어요!'}
+        </div>
+        <div style={{fontSize:13, opacity:0.9, marginTop:4}}>
+          {allDone?'오늘의 분량을 다 읽었어요!':'오늘 분량을 체크해보세요'}
+        </div>
+        <div style={{display:'flex', justifyContent:'space-between', fontSize:12, marginTop:18, fontWeight:700}}>
+          <span>연간 진행률</span>
+          <span>{yearRate}% ({yearDone}/{yearTotal}일)</span>
+        </div>
+        <div style={{height:6, background:'rgba(255,255,255,0.25)', borderRadius:3, marginTop:6, overflow:'hidden'}}>
+          <div style={{width:yearRate+'%', height:'100%', background:'#fff', transition:'width .4s'}} />
+        </div>
+        <div style={{position:'absolute', right:20, top:20, textAlign:'center'}}>
+          <span style={{fontSize:32}}>{allDone?'🏆':'🍯'}</span>
+          <div style={{fontSize:11, background:'rgba(0,0,0,0.2)', padding:'2px 6px', borderRadius:8, marginTop:2, fontWeight:700, color:'#fff'}}>
+            {streak>0?`🔥 ${streak}일`:'시작이 반!'}
+          </div>
+        </div>
+      </div>
+
+      {/* 날짜 표시 헤더 */}
+      <div style={{padding:'0 18px 10px', display:'flex', alignItems:'center', gap:8}}>
+        <span style={{background:'#e6fbf4', color:'#0a825d', padding:'4px 10px', borderRadius:8, fontSize:12, fontWeight:800}}>Day {dayN}</span>
+        <span style={{fontSize:13, color:'var(--text-2)', fontWeight:600}}>
+          {new Date(TODAY).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'})}
+        </span>
+      </div>
+
+      {/* 통독 배정표 — 2개 (구약/신약 중 하나 + 시편) */}
+      <div style={{padding:'0 16px', display:'flex', flexDirection:'column', gap:10}}>
+        {items.map((item, idx) => {
+          const k=`${TODAY}|${item.type}`,checked=doneSet.has(k),loading=saving===k;
+          return(
+            <button key={idx} onClick={()=>toggle(item)} disabled={loading} style={{width:'100%', border:checked?'2px solid var(--green)':'2px solid transparent', background:checked?'var(--green-soft)':'var(--surface)', borderRadius:16, padding:'16px 18px', display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'var(--card-shadow)', textAlign:'left', cursor:'pointer', transition:'all .15s', opacity:loading?0.6:1}}>
+              <div style={{display:'flex', alignItems:'center', gap:14}}>
+                <div style={{width:28, height:28, borderRadius:'50%', border:checked?'2px solid var(--green)':'2px solid var(--divider)', background:checked?'var(--green)':'#fff', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, transition:'all .15s'}}>
+                  {checked&&<span style={{color:'#fff', fontSize:15, fontWeight:900, lineHeight:1}}>✓</span>}
+                </div>
+                <div>
+                  <div style={{fontSize:12, color:checked?'var(--green)':'var(--text-3)', fontWeight:700}}>{item.type}</div>
+                  <div style={{fontSize:16, fontWeight:800, color:'var(--text)', marginTop:1, textDecoration:checked?'line-through':'none', textDecorationColor:'var(--green)'}}>{item.title}</div>
+                </div>
+              </div>
+              <div style={{width:38, height:38, borderRadius:12, background:checked?'rgba(34,197,94,.15)':'var(--orange-soft)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0}}>
+                <span style={{fontSize:16}}>{checked?'✅':'📖'}</span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 이번달 읽기 현황 */}
+      <div style={{width:'calc(100% - 32px)', margin:'14px 16px 0', background:'var(--surface)', borderRadius:16, padding:'16px 18px', boxShadow:'var(--card-shadow)'}}>
+        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:10}}>
+          <div style={{display:'flex', alignItems:'center', gap:12}}>
+            <span style={{fontSize:22}}>📅</span>
+            <div>
+              <div style={{fontSize:15, fontWeight:800, color:'var(--text)'}}>이번 달 읽기 현황</div>
+              <div style={{fontSize:12, color:'var(--text-3)', marginTop:2}}>{monthDone}/{monthTotal}일 완료 ({monthRate}%)</div>
+            </div>
+          </div>
+        </div>
+        <div style={{height:8, background:'var(--bg)', borderRadius:4, overflow:'hidden'}}>
+          <div style={{width:monthRate+'%', height:'100%', background:'linear-gradient(90deg, var(--orange), var(--yellow))', borderRadius:4, transition:'width .4s'}} />
+        </div>
+      </div>
+
+      {/* 마일스톤 리스트 */}
+      <div style={{margin:'14px 16px 24px', background:'var(--surface)', borderRadius:16, padding:'16px 18px', boxShadow:'var(--card-shadow)'}}>
+        <div style={{fontSize:14, fontWeight:800, color:'var(--text)', marginBottom:12}}>마일스톤</div>
+        {milestones.map((m, i) => {
+          const earned=streak>=m.n,remain=Math.max(0,m.n-streak);
+          return(
+            <div key={i} style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'11px 0', borderBottom:i<milestones.length-1?'1px solid rgba(0,0,0,0.04)':'none', opacity:earned?1:0.78}}>
+              <div style={{display:'flex', alignItems:'center', gap:12}}>
+                <span style={{fontSize:20, filter:earned?'none':'grayscale(0.4)'}}>{m.icon}</span>
+                <div>
+                  <div style={{fontSize:13, fontWeight:700, color:earned?'var(--orange)':'#2c210e'}}>{m.title}</div>
+                  <div style={{fontSize:12, color:'var(--text-2)'}}>{m.desc}</div>
+                </div>
+              </div>
+              <span style={{fontSize:12, color:earned?'var(--green)':'var(--text-2)', fontWeight:700}}>
+                {earned?'달성! ✓':`${remain}일 남음`}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+// ── 나눔 ──
+function ShareScreen({uid}){
+  const[shares,setShares]=useState([]);const[loading,setLoading]=useState(true);const[amened,setAmened]=useState(new Set());const[filter,setFilter]=useState('오늘');
+  useEffect(()=>{
+    const{db,collection,query,where,orderBy,onSnapshot,limit}=window._fb;
+    const q=filter==='오늘'?query(collection(db,'shares_youth'),where('date','==',TODAY)):query(collection(db,'shares_youth'),orderBy('createdAt','desc'),limit(40));
+    const unsub=onSnapshot(q,snap=>{let docs=snap.docs.map(d=>({id:d.id,...d.data()}));docs.sort((a,b)=>(b.createdAt?.toDate?.()||0)-(a.createdAt?.toDate?.()||0));setShares(docs);setLoading(false);});
+    return()=>unsub();
+  },[filter]);
+  const doAmen=async s=>{const a=amened.has(s.id);setAmened(p=>{const n=new Set(p);a?n.delete(s.id):n.add(s.id);return n;});await doAmenToggle(s.id,a);};
+  return(<>
+    <div className="qt-topbar"><div className="qt-app-name"><span className="qt-app-name-icon">💬</span>나눔 피드</div></div>
+    <div style={{display:'flex',gap:8,padding:'4px 16px 12px',overflowX:'auto'}}>
+      {['오늘','전체'].map(f=><button key={f} style={{padding:'8px 16px',borderRadius:999,background:filter===f?'var(--orange)':'var(--surface)',color:filter===f?'#fff':'var(--text-2)',fontSize:13,fontWeight:700,flexShrink:0,boxShadow:'0 2px 8px rgba(255,159,28,.1)'}} onClick={()=>setFilter(f)}>{f}</button>)}
+    </div>
+    {loading?<div className="qt-empty"><div className="qt-empty-icon">⏳</div></div>:shares.length===0?<div className="qt-empty"><div className="qt-empty-icon">🕊️</div><div className="qt-empty-msg">아직 나눔이 없어요!<br/>첫 번째로 나눔을 올려봐요 😊</div></div>:shares.map(s=>(
+      <div key={s.id} className="qt-feed-card">
+        <div className="qt-feed-head">
+          <div className="qt-avatar" style={{background:avColor(s.name)}}>{ini(s.name)}</div>
+          <div style={{flex:1,minWidth:0}}>
+            <div className="qt-feed-name">{s.name}{s.uid===uid&&<span style={{fontSize:11,background:'var(--orange-soft)',color:'var(--orange)',padding:'1px 6px',borderRadius:5,fontWeight:800,marginLeft:6}}>나</span>}</div>
+            <div className="qt-feed-meta">{fmtTime(s.createdAt)} · {s.book} {s.range}</div>
+          </div>
+        </div>
+        {s.verseRef&&<div className="qt-feed-verse-box"><div className="qt-feed-verse-ref">{s.verseRef}</div>{s.verse&&<div className="qt-feed-verse-body">"{s.verse}"</div>}</div>}
+        {s.text&&<div className="qt-feed-text">{s.text}</div>}
+        {s.apply&&<div style={{fontSize:13,color:'var(--text-2)',marginTop:8,paddingTop:8,borderTop:'1px solid var(--divider)',fontWeight:600}}>✏️ {s.apply}</div>}
+        <div className="qt-feed-actions">
+          <button className={'qt-feed-btn'+(amened.has(s.id)?' amened':'')} onClick={()=>doAmen(s)}>🤍 아멘 {(s.amen||0)+(amened.has(s.id)?1:0)}</button>
+          <button className="qt-feed-btn">💬 댓글 {s.comments||0}</button>
+        </div>
+      </div>
+    ))}
+    <div style={{height:24}}/>
+  </>);
+}
+
+// ── 진도 ──
+function CalendarScreen({completedSet,streak}){
+  const y=parseInt(TODAY.slice(0,4)),m=parseInt(TODAY.slice(5,7)),fd=new Date(y,m-1,1).getDay(),dim=new Date(y,m,0).getDate(),cells=[];
+  for(let i=0;i<fd;i++)cells.push({empty:true,key:'e'+i});
+  for(let d=1;d<=dim;d++){const ds=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`,done=completedSet.has(ds),isT=ds===TODAY,isFu=ds>TODAY;cells.push({day:d,done,isT,isFu,isMiss:!done&&!isT&&!isFu,key:'d'+d});}
+  const dc=[...completedSet].filter(d=>d.startsWith(`${y}-${String(m).padStart(2,'0')}`)).length,tot=parseInt(TODAY.slice(8,10)),rate=tot>0?Math.round(dc/tot*100):0;
+  return(<>
+    <div className="qt-topbar"><div className="qt-app-name"><span className="qt-app-name-icon">📅</span>내 진도</div></div>
+    <div className="qt-stat-row">
+      {[{icon:'📅',v:dc,u:'일',l:'이번 달'},{icon:'💯',v:rate,u:'%',l:'달성률'},{icon:'🔥',v:streak,u:'일',l:'연속'}].map(s=>(
+        <div key={s.l} className="qt-stat-card"><div className="qt-stat-icon">{s.icon}</div><div className="qt-stat-num">{s.v}<span style={{fontSize:12,color:'var(--text-3)',marginLeft:2}}>{s.u}</span></div><div className="qt-stat-label">{s.l}</div></div>
+      ))}
+    </div>
+    <div className="qt-cal-card">
+      <div style={{fontSize:15,fontWeight:800,marginBottom:12,color:'var(--text)'}}>{y}년 {m}월</div>
+      <div className="qt-cal-grid">
+        {['일','월','화','수','목','금','토'].map(d=><div key={d} className="qt-cal-dow">{d}</div>)}
+        {cells.map(c=>{if(c.empty)return<div key={c.key}/>;const cls='qt-cal-day'+(c.done?' done':'')+(c.isT?' today':'')+(c.isFu?' future':'')+(c.isMiss?' miss':'');return<div key={c.key} className={cls}>{c.done&&!c.isT?'✓':c.day}</div>;})}
+      </div>
+    </div>
+    <div style={{height:24}}/>
+  </>);
+}
+
+// ── 뱃지 ──
+function BadgeScreen({completedSet,streak,points,shareCount,attendCount}){
+  const monthDone=[...completedSet].filter(d=>d.startsWith(TODAY.slice(0,7))).length;
+  const earned=new Set();
+  BADGES.forEach(b=>{
+    if(b.type==='qt'&&monthDone>=b.req)earned.add(b.id);
+    if(b.type==='streak'&&streak>=b.req)earned.add(b.id);
+    if(b.type==='month'&&monthDone>=b.req)earned.add(b.id);
+    if(b.type==='share'&&shareCount>=b.req)earned.add(b.id);
+    if(b.type==='attend'&&attendCount>=b.req)earned.add(b.id);
+    if(b.type==='points'&&points>=b.req)earned.add(b.id);
+  });
+  return(<>
+    <div className="qt-topbar"><div className="qt-app-name"><span className="qt-app-name-icon">🏆</span>뱃지 & 포인트</div></div>
+    <div style={{margin:'0 16px 14px',background:'linear-gradient(135deg,var(--orange),#FFB444)',borderRadius:18,padding:'18px 18px',boxShadow:'0 6px 24px rgba(255,159,28,.3)',color:'#fff'}}>
+      <div style={{fontSize:13,color:'rgba(255,255,255,.8)',fontWeight:700,marginBottom:4}}>내 포인트</div>
+      <div style={{fontSize:38,fontWeight:900,letterSpacing:'-.02em'}}>⭐ {points}P</div>
+      <div style={{fontSize:12,color:'rgba(255,255,255,.75)',marginTop:6,fontWeight:600}}>묵상 완료 +10P · 출석 체크 +5P</div>
+    </div>
+    <div style={{padding:'0 20px 10px',fontSize:15,fontWeight:800,color:'var(--text)'}}>획득한 뱃지</div>
+    <div className="qt-badge-grid">
+      {BADGES.map(b=>(
+        <div key={b.id} className="qt-badge-item">
+          <div className={'qt-badge-icon'+(earned.has(b.id)?' earned':' locked')}>{b.icon}</div>
+          <div className="qt-badge-name" style={{color:earned.has(b.id)?'var(--text)':'var(--text-3)'}}>{b.name}</div>
+        </div>
+      ))}
+    </div>
+    <div style={{height:24}}/>
+  </>);
+}
+
+// ── 더보기 ──
+function MoreScreen({streak,points,onLogout,onDash}){
+  const me=window._me;
+  return(<>
+    <div className="qt-topbar"><div className="qt-app-name"><span className="qt-app-name-icon">👤</span>더보기</div></div>
+    <div className="qt-profile-card">
+      <div className="qt-profile-top">
+        <div className="qt-profile-av">{ini(me?.name)}</div>
+        <div><div className="qt-profile-name">{me?.name}</div><div className="qt-profile-sub">{me?.group||'미배정'} · {me?.role||'학생'}</div></div>
+      </div>
+      <div className="qt-profile-stats">
+        <div className="qt-profile-stat"><div className="qt-profile-stat-num">🔥{streak}</div><div className="qt-profile-stat-label">연속 묵상</div></div>
+        <div className="qt-profile-stat"><div className="qt-profile-stat-num">⭐{points}</div><div className="qt-profile-stat-label">포인트</div></div>
+        <div className="qt-profile-stat"><div className="qt-profile-stat-num">✝️</div><div className="qt-profile-stat-label">말씀ON</div></div>
+      </div>
+    </div>
+    <div style={{padding:'0 16px'}}>
+      {[{icon:'📖',l:'내 묵상 노트'},{icon:'🔔',l:'알림 설정'},{icon:'❓',l:'도움말'}].map(i=>(
+        <button key={i.l} className="qt-more-item"><span className="qt-more-icon">{i.icon}</span><span className="qt-more-label">{i.l}</span><span className="qt-more-chev">›</span></button>
+      ))}
+      {me?.isLeader&&<button className="qt-more-item" onClick={onDash}><span className="qt-more-icon">📊</span><span className="qt-more-label" style={{color:'var(--orange)'}}>선생님 대시보드</span><span className="qt-more-chev">›</span></button>}
+      <button className="qt-more-item" onClick={onLogout}><span className="qt-more-icon">👋</span><span className="qt-more-label" style={{color:'var(--red)'}}>로그아웃</span><span className="qt-more-chev">›</span></button>
+    </div>
+    <div style={{height:24}}/>
+  </>);
+}
+
+// ── 성경 본문 뷰어 ──
+// 1순위: entry.text (수기 입력된 정확한 본문) → 2순위: scrollmapper 공개 성경 DB에서 자동 로드
+const BIBLE_BOOK_MAP={
+  '창세기':'gen','출애공기':'exo','레위기':'lev','민수기':'num','신명기':'deu',
+  '여호수아':'jos','사사기':'jdg','룻기':'rut',
+  '사무엘상':'1sa','사무엘하':'2sa','열왕기상':'1ki','열왕기하':'2ki',
+  '역대상':'1ch','역대하':'2ch','에스라':'ezr','느헤미야':'neh','에스더':'est',
+  '욕기':'job','시편':'psa','잠언':'pro','전도서':'ecc','아가':'sng',
+  '이사야':'isa','예레미야':'jer','예레미야애가':'lam','에스겤':'eze','다니엘':'dan',
+  '호세아':'hos','요엘':'jol','아모스':'amo','오바다':'oba','요나':'jon','미가':'mic',
+  '나후':'nam','하바국':'hab','스반야':'zep','학개':'hag','스가량':'zec','말라기':'mal',
+  '마태복음':'mat','마가복음':'mrk','누가복음':'luk','요한복음':'jhn','사도행전':'act',
+  '로마서':'rom','고린도전서':'1co','고린도후서':'2co','갈라디아서':'gal','에베소서':'eph',
+  '빌립보서':'php','골로새서':'col','데살로니가전서':'1th','데살로니가후서':'2th',
+  '디모데전서':'1ti','디모데후서':'2ti','디도서':'tit','빌레몬서':'phm',
+  '히브리서':'heb','야고보서':'jas','베드로전서':'1pe','베드로후서':'2pe',
+  '요한일서':'1jn','요한이서':'2jn','요한삼서':'3jn','유다서':'jud','요한계시록':'rev',
+};
+function BiblePassage({entry, highlights, onToggleHighlight}){
+  const [autoText, setAutoText] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const hasManual = entry && entry.text && entry.text.length;
+
+  useEffect(()=>{
+    if(hasManual||!entry)return;
+    const bookKey=BIBLE_BOOK_MAP[entry.book];
+    if(!bookKey){setAutoText([]);return;}
+    const m=entry.range.match(/^(\d+):(\d+)(?:-(\d+))?$/);
+    if(!m){setAutoText([]);return;}
+    const chap=parseInt(m[1]),vStart=parseInt(m[2]),vEnd=m[3]?parseInt(m[3]):vStart;
+    setLoading(true);
+    fetch(`https://cdn.jsdelivr.net/gh/scrollmapper/bible_databases@master/json/kr/${bookKey}.json`)
+      .then(r=>r.json())
+      .then(data=>{
+        const ch=data.chapters?.[chap-1];
+        if(!ch){setAutoText([]);return;}
+        setAutoText(ch.verses.filter(v=>v.verse>=vStart&&v.verse<=vEnd).map(v=>({v:v.verse, t:v.text})));
+      })
+      .catch(()=>setAutoText([]))
+      .finally(()=>setLoading(false));
+  },[entry?.book, entry?.range, hasManual]);
+
+  const verses = hasManual ? entry.text : autoText;
+
+  if(loading)return<div style={{fontSize:13,color:'var(--text-3)',padding:'12px 0'}}>본문 불러오는 중…</div>;
+  if(!verses || !verses.length)return(
+    <div style={{fontSize:14, lineHeight:1.7, color:'var(--text-2)', padding:'8px 0'}}>
+      <div style={{fontSize:13, fontWeight:800, color:'var(--orange)', marginBottom:6}}>📖 {entry?.book} {entry?.range}</div>
+      <div>오늘의 본문은 성경책을 펴서 직접 읽어봐요!</div>
+    </div>
+  );
+  const clickable = !!onToggleHighlight;
+  return(
+    <div style={{fontSize:15, lineHeight:1.85, color:'var(--text)'}}>
+      {verses.map(v=>{
+        const isHl = highlights?.has(v.v);
+        return(
+          <div key={v.v}
+            onClick={clickable ? ()=>onToggleHighlight(v.v) : undefined}
+            style={{
+              marginBottom:6,
+              padding:'5px 8px',
+              margin:'0 -8px 4px',
+              borderRadius:8,
+              background: isHl ? 'linear-gradient(180deg, transparent 50%, rgba(255,212,59,0.55) 50%)' : 'transparent',
+              cursor: clickable ? 'pointer' : 'default',
+              transition: 'background .15s',
+              userSelect: clickable ? 'none' : 'auto',
+              WebkitTapHighlightColor: 'transparent',
+            }}>
+            <span style={{fontSize:13, fontWeight:900, color:'var(--orange)', marginRight:8, verticalAlign:'top'}}>{v.v}</span>
+            {v.t}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── 묵상 화면 ──
+function WriteScreen({onCancel,onSave,level,setLevel}){
+  const entry=getEntry();
+  const[answers,setAnswers]=useState({shareText:''});
+  const[saving,setSaving]=useState(false);
+  const[saved,setSaved]=useState(false);
+  const[highlights,setHighlights]=useState(new Set());
+  const[showBible,setShowBible]=useState(true);
+  const[vocabOpen,setVocabOpen]=useState(false);
+  const[helpOpen,setHelpOpen]=useState(true);
+  const[isPlaying,setIsPlaying]=useState(false);
+  const[audioSpeed,setAudioSpeed]=useState('보통');
+  // 나눔 피드 (오늘 날짜)
+  const[shares,setShares]=useState([]);
+  const[shareText,setShareText]=useState('');
+  const[shareSaving,setShareSaving]=useState(false);
+  const[amened,setAmened]=useState(new Set());
+
+  useEffect(()=>{
+    const me=window._me;if(!me)return;
+    const{db,doc,onSnapshot,collection,query,where,orderBy}=window._fb;
+    // 형광펜
+    const u1=onSnapshot(doc(db,'highlights_youth',`${me.uid}_${TODAY}`),snap=>{
+      setHighlights(snap.exists()?new Set(snap.data().verses||[]):new Set());
+    });
+    // 오늘의 나눔
+    const q=query(collection(db,'shares_youth'),where('date','==',TODAY));
+    const u2=onSnapshot(q,snap=>{
+      const docs=snap.docs.map(d=>({id:d.id,...d.data()}));
+      docs.sort((a,b)=>(b.createdAt?.toDate?.()||0)-(a.createdAt?.toDate?.()||0));
+      setShares(docs);
+    });
+    return()=>{u1();u2();};
+  },[]);
+
+  const toggleHighlight=async(vn)=>{
+    const me=window._me;if(!me)return;
+    const{db,doc,setDoc,deleteDoc}=window._fb;
+    const ns=new Set(highlights);
+    ns.has(vn)?ns.delete(vn):ns.add(vn);
+    setHighlights(ns);
+    try{
+      if(ns.size===0)await deleteDoc(doc(db,'highlights_youth',`${me.uid}_${TODAY}`));
+      else await setDoc(doc(db,'highlights_youth',`${me.uid}_${TODAY}`),{uid:me.uid,date:TODAY,verses:[...ns]});
+    }catch(e){}
+  };
+
+  const speedMap={'느리게':0.7,'보통':0.9,'빠르게':1.1};
+  const stopSpeak=()=>{try{window.speechSynthesis.cancel();}catch(e){}setIsPlaying(false);};
+  const toggleSpeak=()=>{
+    if(isPlaying){stopSpeak();return;}
+    if(!('speechSynthesis' in window)){alert('이 브라우저는 TTS를 지원하지 않아요.');return;}
+    window.speechSynthesis.cancel();
+    const chunks=entry.text&&entry.text.length?entry.text.map(v=>v.t):[entry.verse||`${entry.book} ${entry.range}`];
+    const all=window.speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.toLowerCase().startsWith('ko'));
+    const voice=all.find(v=>/neural|online|premium/i.test(v.name))||all[0]||null;
+    let i=0;
+    const next=()=>{
+      if(i>=chunks.length){setIsPlaying(false);return;}
+      const u=new SpeechSynthesisUtterance(chunks[i]);
+      u.lang='ko-KR';u.rate=speedMap[audioSpeed]||0.9;u.pitch=0.95;
+      if(voice)u.voice=voice;
+      u.onend=()=>{i++;setTimeout(next,200);};
+      u.onerror=()=>setIsPlaying(false);
+      window.speechSynthesis.speak(u);
+    };
+    setIsPlaying(true);next();
+  };
+  useEffect(()=>{
+    if('speechSynthesis' in window){const w=()=>window.speechSynthesis.getVoices();w();window.speechSynthesis.onvoiceschanged=w;}
+    return()=>{try{window.speechSynthesis.cancel();}catch(e){}};
+  },[]);
+  useEffect(()=>{if(isPlaying)stopSpeak();},[audioSpeed]);
+
+  const richContent=getDevotion(TODAY,level);
+  const otherLevel=level==='youth'?'kids':'youth';
+  const otherContent=getDevotion(TODAY,otherLevel);
+
+  const QUESTIONS=richContent?.questions||[
+    {q:`오늘 ${entry.book} ${entry.range}에서 가장 마음에 와닿은 구절은?`,hint:'한 구절만 골라 적어봐요.'},
+    {q:'이 말씀이 내 삶과 어떻게 연결되나요?',hint:'학교·가정·친구 관계 중 한 장면을 떠올려봐요.'},
+    {q:'오늘 하루 이 말씀을 어떻게 살아낼 수 있을까요?',hint:'아주 작은 행동 하나도 좋아요.'},
+  ];
+  const vocab=richContent?.vocab||[];
+  const todayHelp={
+    summary:richContent?.summary||`오늘 ${entry.book} ${entry.range}은(는) "${entry.title}"을 다루는 본문이에요. 천천히 두 번 읽어보세요.`,
+    keyPoint:richContent?.keyPoint||null,
+    context:richContent?.context||null,
+    apply:richContent?.apply||'아주 작은 일부터 적용해봐요. 큰 결심보다 작은 실천이 능력이에요.',
+    prayerGuide:richContent?.prayerGuide||null,
+  };
+  const mem=getTodayMemory();
+
+  // 묵상 완료 저장
+  const hasAnswers=QUESTIONS.some((_,i)=>answers[i]&&answers[i].trim());
+  const save=async()=>{
+    if(!hasAnswers){alert('질문에 한 가지라도 답해주세요 🙏');return;}
+    setSaving(true);
+    try{
+      const me=window._me;
+      await saveCheck(me.uid,TODAY);
+      const at=QUESTIONS.map((_,i)=>answers[i]||'').filter(Boolean).map((v,i)=>`Q${i+1}. ${v}`).join('\n\n');
+      await saveShare(me.uid,me.name,{date:TODAY,book:entry.book,range:entry.range,title:entry.title,text:at,level,type:'devotion'});
+      setSaved(true);
+      onSave();
+    }catch(e){alert('저장 실패. 다시 시도해주세요.');}
+    finally{setSaving(false);}
+  };
+
+  // 나눔 한줄 등록
+  const submitShare=async()=>{
+    if(!shareText.trim())return;
+    setShareSaving(true);
+    try{
+      const me=window._me;
+      await saveShare(me.uid,me.name,{date:TODAY,book:entry.book,range:entry.range,title:entry.title,text:shareText.trim(),level,type:'share'});
+      setShareText('');
+    }catch(e){alert('나눔 등록 실패');}
+    finally{setShareSaving(false);}
+  };
+
+  const doAmen=async(s)=>{
+    const a=amened.has(s.id);
+    setAmened(p=>{const n=new Set(p);a?n.delete(s.id):n.add(s.id);return n;});
+    await doAmenToggle(s.id,a);
+  };
+
+  // 섹션 구분선
+  const Divider=()=><div style={{height:1,background:'#f5ede0',margin:'0 18px'}}/>;
+
+  return(
+    <div className="qt-write-screen" style={{display:'flex',flexDirection:'column',background:'#FFF8F0'}}>
+
+      {/* ── 헤더 ── */}
+      <div style={{background:'#FFF8F0',borderBottom:'1.5px solid rgba(255,159,28,.18)',padding:'14px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:10,backdropFilter:'blur(6px)'}}>
+        <button onClick={onCancel} style={{fontSize:24,color:'var(--text-2)',background:'none',border:'none',cursor:'pointer',lineHeight:1,padding:'2px 6px',borderRadius:8}}>‹</button>
+        <div>
+          <div style={{fontSize:17,fontWeight:900,color:'var(--text)',textAlign:'center'}}>오늘의 묵상</div>
+          <div style={{fontSize:11,color:'var(--orange)',fontWeight:700,textAlign:'center'}}>{entry.book} {entry.range}</div>
+        </div>
+        {/* 레벨 토글 */}
+        <div style={{display:'flex',gap:3,padding:3,background:'rgba(255,159,28,.1)',borderRadius:10}}>
+          {[{id:'kids',l:'초등'},{id:'youth',l:'청소년'}].map(lv=>(
+            <button key={lv.id} onClick={()=>setLevel(lv.id)} style={{padding:'4px 8px',fontSize:11,fontWeight:800,color:level===lv.id?'#fff':'var(--text-3)',background:level===lv.id?'var(--orange)':'transparent',borderRadius:7,border:'none',cursor:'pointer',transition:'all .15s'}}>
+              {lv.l}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{flex:1,overflowY:'auto',paddingBottom:32}}>
+
+        {/* ══ ① 오늘의 암송 구절 ══ */}
+        {mem.verse&&(
+          <div style={{margin:'16px 16px 0',background:'linear-gradient(135deg,#FFF3CC,#FFF8E7)',borderRadius:20,padding:'20px 22px',border:'1.5px solid rgba(255,200,50,.35)'}}>
+            <div style={{fontSize:12,color:'#B07D00',fontWeight:800,letterSpacing:'.06em',marginBottom:10,textAlign:'center'}}>✦ 오늘의 암송 구절 ✦</div>
+            <div style={{fontSize:16,fontWeight:900,color:'#2C1A00',lineHeight:1.7,textAlign:'center',fontFamily:"'Noto Serif KR',serif"}}>{mem.verse}</div>
+            <div style={{fontSize:13,color:'var(--orange)',fontWeight:700,textAlign:'center',marginTop:8}}>({mem.ref})</div>
+          </div>
+        )}
+
+        {/* ══ ② 오늘 본문 ══ */}
+        <div style={{margin:'12px 16px 0',background:'#fff',borderRadius:20,boxShadow:'0 2px 14px rgba(255,159,28,.1)',overflow:'hidden'}}>
+          <button onClick={()=>setShowBible(b=>!b)} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 18px',background:'none',border:'none',cursor:'pointer'}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <div style={{width:36,height:36,borderRadius:10,background:'var(--orange-soft)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>📖</div>
+              <div style={{textAlign:'left'}}>
+                <div style={{fontSize:12,color:'var(--orange)',fontWeight:800}}>{entry.book} · {entry.range}</div>
+                <div style={{fontSize:15,fontWeight:900,color:'var(--text)'}}>{entry.title}</div>
+              </div>
+            </div>
+            <div style={{display:'flex',alignItems:'center',gap:8}}>
+              {/* TTS 버튼 */}
+              <button onClick={e=>{e.stopPropagation();toggleSpeak();}} style={{width:32,height:32,borderRadius:'50%',background:isPlaying?'var(--orange)':'var(--orange-soft)',border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,color:isPlaying?'#fff':'var(--orange)',flexShrink:0}}>
+                {isPlaying?'⏸':'▶'}
+              </button>
+              <span style={{fontSize:18,color:'var(--text-3)',transform:showBible?'rotate(180deg)':'none',transition:'transform .2s',display:'inline-block'}}>⌄</span>
+            </div>
+          </button>
+          {showBible&&(
+            <>
+              <Divider/>
+              {/* 배속 */}
+              <div style={{display:'flex',alignItems:'center',gap:6,padding:'8px 18px'}}>
+                <span style={{fontSize:11,color:'var(--text-3)',fontWeight:700,marginRight:2}}>속도</span>
+                {['느리게','보통','빠르게'].map(s=>(
+                  <button key={s} onClick={()=>setAudioSpeed(s)} style={{padding:'3px 9px',borderRadius:7,fontSize:11,fontWeight:700,background:audioSpeed===s?'var(--orange)':'#f5f0e8',color:audioSpeed===s?'#fff':'var(--text-2)',border:'none',cursor:'pointer'}}>
+                    {s}
+                  </button>
+                ))}
+              </div>
+              <Divider/>
+              <div style={{padding:'14px 18px 18px'}}>
+                <BiblePassage entry={entry} highlights={highlights} onToggleHighlight={toggleHighlight}/>
+                <div style={{fontSize:11,color:'var(--text-3)',marginTop:10,textAlign:'center'}}>💡 절을 탭하면 형광펜으로 표시돼요</div>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* ══ ③ 묵상 해설 ══ */}
+        <div style={{margin:'12px 16px 0',background:'#fff',borderRadius:20,boxShadow:'0 2px 14px rgba(255,159,28,.1)',overflow:'hidden'}}>
+          <button onClick={()=>setHelpOpen(o=>!o)} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 18px',background:'none',border:'none',cursor:'pointer'}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <div style={{width:36,height:36,borderRadius:10,background:'rgba(34,197,94,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>🌿</div>
+              <div style={{textAlign:'left'}}>
+                <div style={{fontSize:12,color:'#16a34a',fontWeight:800}}>{level==='kids'?'초등부':'청소년부'} 묵상 도움</div>
+                <div style={{fontSize:14,fontWeight:900,color:'var(--text)'}}>오늘 본문 이해하기</div>
+              </div>
+            </div>
+            <span style={{fontSize:18,color:'var(--text-3)',transform:helpOpen?'rotate(180deg)':'none',transition:'transform .2s',display:'inline-block'}}>⌄</span>
+          </button>
+
+          {helpOpen&&(
+            <div>
+              <Divider/>
+              {/* 다른 연령대 */}
+              {otherContent&&(
+                <button onClick={()=>setLevel(otherLevel)} style={{display:'flex',alignItems:'center',gap:4,padding:'8px 18px 4px',fontSize:12,color:'var(--orange)',fontWeight:700,background:'none',border:'none',cursor:'pointer'}}>
+                  ↺ {otherLevel==='kids'?'초등부':'청소년부'} 버전으로 보기
+                </button>
+              )}
+
+              {/* 오늘의 묵상 안내 */}
+              <div style={{padding:'14px 18px 10px'}}>
+                <div style={{fontSize:13,fontWeight:800,color:'var(--orange)',marginBottom:8}}>오늘의 묵상 안내</div>
+                <div style={{fontSize:14.5,lineHeight:1.8,color:'var(--text)'}}>{todayHelp.summary}</div>
+              </div>
+
+              {/* 배경 이야기 */}
+              {todayHelp.context&&(
+                <>
+                  <Divider/>
+                  <div style={{padding:'14px 18px 10px'}}>
+                    <div style={{fontSize:13,fontWeight:800,color:'var(--orange)',marginBottom:8}}>📜 배경 이야기</div>
+                    <div style={{fontSize:14,lineHeight:1.8,color:'var(--text)'}}>{todayHelp.context}</div>
+                  </div>
+                </>
+              )}
+
+              {/* 핵심 포인트 */}
+              {todayHelp.keyPoint&&(
+                <>
+                  <Divider/>
+                  <div style={{padding:'14px 18px 10px'}}>
+                    <div style={{fontSize:13,fontWeight:800,color:'var(--orange)',marginBottom:8}}>💡 핵심 포인트</div>
+                    <div style={{background:'linear-gradient(135deg,rgba(255,159,28,.08),rgba(255,212,59,.1))',borderLeft:'3px solid var(--orange)',borderRadius:'0 12px 12px 0',padding:'12px 14px',fontSize:14.5,fontWeight:700,lineHeight:1.7,color:'var(--text)'}}>
+                      {todayHelp.keyPoint}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* 어려운 낱말 풀이 */}
+              {vocab&&vocab.length>0&&(
+                <>
+                  <Divider/>
+                  <div style={{padding:'14px 18px 10px'}}>
+                    <button onClick={()=>setVocabOpen(o=>!o)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',background:'none',border:'none',cursor:'pointer',padding:0,marginBottom:vocabOpen?10:0}}>
+                      <div style={{fontSize:13,fontWeight:800,color:'var(--orange)'}}>📚 어려운 낱말 풀이</div>
+                      <span style={{fontSize:14,color:'var(--text-3)',transform:vocabOpen?'rotate(180deg)':'none',transition:'transform .2s',display:'inline-block'}}>⌄</span>
+                    </button>
+                    {vocabOpen&&vocab.map((v,i)=>(
+                      <div key={i} style={{display:'flex',gap:10,alignItems:'flex-start',marginBottom:i<vocab.length-1?10:0,paddingBottom:i<vocab.length-1?10:0,borderBottom:i<vocab.length-1?'1px dashed #f0e8d8':'none'}}>
+                        <div style={{flexShrink:0,background:'var(--orange)',color:'#fff',borderRadius:8,padding:'3px 10px',fontSize:12,fontWeight:800,whiteSpace:'nowrap',marginTop:1}}>{v.term}</div>
+                        <div style={{fontSize:13.5,lineHeight:1.65,color:'var(--text-2)',flex:1}}>{v.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* 적용 도움 */}
+              <Divider/>
+              <div style={{padding:'14px 18px 10px'}}>
+                <div style={{fontSize:13,fontWeight:800,color:'var(--orange)',marginBottom:8}}>적용 도움</div>
+                <div style={{fontSize:14,lineHeight:1.8,color:'var(--text)'}}>{todayHelp.apply}</div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ══ ④ 함께 기도해요 ══ */}
+        {todayHelp.prayerGuide&&(
+          <div style={{margin:'12px 16px 0',background:'#fff',borderRadius:20,boxShadow:'0 2px 14px rgba(255,159,28,.1)',padding:'18px 20px'}}>
+            <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
+              <div style={{width:36,height:36,borderRadius:10,background:'rgba(79,70,229,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>🙏</div>
+              <div style={{fontSize:13,fontWeight:800,color:'#4f46e5'}}>함께 기도해요</div>
+            </div>
+            <div style={{background:'#f5f4ff',borderRadius:14,padding:'14px 16px',fontSize:14.5,lineHeight:1.85,color:'#2d2a6e',fontStyle:'italic',fontFamily:"'Noto Serif KR',serif"}}>
+              "{todayHelp.prayerGuide}"
+            </div>
+          </div>
+        )}
+
+        {/* ══ ⑤ 내 생각 적기 (질문) ══ */}
+        <div style={{margin:'12px 16px 0',background:'#fff',borderRadius:20,boxShadow:'0 2px 14px rgba(255,159,28,.1)',padding:'18px 20px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:16}}>
+            <div style={{width:36,height:36,borderRadius:10,background:'rgba(255,159,28,.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>✍️</div>
+            <div>
+              <div style={{fontSize:15,fontWeight:900,color:'var(--text)'}}>내 생각 적기</div>
+              <div style={{fontSize:11,color:'var(--text-3)',marginTop:1}}>솔직하게 답해봐요 — 정답은 없어요</div>
+            </div>
+          </div>
+          {QUESTIONS.map((qItem,i)=>{
+            const q=typeof qItem==='string'?{q:qItem}:qItem;
+            const filled=answers[i]&&answers[i].trim();
+            return(
+              <div key={i} style={{marginBottom:i<QUESTIONS.length-1?18:0}}>
+                <div style={{display:'flex',gap:8,alignItems:'flex-start',marginBottom:7}}>
+                  <div style={{width:24,height:24,borderRadius:7,background:filled?'var(--green)':'var(--orange)',color:'#fff',fontSize:11,fontWeight:900,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1,transition:'background .2s'}}>
+                    {filled?'✓':`Q${i+1}`}
+                  </div>
+                  <div style={{fontSize:14,color:'var(--text)',lineHeight:1.6,fontWeight:700,flex:1}}>{q.q}</div>
+                </div>
+                {q.hint&&<div style={{fontSize:11.5,color:'var(--text-3)',marginLeft:32,marginBottom:6,fontStyle:'italic'}}>💡 {q.hint}</div>}
+                <textarea
+                  value={answers[i]||''}
+                  onChange={e=>setAnswers(a=>({...a,[i]:e.target.value}))}
+                  placeholder="여기에 솔직하게 답해봐요"
+                  rows={3}
+                  style={{width:'100%',background:'#FFF8F0',borderRadius:12,border:'2px solid transparent',padding:'11px 13px',color:'var(--text)',fontSize:14,lineHeight:1.6,resize:'none',outline:'none',fontFamily:'inherit',boxSizing:'border-box'}}
+                  onFocus={e=>e.target.style.borderColor='var(--orange)'}
+                  onBlur={e=>e.target.style.borderColor='transparent'}
+                />
+              </div>
+            );
+          })}
+          {/* 묵상 완료 저장 */}
+          <button onClick={save} disabled={saving||!hasAnswers} style={{width:'100%',height:52,borderRadius:14,background:hasAnswers?'var(--orange)':'#e5ddd0',color:hasAnswers?'#fff':'#bbb',fontSize:16,fontWeight:900,boxShadow:hasAnswers?'0 4px 16px rgba(255,159,28,.35)':'none',border:'none',cursor:hasAnswers?'pointer':'default',marginTop:16,letterSpacing:'-.01em'}}>
+            {saving?'저장 중…':'✅  묵상 완료 기록하기'}
+          </button>
+          {saved&&<div style={{textAlign:'center',fontSize:13,color:'var(--green)',fontWeight:700,marginTop:8}}>오늘 묵상 완료! 🎉</div>}
+        </div>
+
+        {/* ══ ⑥ 나눔 코너 ══ */}
+        <div style={{margin:'12px 16px 0',background:'#fff',borderRadius:20,boxShadow:'0 2px 14px rgba(255,159,28,.1)',padding:'18px 20px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14}}>
+            <div style={{width:36,height:36,borderRadius:10,background:'rgba(99,179,237,.15)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>💬</div>
+            <div>
+              <div style={{fontSize:15,fontWeight:900,color:'var(--text)'}}>오늘의 나눔</div>
+              <div style={{fontSize:11,color:'var(--text-3)',marginTop:1}}>오늘 말씀에서 받은 은혜 한 줄로 나눠요</div>
+            </div>
+          </div>
+
+          {/* 나눔 입력 */}
+          <div style={{background:'#FFF8F0',borderRadius:14,padding:'12px 14px',marginBottom:14}}>
+            <textarea
+              value={shareText}
+              onChange={e=>setShareText(e.target.value)}
+              placeholder={`오늘 "${entry.title}" 말씀에서 받은 은혜를 한 줄로 나눠봐요 ✨`}
+              rows={2}
+              style={{width:'100%',background:'transparent',border:'none',outline:'none',fontSize:14,lineHeight:1.65,color:'var(--text)',resize:'none',fontFamily:'inherit',boxSizing:'border-box'}}
+            />
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:6}}>
+              <span style={{fontSize:11,color:shareText.length>150?'var(--red)':'var(--text-3)',fontWeight:600}}>{shareText.length}/150자</span>
+              <button onClick={submitShare} disabled={shareSaving||!shareText.trim()||shareText.length>150} style={{padding:'7px 18px',borderRadius:10,background:shareText.trim()&&shareText.length<=150?'var(--orange)':'#e5ddd0',color:shareText.trim()&&shareText.length<=150?'#fff':'#bbb',fontSize:13,fontWeight:800,border:'none',cursor:shareText.trim()?'pointer':'default'}}>
+                {shareSaving?'등록 중…':'나눔 등록'}
+              </button>
+            </div>
+          </div>
+
+          {/* 나눔 피드 */}
+          {shares.length===0?(
+            <div style={{textAlign:'center',padding:'20px 0',color:'var(--text-3)',fontSize:13}}>
+              아직 나눔이 없어요. 첫 번째로 나눔을 올려봐요! 🌱
+            </div>
+          ):(
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+              {shares.map(s=>{
+                const isMe=s.uid===window._me?.uid;
+                const amed=amened.has(s.id);
+                return(
+                  <div key={s.id} style={{background:'#FFF8F0',borderRadius:14,padding:'12px 14px'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:7}}>
+                      <div style={{width:30,height:30,borderRadius:9,background:avColor(s.name),display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:900,color:'#fff',flexShrink:0}}>
+                        {ini(s.name)}
+                      </div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:13,fontWeight:800,color:'var(--text)',display:'flex',alignItems:'center',gap:5}}>
+                          {s.name}
+                          {isMe&&<span style={{fontSize:10,background:'var(--orange-soft)',color:'var(--orange)',padding:'1px 5px',borderRadius:4,fontWeight:800}}>나</span>}
+                          {s.role==='선생님'&&<span style={{fontSize:10,background:'rgba(99,179,237,.2)',color:'#2b6cb0',padding:'1px 5px',borderRadius:4,fontWeight:800}}>선생님</span>}
+                        </div>
+                        <div style={{fontSize:11,color:'var(--text-3)'}}>
+                          {s.type==='devotion'?'묵상 나눔':'한줄 나눔'} · {fmtTime(s.createdAt)}
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{fontSize:14,lineHeight:1.7,color:'var(--text)',marginBottom:8}}>{s.text}</div>
+                    <button onClick={()=>doAmen(s)} style={{display:'inline-flex',alignItems:'center',gap:4,padding:'5px 12px',borderRadius:8,background:amed?'rgba(255,107,157,.12)':'rgba(0,0,0,.04)',color:amed?'#FF6B9D':'var(--text-3)',fontSize:12,fontWeight:700,border:'none',cursor:'pointer'}}>
+                      {amed?'🤍':'🤍'} 아멘 {(s.amen||0)+(amed?1:0)}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <div style={{height:32}}/>
+      </div>
+    </div>
+  );
+}
+// ── 기도 노트 ──
+function PrayerNoteScreen({onClose,uid}){
+  const[prayers,setPrayers]=useState([]);const[loading,setLoading]=useState(true);const[filter,setFilter]=useState('전체');const[adding,setAdding]=useState(false);const[newTitle,setNewTitle]=useState('');const[saving,setSaving]=useState(false);
+  useEffect(()=>{
+    const{db,collection,query,where,onSnapshot}=window._fb;
+    const q=query(collection(db,'prayers_youth'),where('uid','==',uid));
+    return onSnapshot(q,snap=>{let docs=snap.docs.map(d=>({id:d.id,...d.data()}));docs.sort((a,b)=>(b.createdAt?.toDate?.()||0)-(a.createdAt?.toDate?.()||0));setPrayers(docs);setLoading(false);});
+  },[uid]);
+  const addPrayer=async()=>{
+    if(!newTitle.trim())return;setSaving(true);
+    const{db,collection,addDoc,serverTimestamp}=window._fb;
+    await addDoc(collection(db,'prayers_youth'),{uid,title:newTitle,status:'기도중',createdAt:serverTimestamp()});
+    setNewTitle('');setAdding(false);setSaving(false);
+  };
+  const toggleStatus=async(p)=>{
+    const{db,doc,updateDoc}=window._fb;
+    await updateDoc(doc(db,'prayers_youth',p.id),{status:p.status==='기도중'?'응답됨':'기도중'});
+  };
+  const filtered=filter==='전체'?prayers:prayers.filter(p=>p.status===filter);
+  const prayingCount=prayers.filter(p=>p.status==='기도중').length;
+  const answeredCount=prayers.filter(p=>p.status==='응답됨').length;
+  return(
+    <div style={{position:'fixed',inset:0,zIndex:60,background:'var(--bg)',overflowY:'auto'}}>
+      <div style={{padding:'18px 20px 0',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
+        <button onClick={onClose} style={{fontSize:14,color:'var(--text-3)',fontWeight:700,padding:'6px 0'}}>← 닫기</button>
+        <div style={{fontSize:17,fontWeight:900}}>기도 노트 🙏</div>
+        <div style={{width:48}}/>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,padding:'0 16px',marginBottom:14}}>
+        {[{l:'전체',v:prayers.length,c:'var(--text)'},{l:'기도 중',v:prayingCount,c:'var(--orange)'},{l:'응답됨',v:answeredCount,c:'var(--green)'}].map(s=>(
+          <div key={s.l} style={{background:'var(--surface)',borderRadius:14,padding:'14px 10px',textAlign:'center',boxShadow:'0 2px 8px rgba(255,159,28,.08)'}}>
+            <div style={{fontSize:26,fontWeight:900,color:s.c}}>{s.v}</div>
+            <div style={{fontSize:12,color:'var(--text-3)',fontWeight:600,marginTop:3}}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+      {adding?(
+        <div style={{padding:'0 16px',marginBottom:14}}>
+          <input style={{width:'100%',padding:'14px 16px',borderRadius:14,background:'var(--surface)',border:'2px solid var(--orange)',fontSize:15,outline:'none',color:'var(--text)',marginBottom:10}} value={newTitle} onChange={e=>setNewTitle(e.target.value)} placeholder="기도 제목을 입력해요" autoFocus/>
+          <div style={{display:'flex',gap:8}}>
+            <button onClick={addPrayer} disabled={saving} style={{flex:1,height:48,borderRadius:12,background:'var(--orange)',color:'#fff',fontSize:15,fontWeight:800}}>추가</button>
+            <button onClick={()=>setAdding(false)} style={{flex:1,height:48,borderRadius:12,background:'var(--surface)',color:'var(--text-3)',fontSize:15,fontWeight:700}}>취소</button>
+          </div>
+        </div>
+      ):(
+        <div style={{padding:'0 16px',marginBottom:14}}>
+          <button onClick={()=>setAdding(true)} style={{width:'100%',height:52,borderRadius:14,background:'var(--orange)',color:'#fff',fontSize:16,fontWeight:800,boxShadow:'0 4px 14px rgba(255,159,28,.3)'}}>+ 새 기도 제목 추가</button>
+        </div>
+      )}
+      <div style={{display:'flex',gap:8,padding:'0 16px',marginBottom:14}}>
+        {['전체','기도 중','응답됨'].map(f=>(
+          <button key={f} onClick={()=>setFilter(f==='기도 중'?'기도중':f==='응답됨'?'응답됨':'전체')} style={{padding:'8px 16px',borderRadius:999,background:filter===(f==='기도 중'?'기도중':f==='응답됨'?'응답됨':'전체')?'var(--orange)':'var(--surface)',color:filter===(f==='기도 중'?'기도중':f==='응답됨'?'응답됨':'전체')?'#fff':'var(--text-2)',fontSize:13,fontWeight:700,boxShadow:'0 2px 8px rgba(255,159,28,.1)'}}>
+            {f}
+          </button>
+        ))}
+      </div>
+      {filtered.map(p=>(
+        <div key={p.id} style={{background:'var(--surface)',borderRadius:16,padding:'16px 18px',margin:'0 16px 10px',display:'flex',alignItems:'center',gap:12,boxShadow:'0 2px 8px rgba(255,159,28,.06)'}}>
+          <button onClick={()=>toggleStatus(p)} style={{width:32,height:32,borderRadius:50,background:p.status==='응답됨'?'var(--green-soft)':'var(--orange-soft)',border:`2px solid ${p.status==='응답됨'?'var(--green)':'var(--orange)'}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            {p.status==='응답됨'?'✓':'🙏'}
+          </button>
+          <div style={{flex:1}}>
+            <div style={{fontSize:15,fontWeight:700,color:p.status==='응답됨'?'var(--text-3)':'var(--text)',textDecoration:p.status==='응답됨'?'line-through':''}}>{p.title}</div>
+            <div style={{fontSize:11,color:p.status==='응답됨'?'var(--green)':'var(--orange)',fontWeight:700,marginTop:2}}>{p.status}</div>
+          </div>
+        </div>
+      ))}
+      <div style={{height:40}}/>
+    </div>
+  );
+}
+
+// ── 말씀 암송 ──
+function MemoryScreen({onClose}){
+  const[revealed,setRevealed]=useState(false);const[done,setDone]=useState(false);
+  return(
+    <div style={{position:'fixed',inset:0,zIndex:60,background:'var(--bg)',overflowY:'auto'}}>
+      <div style={{padding:'18px 20px 0',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
+        <button onClick={onClose} style={{fontSize:14,color:'var(--text-3)',fontWeight:700,padding:'6px 0'}}>← 닫기</button>
+        <div style={{fontSize:17,fontWeight:900}}>말씀 암송 📖</div>
+        <div style={{width:48}}/>
+      </div>
+      <div style={{margin:'0 16px 14px',background:'var(--surface)',borderRadius:16,padding:'16px 18px',boxShadow:'0 2px 8px rgba(255,159,28,.08)'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+          <div style={{fontSize:14,fontWeight:800,color:'var(--text)'}}>이번 주 암송 현황</div>
+          <div style={{fontSize:14,fontWeight:800,color:'var(--orange)'}}>{done?'1/7':'0/7'}</div>
+        </div>
+        <div style={{display:'flex',gap:8,justifyContent:'center'}}>
+          {['주일','월','화','수','목','금','토'].map((d,i)=>(
+            <div key={d} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+              <div style={{width:34,height:34,borderRadius:50,background:done&&i===0?'var(--orange)':'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                {done&&i===0?<span style={{fontSize:14}}>✓</span>:<span style={{fontSize:18}}>○</span>}
+              </div>
+              <div style={{fontSize:10,color:'var(--text-3)',fontWeight:600}}>{d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{margin:'0 16px 12px',borderRadius:18,background:'linear-gradient(135deg,var(--orange),#FFB444)',padding:'28px 22px',boxShadow:'0 6px 24px rgba(255,159,28,.3)',cursor:'pointer',minHeight:180,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center'}} onClick={()=>setRevealed(r=>!r)}>
+        <div style={{fontSize:12,color:'rgba(255,255,255,.8)',fontWeight:700,marginBottom:8}}>오늘의 암송 구절</div>
+        <div style={{fontSize:22,fontWeight:900,color:'#fff',marginBottom:8}}>{getTodayMemory().ref}</div>
+        {revealed?(
+          <div style={{fontSize:15,lineHeight:1.75,color:'#fff',marginTop:8}}>{getTodayMemory().verse}</div>
+        ):(
+          <>
+            <div style={{fontSize:14,color:'rgba(255,255,255,.75)',fontWeight:600}}>이 구절을 기억하시나요?</div>
+            <div style={{fontSize:13,color:'rgba(255,255,255,.6)',marginTop:4}}>탭하여 본문 확인</div>
+          </>
+        )}
+      </div>
+      <div style={{padding:'0 16px'}}>
+        <button onClick={()=>{setDone(true);setRevealed(true);}} style={{width:'100%',height:52,borderRadius:14,background:done?'var(--green-soft)':'var(--surface)',color:done?'var(--green)':'var(--text)',fontSize:16,fontWeight:800,border:done?'2px solid var(--green)':'2px solid var(--divider)',marginBottom:10}}>
+          {done?'✅ 암송 완료!':'다시 보기'}
+        </button>
+        {!done&&<button onClick={()=>setDone(true)} style={{width:'100%',height:52,borderRadius:14,background:'var(--orange)',color:'#fff',fontSize:16,fontWeight:800,boxShadow:'0 4px 14px rgba(255,159,28,.3)'}}>
+          ✓ 암송했어요!
+        </button>}
+      </div>
+      <div style={{height:40}}/>
+    </div>
+  );
+}
+
+function MyNotesScreen({onClose,uid}){
+  const[notes,setNotes]=useState([]);const[loading,setLoading]=useState(true);
+  useEffect(()=>{
+    const{db,collection,query,where,onSnapshot}=window._fb;
+    const q=query(collection(db,'shares_youth'),where('uid','==',uid));
+    return onSnapshot(q,snap=>{
+      let docs=snap.docs.map(d=>({id:d.id,...d.data()}));
+      docs.sort((a,b)=>(b.createdAt?.toDate?.()||0)-(a.createdAt?.toDate?.()||0));
+      setNotes(docs);setLoading(false);
+    });
+  },[uid]);
+  const fmtDate=ts=>{if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts);return`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;};
+  return(
+    <div style={{position:'fixed',inset:0,zIndex:60,background:'var(--bg)',overflowY:'auto'}}>
+      <div style={{padding:'18px 20px 0',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+        <button onClick={onClose} style={{fontSize:14,color:'var(--text-3)',fontWeight:700,padding:'6px 0'}}>← 닫기</button>
+        <div style={{fontSize:17,fontWeight:900,color:'var(--text)'}}>내 묵상 노트 📖</div>
+        <div style={{width:48}}/>
+      </div>
+      <div style={{padding:'4px 20px 14px',fontSize:13,color:'var(--text-3)',fontWeight:600}}>총 {notes.length}편</div>
+      {notes.map(n=>(
+        <div key={n.id} style={{background:'var(--surface)',borderRadius:18,padding:'18px 18px 14px',margin:'0 16px 10px',boxShadow:'0 2px 12px rgba(255,159,28,.08)'}}>
+          <div>
+            <div style={{fontSize:12,color:'var(--orange)',fontWeight:800}}>{fmtDate(n.createdAt)}</div>
+            <div style={{fontSize:16,fontWeight:900,color:'var(--text)',marginTop:2}}>{n.title||n.book+' '+n.range}</div>
+          </div>
+          {n.verseRef&&<div style={{padding:'10px 13px 10px 15px',background:'var(--orange-soft)',borderLeft:'3px solid var(--orange)',borderRadius:'4px 11px 11px 4px',margin:'10px 0'}}>
+            <div style={{fontSize:11,color:'var(--orange)',fontWeight:800}}>{n.verseRef}</div>
+            {n.verse&&<div style={{fontFamily:'Noto Serif KR,serif',fontSize:14,color:'var(--text)'}}>"{n.verse}"</div>}
+          </div>}
+          {n.text&&<div style={{fontSize:14,lineHeight:1.7,color:'var(--text)'}}>{n.text}</div>}
+        </div>
+      ))}
+      <div style={{height:40}}/>
+    </div>
+  );
+}
+
+// ── 선생님 대시보드 ──
+function Dashboard({onBack}){
+  const[members,setMembers]=useState([]);const[shares,setShares]=useState([]);const[todayUids,setTodayUids]=useState(new Set());const[allChecks,setAllChecks]=useState([]);const[loading,setLoading]=useState(true);
+  useEffect(()=>{
+    const{db,collection,query,where,orderBy,onSnapshot,limit}=window._fb;
+    const u1=onSnapshot(collection(db,'users_youth'),s=>{setMembers(s.docs.map(d=>({id:d.id,...d.data()})));setLoading(false);});
+    const u2=onSnapshot(query(collection(db,'checks_youth'),where('date','==',TODAY)),s=>setTodayUids(new Set(s.docs.map(d=>d.data().uid))));
+    const u3=onSnapshot(collection(db,'checks_youth'),s=>setAllChecks(s.docs.map(d=>d.data())));
+    const u4=onSnapshot(query(collection(db,'shares_youth'),orderBy('createdAt','desc'),limit(6)),s=>setShares(s.docs.map(d=>({id:d.id,...d.data()}))));
+    return()=>{u1();u2();u3();u4();};
+  },[]);
+  const month=TODAY.slice(0,7),tod=parseInt(TODAY.slice(8,10));
+  const stats=members.map(m=>{const mc=allChecks.filter(c=>c.uid===m.id&&c.date.startsWith(month));return{...m,monthRate:tod>0?Math.round(mc.length/tod*100):0,todayDone:todayUids.has(m.id)};});
+  const total=members.length,todayN=[...todayUids].length,todayRate=total>0?Math.round(todayN/total*100):0,avgMonth=stats.length>0?Math.round(stats.reduce((a,m)=>a+m.monthRate,0)/stats.length):0;
+  const rc=r=>r>=80?'good':r>=60?'mid':'low';
+  if(loading)return<div className="dash-wrap" style={{display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'var(--text-2)'}}>불러오는 중…</div>;
+  return(
+    <div className="dash-wrap">
+      <div className="dash-head">
+        <div className="dash-head-top"><div className="dash-head-title">📊 선생님 대시보드</div><button className="dash-back" onClick={onBack}>← 앱으로</button></div>
+      </div>
+      <div className="dash-kpis">
+        {[{l:'오늘 완료',v:todayN,u:`/${total}명`,s:'실시간'},{l:'오늘 완료율',v:todayRate,u:'%',s:todayRate>=70?'잘하고 있어요 🎉':'독려 필요'},{l:'이번 달 평균',v:avgMonth,u:'%',s:'전체 학생'},{l:'오늘 나눔',v:shares.length,u:'편',s:'실시간'}].map(k=>(
+          <div key={k.l} className="dash-kpi"><div className="dash-kpi-label">{k.l}</div><div className="dash-kpi-val">{k.v}<span className="u">{k.u}</span></div><div className="dash-kpi-sub"><span className="live-dot"/>{k.s}</div></div>
+        ))}
+      </div>
+      <div className="dash-panel" style={{marginBottom:24}}>
+        <div className="dash-panel-title">학생 진도 현황 ({total}명)</div>
+        {stats.sort((a,b)=>b.monthRate-a.monthRate).map(m=>(
+          <div key={m.id} className="dash-row">
+            <div className="dash-av" style={{background:avColor(m.name)}}>{ini(m.name)}</div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:5}}><div className="dash-name">{m.name}</div><span className={'dash-pill '+rc(m.monthRate)}>{m.monthRate}%</span></div>
+              <div className="dash-bar-wrap"><div className="dash-bar-fill" style={{width:m.monthRate+'%'}}/></div>
+            </div>
+            <div className={'dash-dot '+(m.todayDone?'done':'miss')}/>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── CCM 인앱 플레이어 모달 ──
+function CCMPlayer({ccm,onClose}){
+  if(!ccm)return null;
+  const embedSrc=ccm.kind==='override'
+    ? `https://www.youtube.com/embed/${ccm.videoId}?autoplay=1&rel=0`
+    : ccm.embedUrl;
+  const externalUrl=ccm.kind==='override'
+    ? `https://www.youtube.com/watch?v=${ccm.videoId}`
+    : ccm.listUrl;
+  return(
+    <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,.78)',zIndex:200,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'20px 16px'}}>
+      <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:400,background:'var(--surface)',borderRadius:18,overflow:'hidden',boxShadow:'0 12px 40px rgba(0,0,0,.4)'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:'1px solid var(--divider)'}}>
+          <div style={{display:'flex',alignItems:'center',gap:8,minWidth:0}}>
+            <span style={{fontSize:18}}>🎵</span>
+            <div style={{fontSize:14,fontWeight:800,color:'var(--text)',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{ccm.title}</div>
+          </div>
+          <button onClick={onClose} aria-label="닫기" style={{width:32,height:32,borderRadius:'50%',background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,color:'var(--text-2)',flexShrink:0,border:'none',cursor:'pointer'}}>✕</button>
+        </div>
+        <div style={{position:'relative',width:'100%',paddingBottom:'56.25%',background:'#000'}}>
+          <iframe src={embedSrc} title={ccm.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{position:'absolute',inset:0,width:'100%',height:'100%',border:0}}/>
+        </div>
+        <div style={{padding:'12px 16px',display:'flex',gap:8}}>
+          <a href={externalUrl} target="_blank" rel="noopener" style={{flex:1,height:42,borderRadius:11,background:'var(--orange-soft)',color:'var(--orange)',fontSize:13,fontWeight:800,display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none',gap:5}}>
+            ▶ 유튜브에서 보기
+          </a>
+          <button onClick={onClose} style={{flex:1,height:42,borderRadius:11,background:'var(--orange)',color:'#fff',fontSize:13,fontWeight:800,border:'none',cursor:'pointer'}}>
+            닫기
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── 메인 App 컨트롤러 ──
+function App(){
+  const[tab,setTab]=useState('home');const[done,setDone]=useState(false);const[cs,setCs]=useState(new Set());const[streak,setStreak]=useState(0);const[points,setPoints]=useState(0);const[writing,setWriting]=useState(false);const[toast,setToast]=useState(null);const[dash,setDash]=useState(false);const[shareCount,setShareCount]=useState(0);const[attendCount,setAttendCount]=useState(0);const[viewingNotes,setViewingNotes]=useState(false);const[viewingPrayer,setViewingPrayer]=useState(false);const[viewingMemory,setViewingMemory]=useState(false);
+  // 어린이/청소년 레벨 (localStorage 저장)
+  const[level,setLevelRaw]=useState(()=>localStorage.getItem('qt_level')||'youth');
+  const setLevel=lv=>{setLevelRaw(lv);try{localStorage.setItem('qt_level',lv);}catch(e){}};
+  const me=window._me;
+  useEffect(()=>{
+    if(!me)return;
+    const{db,collection,query,where,onSnapshot}=window._fb;
+    const u1=onSnapshot(query(collection(db,'checks_youth'),where('uid','==',me.uid)),snap=>{
+      const dates=new Set(snap.docs.map(d=>d.data().date));setCs(dates);setDone(dates.has(TODAY));
+      let s=0,d=new Date(TODAY);while(s<=365){const ds=d.toISOString().slice(0,10);if(dates.has(ds)){s++;d.setDate(d.getDate()-1);}else break;}setStreak(s);
+    });
+    const u2=onSnapshot(query(collection(db,'users_youth'),where('__name__','==',me.uid)),snap=>{if(!snap.empty)setPoints(snap.docs[0].data().points||0);});
+    const u3=onSnapshot(query(collection(db,'shares_youth'),where('uid','==',me.uid)),snap=>setShareCount(snap.size));
+    const u4=onSnapshot(query(collection(db,'attend_youth'),where('uid','==',me.uid)),snap=>setAttendCount(snap.size));
+    return()=>{u1();u2();u3();u4();};
+  },[me?.uid]);
+
+  const markDone=async()=>{if(done)return;try{await saveCheck(me.uid,TODAY);showToast('묵상 완료! +10P 🎉');}catch(e){alert('저장 실패');}};
+  const showToast=msg=>{setToast(msg);setTimeout(()=>setToast(null),2400);};
+  const logout=async()=>{const{auth,signOut}=window._fb;await signOut(auth);};
+
+  if(dash)return<Dashboard onBack={()=>setDash(false)}/>;
+  if(viewingNotes)return<MyNotesScreen onClose={()=>setViewingNotes(false)} uid={me?.uid}/>;
+  if(viewingPrayer)return<PrayerNoteScreen onClose={()=>setViewingPrayer(false)} uid={me?.uid}/>;
+  if(viewingMemory)return<MemoryScreen onClose={()=>setViewingMemory(false)}/>;
+
+  const TABS=[
+    {id:'home',l:'홈',i:'🏠'},
+    {id:'write',l:'묵상',i:'📝'},
+    {id:'share',l:'그룹',i:'👥'},
+    {id:'prayer',l:'기도',i:'🤍'},
+    {id:'memory',l:'암송',i:'✨'},
+    {id:'bible',l:'성경읽기',i:'📖'},
+  ];
+
+  return(
+    <div className="qt-app" style={{position:'relative'}}>
+      <div className="qt-scroll">
+        {tab==='home'&&<HomeScreen done={done} onWrite={()=>setTab('write')} onMarkDone={markDone} completedSet={cs} streak={streak} points={points} onViewNote={()=>setViewingNotes(true)} onViewPrayer={()=>setViewingPrayer(true)} onViewMemory={()=>setViewingMemory(true)} onViewShare={()=>setTab('share')} onPlayCCM={(ccm)=>setPlayingCCM(ccm)}/>}
+        {tab==='write'&&<WriteScreen onCancel={()=>setTab('home')} onSave={()=>{setTab('home');showToast('묵상 완료! +10P 🙌');}} level={level} setLevel={setLevel}/>}
+        {tab==='bible'&&<BibleReadingScreen uid={me?.uid}/>}
+        {tab==='cal'&&<CalendarScreen completedSet={cs} streak={streak}/>}
+        {tab==='share'&&<ShareScreen uid={me?.uid}/>}
+        {tab==='badge'&&<BadgeScreen completedSet={cs} streak={streak} points={points} shareCount={shareCount} attendCount={attendCount}/>}
+        {tab==='prayer'&&<PrayerNoteScreen onClose={()=>setTab('home')} uid={me?.uid}/>}
+        {tab==='memory'&&<MemoryScreen onClose={()=>setTab('home')}/>}
+        {tab==='more'&&<MoreScreen streak={streak} points={points} onLogout={logout} onDash={()=>setDash(true)}/>}
+      </div>
+      <div className="qt-tabs">
+        {TABS.map(t=>(
+          <button key={t.id} className={'qt-tab'+(tab===t.id?' active':'')} onClick={()=>setTab(t.id)}>
+            <span className="qt-tab-icon">{t.i}</span>
+            <span>{t.l}</span>
+          </button>
+        ))}
+      </div>
+      {toast&&<div className="qt-toast">{toast}</div>}
+    </div>
+  );
+}
+
+window._mountApp=()=>ReactDOM.createRoot(document.getElementById('app')).render(<App/>);
+</script>
+</body>
+</html>
